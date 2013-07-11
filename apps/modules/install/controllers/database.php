@@ -3,6 +3,14 @@
 class Database extends MX_Controller
 {
 	protected $_entity = array(
+		'models\\entity\\collection\\Collections',
+		'models\\entity\\collection\\Points',
+		'models\\entity\\collection\\Templates',
+		'models\\entity\\store\\Commodities',
+		'models\\entity\\store\\Stores',
+		'models\\entity\\store\\Storegroups',
+		'models\\entity\\member\\Members',
+		'models\\entity\\member\\Membergroups'
 	);
 
 	public function index()
