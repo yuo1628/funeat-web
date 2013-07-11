@@ -20,4 +20,17 @@ class Member extends Model
 	{
 		parent::__construct($entity);
 	}
+
+	/**
+	 * Verify user
+	 */
+	public function verify($username, $password)
+	{
+		$find = array(
+			'username' => $username,
+			'password' => md5($password)
+		);
+
+		return $this->_repository->findBy($find);
+	}
 }
