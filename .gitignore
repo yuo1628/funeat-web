@@ -1,3 +1,5 @@
+# Framework files
+
 config/development
 logs/log-*.php
 !logs/index.html
@@ -5,3 +7,8 @@ cache/*
 !cache/index.html
 !cache/.htaccess
 .project
+
+# Design files
+
+*.ai
+*.psd
