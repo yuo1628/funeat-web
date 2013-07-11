@@ -32,7 +32,7 @@ interface IModel
 	 * @param string
 	 * @return this
 	 */
-	public function getItem($id = null, $column = null);
+	public function getItem($id, $column = null);
 
 	/**
 	 * Get items

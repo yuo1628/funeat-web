@@ -217,7 +217,7 @@ class CIModel extends Model
     /**
      * {@inheritDoc}
      */
-    public function getItem($id = null)
+    public function getItem($id, $column = null)
     {
 		// TODO: Implement it!
     }

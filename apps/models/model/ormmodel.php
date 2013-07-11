@@ -64,7 +64,7 @@ class ORMModel extends Model
 	/**
      * {@inheritDoc}
 	 */
-	public function getItem($id = null, $column = null)
+	public function getItem($id, $column = null)
 	{
 		if ($column === null)
 		{
