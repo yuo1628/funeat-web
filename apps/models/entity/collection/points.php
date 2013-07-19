@@ -34,11 +34,11 @@ class Points
 	private $code;
 
 	/**
-	 * @var Stores
+	 * @var Restaurants
 	 *
-	 * @ORM\ManyToOne(targetEntity="models\entity\store\Stores", inversedBy="points")
+	 * @ORM\ManyToOne(targetEntity="models\entity\restaurant\Restaurants", inversedBy="points")
 	 */
-	private $store;
+	private $restaurants;
 
 	/**
 	 * @var Collections
@@ -105,9 +105,9 @@ class Points
 		return $this->code;
 	}
 
-	public function setStore(Stores $value)
+	public function setRestaurant(Restaurants $value)
 	{
-		$this->store = $value;
+		$this->restaurant = $value;
 	}
 
 	public function getStore()

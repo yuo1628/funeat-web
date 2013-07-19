@@ -3,7 +3,7 @@
 namespace models\entity\collection;
 
 use Doctrine\ORM\Mapping as ORM;
-use models\entity\store\Storegroups;
+use models\entity\restaurant\Restaurantgroups;
 
 /**
  * Templates ORM Class
@@ -42,16 +42,16 @@ class Templates
 	private $data;
 
 	/**
-	 * @var models\entity\store\Storegroups []
+	 * @var models\entity\restaurant\Restaurantgroups []
 	 *
-	 * @ORM\ManyToMany(targetEntity="models\entity\store\Storegroups")
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Restaurantgroups")
 	 * @ORM\JoinTable(
-	 * 	name="Store_Templates_Mapping",
-	 * 	joinColumns={@ORM\JoinColumn(name="stores_id", referencedColumnName="id")},
+	 * 	name="Restaurant_Templates_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
 	 * 	inverseJoinColumns={@ORM\JoinColumn(name="templates_id", referencedColumnName="id")}
 	 * )
 	 */
-	private $storegroups;
+	private $restaurantgroups;
 
 	/**
 	 * @var Collections
@@ -100,14 +100,14 @@ class Templates
 		return json_decode($this->preview);
 	}
 
-	public function setStoregroups($value)
+	public function setRestaurantgroups($value)
 	{
-		$this->storegroups = $value;
+		$this->restaurantgroups = $value;
 	}
 
-	public function getStoregroups()
+	public function getrestaurantgroups()
 	{
-		return $this->storegroups;
+		return $this->restaurantgroups;
 	}
 
 	public function setCollections($value)

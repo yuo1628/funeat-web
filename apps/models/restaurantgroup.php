@@ -5,18 +5,18 @@ namespace models;
 use models\model\ORMModel as Model;
 
 /**
- * Commodity model
+ * Restaurantgroup model
  *
  * @category		models
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  */
-class Commodity extends Model
+class Restaurantgroup extends Model
 {
 	/**
 	 * Constructor.
 	 */
-	public function __construct($entity = "models\\entity\\store\\Commodities")
+	public function __construct($entity = "models\\entity\\restaurant\\Restaurantgroup")
 	{
 		parent::__construct($entity);
 	}

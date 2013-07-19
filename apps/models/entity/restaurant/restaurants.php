@@ -1,21 +1,21 @@
 <?php
 
-namespace models\entity\store;
+namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Stores ORM Class
+ * Restaurants ORM Class
  *
  * @category		Models.Entity
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  *
- * @ORM\Table(name="stores")
+ * @ORM\Table(name="restaurants")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Stores
+class Restaurants
 {
 	/**
 	 * @var integer
@@ -27,28 +27,28 @@ class Stores
 	private $id;
 
 	/**
-	 * @var Storegroups[]
+	 * @var Restaurantgroups[]
 	 *
-	 * @ORM\ManyToMany(targetEntity="Storegroups")
+	 * @ORM\ManyToMany(targetEntity="Restaurantgroups")
 	 * @ORM\JoinTable(
-	 * 	name="Store_Groups_Mapping",
-	 * 	joinColumns={@ORM\JoinColumn(name="stores_id", referencedColumnName="id")},
-	 * 	inverseJoinColumns={@ORM\JoinColumn(name="storegroups_id", referencedColumnName="id")}
+	 * 	name="Restaurant_Groups_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="restaurantgroups_id", referencedColumnName="id")}
 	 * )
 	 */
-	private $storegroups;
+	private $restaurantgroups;
 
 	/**
-	 * @var Commodities[]
+	 * @var Cuisines[]
 	 *
-	 * @ORM\ManyToMany(targetEntity="Commodities")
+	 * @ORM\ManyToMany(targetEntity="Cuisines")
 	 * @ORM\JoinTable(
-	 * 	name="Store_Commodities_Mapping",
-	 * 	joinColumns={@ORM\JoinColumn(name="stores_id", referencedColumnName="id")},
-	 * 	inverseJoinColumns={@ORM\JoinColumn(name="commodities_id", referencedColumnName="id")}
+	 * 	name="Restaurant_Cuisines_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="cuisines_id", referencedColumnName="id")}
 	 * )
 	 */
-	private $commodities;
+	private $cuisines;
 
 	/**
 	 * @var string
@@ -179,7 +179,7 @@ class Stores
 	/**
 	 * @var Points[]
 	 *
-	 * @ORM\OneToMany(targetEntity="models\entity\collection\Points", mappedBy="stores")
+	 * @ORM\OneToMany(targetEntity="models\entity\collection\Points", mappedBy="restaurants")
 	 */
 	private $points;
 
@@ -230,14 +230,14 @@ class Stores
 		return $this->id;
 	}
 
-	public function setStoregroups(Storegroups $value)
+	public function setRestaurantgroups(Restaurantgroups $value)
 	{
-		$this->storegroups = $value;
+		$this->restaurantgroups = $value;
 	}
 
-	public function getStoregroups()
+	public function getRestaurantgroups()
 	{
-		return $this->storegroups;
+		return $this->restaurantgroups;
 	}
 
 	public function __get($key)

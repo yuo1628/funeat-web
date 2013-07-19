@@ -1,21 +1,21 @@
 <?php
 
-namespace models\entity\store;
+namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Commodities ORM Class
+ * Cuisines ORM Class
  *
  * @category		Models.Entity
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  *
- * @ORM\Table(name="commodities")
+ * @ORM\Table(name="cuisines")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Commodities
+class Cuisines
 {
 	/**
 	 * @var integer
@@ -48,18 +48,18 @@ class Commodities
 	private $data;
 
 	/**
-	 * @var Storegroups
+	 * @var Restaurantgroups
 	 *
-	 * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="commodities")
+	 * @ORM\ManyToOne(targetEntity="Restaurantgroups", inversedBy="cuisines")
 	 */
-	private $storegroups;
+	private $restaurantgroups;
 
 	/**
-	 * @var Stores []
+	 * @var Restaurants[]
 	 *
-	 * @ORM\ManyToMany(targetEntity="Stores", mappedBy="commodities")
+	 * @ORM\ManyToMany(targetEntity="Restaurants", mappedBy="cuisines")
 	 */
-	private $stores;
+	private $restaurants;
 
 	/**
 	 * Constructor
@@ -111,24 +111,24 @@ class Commodities
 		return json_decode($this->data);
 	}
 
-	public function setStoregroups(Storegroups $value)
+	public function setRestaurantgroups(Restaurantgroups $value)
 	{
-		$this->storegroups = $value;
+		$this->restaurantgroups = $value;
 	}
 
-	public function getStoregroups()
+	public function getRestaurantgroups()
 	{
-		return $this->storegroups;
+		return $this->restaurantgroups;
 	}
 
-	public function setStores(Storegroups $value)
+	public function setRestaurants(Restaurant $value)
 	{
-		$this->stores = $value;
+		$this->restaurants = $value;
 	}
 
-	public function getStores()
+	public function getRestaurants()
 	{
-		return $this->stores;
+		return $this->restaurants;
 	}
 
 }

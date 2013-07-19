@@ -1,13 +1,13 @@
 <?php
 
-namespace models\entity\store;
+namespace models\entity\restaurant;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Storegroups ORM class
+ * Restaurantgroups ORM class
  *
  * Use Gedmo nested tree sample.
  * Use repository for handy tree functions.
@@ -17,10 +17,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @version			1.0
  *
  * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="storegroups")
+ * @ORM\Table(name="restaurantgroups")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  */
-class Storegroups
+class Restaurantgroups
 {
 	/**
 	 * @var integer
@@ -64,18 +64,18 @@ class Storegroups
 	private $root;
 
 	/**
-	 * @var Storegroups
+	 * @var Restaurantgroups
 	 *
 	 * @Gedmo\TreeParent
-	 * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="children")
+	 * @ORM\ManyToOne(targetEntity="Restaurantgroups", inversedBy="children")
 	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	private $parent;
 
 	/**
-	 * @var Storegroups []
+	 * @var Restaurantgroups []
 	 *
-	 * @ORM\OneToMany(targetEntity="Storegroups", mappedBy="parent")
+	 * @ORM\OneToMany(targetEntity="Restaurantgroups", mappedBy="parent")
 	 * @ORM\OrderBy({"lft" = "ASC"})
 	 */
 	private $children;
@@ -88,32 +88,32 @@ class Storegroups
 	private $title;
 
 	/**
-	 * @var Stores []
+	 * @var Restaurants []
 	 *
-	 * @ORM\ManyToMany(targetEntity="Stores", mappedBy="storegroups")
+	 * @ORM\ManyToMany(targetEntity="Restaurants", mappedBy="restaurantgroups")
 	 */
-	private $stores;
+	private $restaurants;
 
 	/**
 	 * @var models\entity\collection\Templates []
 	 *
-	 * @ORM\ManyToMany(targetEntity="models\entity\collection\Templates", mappedBy="storegroups")
+	 * @ORM\ManyToMany(targetEntity="models\entity\collection\Templates", mappedBy="restaurantgroups")
 	 */
 	private $templates;
 
 	/**
-	 * @var Commodities []
+	 * @var Cuisines[]
 	 *
-	 * @ORM\OneToMany(targetEntity="Commodities", mappedBy="storegroups")
+	 * @ORM\OneToMany(targetEntity="Cuisines", mappedBy="restaurantgroups")
 	 */
-	private $commodities;
+	private $cuisines;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct()
 	{
-		$this->stores = new ArrayCollection();
+		$this->restaurants = new ArrayCollection();
 	}
 
 	/**
@@ -148,9 +148,9 @@ class Storegroups
 		return $this->title;
 	}
 
-	public function getStoress()
+	public function getRestaurants()
 	{
-		return $this->stores;
+		return $this->restaurants;
 	}
 
 }

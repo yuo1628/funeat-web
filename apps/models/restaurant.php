@@ -5,18 +5,18 @@ namespace models;
 use models\model\Model as Model;
 
 /**
- * Store model
+ * Restaurant model
  *
  * @category		models
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  */
-class Store extends Model
+class Restaurant extends Model
 {
 	/**
 	 * Constructor.
 	 */
-	public function __construct($entity = "models\\entity\\store\\Stores")
+	public function __construct($entity = "models\\entity\\restaurant\\Restaurants")
 	{
 		parent::__construct($entity);
 	}
