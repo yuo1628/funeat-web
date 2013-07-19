@@ -26,11 +26,9 @@ class Member extends Model
 	 */
 	public function verify($username, $password)
 	{
-		$find = array(
-			'username' => $username,
-			'password' => md5($password)
-		);
+		$find = array('username' => $username, 'password' => md5($password));
 
 		return $this->_repository->findBy($find);
 	}
+
 }

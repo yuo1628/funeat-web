@@ -91,76 +91,78 @@ class Points
 	/**
 	 * Cloneable
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function getCode()
-    {
-        return $this->code;
-    }
+	public function getCode()
+	{
+		return $this->code;
+	}
 
-    public function setStore(Stores $value)
-    {
-        $this->store = $value;
-    }
+	public function setStore(Stores $value)
+	{
+		$this->store = $value;
+	}
 
-    public function getStore()
-    {
-        return $this->store;
-    }
+	public function getStore()
+	{
+		return $this->store;
+	}
 
-    public function setCollection(Collections $value)
-    {
-        $this->collections = $value;
-    }
+	public function setCollection(Collections $value)
+	{
+		$this->collections = $value;
+	}
 
-    public function getCollection()
-    {
-        return $this->collections;
-    }
+	public function getCollection()
+	{
+		return $this->collections;
+	}
 
-    public function setStartDate(DateTime $value)
-    {
-        $this->startDate = $value;
-    }
+	public function setStartDate(DateTime $value)
+	{
+		$this->startDate = $value;
+	}
 
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
+	public function getStartDate()
+	{
+		return $this->startDate;
+	}
 
-    public function setEndDate(DateTime $value)
-    {
-        $this->endDate = $value;
-    }
+	public function setEndDate(DateTime $value)
+	{
+		$this->endDate = $value;
+	}
 
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
+	public function getEndDate()
+	{
+		return $this->endDate;
+	}
 
-    public function setActivated($value)
-    {
-        $this->activated = (boolean) $value;
-    }
+	public function setActivated($value)
+	{
+		$this->activated = (boolean)$value;
+	}
 
-    public function getActivated()
-    {
-        return $this->activated;
-    }
+	public function getActivated()
+	{
+		return $this->activated;
+	}
 
-    public function setDestroyed($value)
-    {
-        $this->destroyed = (boolean) $value;
-    }
+	public function setDestroyed($value)
+	{
+		$this->destroyed = (boolean)$value;
+	}
 
-    public function getDestroyed()
-    {
-        return $this->destroyed;
-    }
+	public function getDestroyed()
+	{
+		return $this->destroyed;
+	}
 
 }

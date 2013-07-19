@@ -20,4 +20,5 @@ class Commodity extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

@@ -198,7 +198,9 @@ class Members
 	/**
 	 * Cloneable
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
 	/**
 	 * @ORM\PrePersist
@@ -206,7 +208,7 @@ class Members
 	public function doRegisterOnPrePersist()
 	{
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP = get_instance()->input->server('REMOTE_ADDR');
+		$this->createIP =  get_instance()->input->server('REMOTE_ADDR');
 	}
 
 	/**
@@ -225,20 +227,20 @@ class Members
 		$this->password = md5($this->password);
 	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setMembergroups(Membergroups $value)
-    {
-        $this->membergroups = $value;
-    }
+	public function setMembergroups(Membergroups $value)
+	{
+		$this->membergroups = $value;
+	}
 
-    public function getMembergroups()
-    {
-        return $this->membergroups;
-    }
+	public function getMembergroups()
+	{
+		return $this->membergroups;
+	}
 
 	public function __get($key)
 	{
@@ -249,4 +251,5 @@ class Members
 	{
 		$this->$key = $value;
 	}
+
 }

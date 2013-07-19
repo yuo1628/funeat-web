@@ -20,4 +20,5 @@ class Point extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

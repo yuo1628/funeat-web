@@ -71,50 +71,53 @@ class Templates
 	/**
 	 * Cloneable
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setPreview($value)
-    {
-        $this->preview = $value;
-    }
+	public function setPreview($value)
+	{
+		$this->preview = $value;
+	}
 
-    public function getPreview()
-    {
-        return $this->preview;
-    }
+	public function getPreview()
+	{
+		return $this->preview;
+	}
 
-    public function setData(array $value)
-    {
-        $this->data = json_encode($value);
-    }
+	public function setData(array $value)
+	{
+		$this->data = json_encode($value);
+	}
 
-    public function getData()
-    {
-        return json_decode($this->preview);
-    }
+	public function getData()
+	{
+		return json_decode($this->preview);
+	}
 
-    public function setStoregroups($value)
-    {
-        $this->storegroups = $value;
-    }
+	public function setStoregroups($value)
+	{
+		$this->storegroups = $value;
+	}
 
-    public function getStoregroups()
-    {
-        return $this->storegroups;
-    }
+	public function getStoregroups()
+	{
+		return $this->storegroups;
+	}
 
-    public function setCollections($value)
-    {
-        $this->collections = $value;
-    }
+	public function setCollections($value)
+	{
+		$this->collections = $value;
+	}
 
-    public function getCollections()
-    {
-        return $this->collections;
-    }
+	public function getCollections()
+	{
+		return $this->collections;
+	}
+
 }

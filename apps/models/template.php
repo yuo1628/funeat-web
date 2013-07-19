@@ -20,4 +20,5 @@ class Template extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

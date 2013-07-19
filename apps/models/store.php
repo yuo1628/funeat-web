@@ -20,4 +20,5 @@ class Store extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

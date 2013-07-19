@@ -50,7 +50,7 @@ class Commodities
 	/**
 	 * @var Storegroups
 	 *
-     * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="commodities")
+	 * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="commodities")
 	 */
 	private $storegroups;
 
@@ -72,60 +72,63 @@ class Commodities
 	/**
 	 * Cloneable
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setTitle($value)
-    {
-        $this->title = $value;
-    }
+	public function setTitle($value)
+	{
+		$this->title = $value;
+	}
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    public function setInfo($value)
-    {
-        $this->info = $value;
-    }
+	public function setInfo($value)
+	{
+		$this->info = $value;
+	}
 
-    public function getInfo()
-    {
-        return $this->info;
-    }
+	public function getInfo()
+	{
+		return $this->info;
+	}
 
-    public function setData(array $value)
-    {
-        $this->data = json_encode($value);
-    }
+	public function setData(array $value)
+	{
+		$this->data = json_encode($value);
+	}
 
-    public function getData()
-    {
-        return json_decode($this->data);
-    }
+	public function getData()
+	{
+		return json_decode($this->data);
+	}
 
-    public function setStoregroups(Storegroups $value)
-    {
-        $this->storegroups = $value;
-    }
+	public function setStoregroups(Storegroups $value)
+	{
+		$this->storegroups = $value;
+	}
 
-    public function getStoregroups()
-    {
-        return $this->storegroups;
-    }
+	public function getStoregroups()
+	{
+		return $this->storegroups;
+	}
 
-    public function setStores(Storegroups $value)
-    {
-        $this->stores = $value;
-    }
+	public function setStores(Storegroups $value)
+	{
+		$this->stores = $value;
+	}
 
-    public function getStores()
-    {
-        return $this->stores;
-    }
+	public function getStores()
+	{
+		return $this->stores;
+	}
+
 }

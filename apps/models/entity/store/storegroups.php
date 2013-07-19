@@ -55,30 +55,30 @@ class Storegroups
 	 */
 	private $level;
 
-    /**
+	/**
 	 * @var integer/NULL
 	 *
-     * @Gedmo\TreeRoot
-     * @ORM\Column(name="root", type="integer", nullable=true)
-     */
-    private $root;
+	 * @Gedmo\TreeRoot
+	 * @ORM\Column(name="root", type="integer", nullable=true)
+	 */
+	private $root;
 
-    /**
+	/**
 	 * @var Storegroups
 	 *
-     * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $parent;
+	 * @Gedmo\TreeParent
+	 * @ORM\ManyToOne(targetEntity="Storegroups", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+	 */
+	private $parent;
 
-    /**
-     * @var Storegroups []
+	/**
+	 * @var Storegroups []
 	 *
 	 * @ORM\OneToMany(targetEntity="Storegroups", mappedBy="parent")
-     * @ORM\OrderBy({"lft" = "ASC"})
-     */
-    private $children;
+	 * @ORM\OrderBy({"lft" = "ASC"})
+	 */
+	private $children;
 
 	/**
 	 * @var string
@@ -101,12 +101,12 @@ class Storegroups
 	 */
 	private $templates;
 
-    /**
-     * @var Commodities []
+	/**
+	 * @var Commodities []
 	 *
 	 * @ORM\OneToMany(targetEntity="Commodities", mappedBy="storegroups")
-     */
-    private $commodities;
+	 */
+	private $commodities;
 
 	/**
 	 * Constructor.
@@ -119,35 +119,38 @@ class Storegroups
 	/**
 	 * Clone
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setParent(Membergroups $value = null)
-    {
-        $this->parent = $value;
-    }
+	public function setParent(Membergroups $value = null)
+	{
+		$this->parent = $value;
+	}
 
-    public function getParent()
-    {
-        return $this->parent;
-    }
+	public function getParent()
+	{
+		return $this->parent;
+	}
 
-    public function setTitle($value)
-    {
-        $this->title = $value;
-    }
+	public function setTitle($value)
+	{
+		$this->title = $value;
+	}
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    public function getStoress()
-    {
-        return $this->stores;
-    }
+	public function getStoress()
+	{
+		return $this->stores;
+	}
+
 }

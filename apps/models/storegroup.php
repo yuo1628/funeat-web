@@ -20,4 +20,5 @@ class Storegroup extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

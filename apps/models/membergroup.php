@@ -20,4 +20,5 @@ class Membergroup extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }

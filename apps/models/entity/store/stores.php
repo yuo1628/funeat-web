@@ -196,7 +196,9 @@ class Stores
 	/**
 	 * Cloneable
 	 */
-	public function __clone() {}
+	public function __clone()
+	{
+	}
 
 	/**
 	 * @ORM\PrePersist
@@ -204,7 +206,7 @@ class Stores
 	public function doRegisterOnPrePersist()
 	{
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP = get_instance()->input->server('REMOTE_ADDR');
+		$this->createIP =  get_instance()->input->server('REMOTE_ADDR');
 	}
 
 	/**
@@ -223,20 +225,20 @@ class Stores
 		$this->password = md5($this->password);
 	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setStoregroups(Storegroups $value)
-    {
-        $this->storegroups = $value;
-    }
+	public function setStoregroups(Storegroups $value)
+	{
+		$this->storegroups = $value;
+	}
 
-    public function getStoregroups()
-    {
-        return $this->storegroups;
-    }
+	public function getStoregroups()
+	{
+		return $this->storegroups;
+	}
 
 	public function __get($key)
 	{
@@ -247,4 +249,5 @@ class Stores
 	{
 		$this->$key = $value;
 	}
+
 }

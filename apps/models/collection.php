@@ -20,4 +20,5 @@ class Collection extends Model
 	{
 		parent::__construct($entity);
 	}
+
 }
