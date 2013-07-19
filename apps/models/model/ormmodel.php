@@ -40,15 +40,15 @@ class ORMModel extends Model
 	 */
 	public function __construct($entity)
 	{
-        parent::__construct();
+		parent::__construct();
 
 		$this->_entity = $entity;
-		$this->_em = get_instance()->doctrine->em;
+		$this->_em =  get_instance()->doctrine->em;
 		$this->_repository = $this->_em->getRepository($entity);
 	}
 
 	/**
-     * {@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function getInstance()
 	{
@@ -62,7 +62,7 @@ class ORMModel extends Model
 	}
 
 	/**
-     * {@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function getItem($id, $column = null)
 	{
@@ -77,7 +77,7 @@ class ORMModel extends Model
 	}
 
 	/**
-     * {@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function getItems()
 	{
@@ -85,7 +85,7 @@ class ORMModel extends Model
 	}
 
 	/**
-     * {@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function save($entity)
 	{
@@ -110,7 +110,7 @@ class ORMModel extends Model
 	}
 
 	/**
-     * {@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function remove($entity)
 	{
@@ -120,4 +120,5 @@ class ORMModel extends Model
 			$this->_em->flush();
 		}
 	}
+
 }

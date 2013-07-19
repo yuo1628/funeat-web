@@ -11,210 +11,216 @@ namespace models\model;
  */
 abstract class Model implements IModel
 {
-    /**
-     * Error
+	/**
+	 * Error
 	 *
 	 * @var array
-     **/
-    protected $_error;
+	 **/
+	protected $_error;
 
-    /**
-     * Group By
+	/**
+	 * Group By
 	 *
 	 * @var string
-     */
-    protected $_group_by;
+	 */
+	protected $_group_by;
 
-    /**
-     * Like
+	/**
+	 * Like
 	 *
 	 * @var array
-     */
-    protected $_like;
+	 */
+	protected $_like;
 
-    /**
-     * Limit
+	/**
+	 * Limit
 	 *
 	 * @var integer
-     */
-    protected $_limit;
+	 */
+	protected $_limit;
 
-    /**
-     * Message
+	/**
+	 * Message
 	 *
 	 * @var array
-     **/
-    protected $_message;
+	 **/
+	protected $_message;
 
-    /**
-     * Offset
+	/**
+	 * Offset
 	 *
 	 * @var integer
-     */
-    protected $_offset;
+	 */
+	protected $_offset;
 
-    /**
-     * Order
+	/**
+	 * Order
 	 *
 	 * @var string
-     */
-    protected $_order;
+	 */
+	protected $_order;
 
-    /**
-     * Order By
+	/**
+	 * Order By
 	 *
 	 * @var string
-     */
-    protected $_order_by;
+	 */
+	protected $_order_by;
 
-    /**
-     * Select
+	/**
+	 * Select
 	 *
 	 * @var array
-     */
-    protected $_select;
+	 */
+	protected $_select;
 
-    /**
-     * Where
+	/**
+	 * Where
 	 *
 	 * @var array
-     */
-    protected $_where;
+	 */
+	protected $_where;
 
-    /**
-     * __construct
-     */
-    public function __construct()
-    {
+	/**
+	 * __construct
+	 */
+	public function __construct()
+	{
 		$this->_error = array();
 		$this->_like = array();
 		$this->_message = array();
 		$this->_select = array();
 		$this->_where = array();
-    }
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getError()
-    {
-        $output = '';
-        foreach ($this->_error as $error) {
-            $output .= ((empty($_output)) ? '' : ', ') . $error;
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getError()
+	{
+		$output = '';
+		foreach ($this->_error as $error)
+		{
+			$output .= ((empty($_output)) ? '' : ', ') . $error;
+		}
 
-        return $output;
-    }
+		return $output;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getMessage()
-    {
-        $output = '';
-        foreach ($this->_message as $message) {
-            $output .= ((empty($output)) ? '' : ', ') . $message;
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMessage()
+	{
+		$output = '';
+		foreach ($this->_message as $message)
+		{
+			$output .= ((empty($output)) ? '' : ', ') . $message;
+		}
 
-        return $output;
-    }
+		return $output;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setColumn($select)
-    {
-        $this->_select[] = $select;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setColumn($select)
+	{
+		$this->_select[] = $select;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setError($error)
-    {
-        $this->_error[] = $error;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setError($error)
+	{
+		$this->_error[] = $error;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setGroupBy($by)
-    {
-        $this->_group_by = $by;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setGroupBy($by)
+	{
+		$this->_group_by = $by;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setLike($like, $value = null)
-    {
-        if (!is_array($like)) {
-            $like = array($like => $value);
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setLike($like, $value = null)
+	{
+		if (!is_array($like))
+		{
+			$like = array($like => $value);
+		}
 
 		$this->_like[] = $like;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setLimit($limit)
-    {
-        $this->_limit = (int) $limit;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setLimit($limit)
+	{
+		$this->_limit = (int)$limit;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setMessage($message)
-    {
-        $this->_message[] = $message;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMessage($message)
+	{
+		$this->_message[] = $message;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setOffset($offset)
-    {
-        $this->_offset = (int) $offset;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setOffset($offset)
+	{
+		$this->_offset = (int)$offset;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setOrderBy($by, $order = 'desc')
-    {
-        $this->_order_by = $by;
-        $this->_order    = $order;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setOrderBy($by, $order = 'desc')
+	{
+		$this->_order_by = $by;
+		$this->_order = $order;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setWhere($where, $value = null)
-    {
-        if (is_array($where))
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setWhere($where, $value = null)
+	{
+		if (is_array($where))
 		{
-            foreach ($where as $k => $v)
-            {
-                $this->_where[$k] = $v;
-            }
-        } else {
-            $this->_where[$where] = $value;
-        }
+			foreach ($where as $k => $v)
+			{
+				$this->_where[$k] = $v;
+			}
+		}
+		else
+		{
+			$this->_where[$where] = $value;
+		}
 
-        return $this;
-    }
+		return $this;
+	}
+
 }
