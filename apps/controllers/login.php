@@ -1,6 +1,4 @@
-<?php
-if (!defined('BASEPATH'))
-	exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login extends MY_Controller
 {
@@ -23,14 +21,30 @@ class Login extends MY_Controller
 	);
 
 	/**
+	 * Redirect page when user is login
+	 *
+	 * @var string
+	 */
+	protected $redirect_page = '/';
+
+	/**
+	 * Redirect page when user is login
+	 *
+	 * @var models\entity\member\Members
+	 */
+	protected $member;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
 	{
 		parent::__construct('default');
 
-		// Load ORM library
+		// Load library
 		$this->load->library('doctrine');
+		$this->load->helper('url');
+		$this->load->library('session');
 
 	}
 
@@ -39,34 +53,45 @@ class Login extends MY_Controller
 	 */
 	public function index()
 	{
-		// load from validation library
-		$this->load->library('form_validation');
+		$this->member = new models\Member();
 
-		$this->form_validation->set_rules($this->validation_config);
-
-		if ($this->form_validation->run() == FALSE)
+		// If isLogin ,then redirect
+		if ($this->member->isLogin($this->session))
 		{
-			$this->load->helper('form');
-			$this->view("user/login");
+			redirect($this->redirect_page, 'location', 301);
 		}
 		else
 		{
-			$identity = $this->input->post('identity');
-			$password = $this->input->post('password');
+			// load from validation library
+			$this->load->library('form_validation');
 
-			$members = new models\Member();
+			$this->form_validation->set_rules($this->validation_config);
 
-			$member = $members->verify($identity, $password);
-
-			if (empty($member))
+			if ($this->form_validation->run() == FALSE)
 			{
-				// TODO when login failed
-				echo 'Login Failed!';
+				$this->load->helper('form');
+				$this->view("user/login");
 			}
 			else
 			{
-				// TODO when login OK
-				echo 'Login OK!';
+				$identity = $this->input->post('identity');
+				$password = $this->input->post('password');
+
+				$member = $this->member->verify($identity, $password);
+
+				if (empty($member))
+				{
+					// TODO when login failed
+
+					echo 'Login Failed!';
+				}
+				else
+				{
+					// TODO when login OK
+
+					$this->member->login($this->session, $member);
+					echo 'Login OK!';
+				}
 			}
 		}
 	}
