@@ -1,4 +1,5 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
  * CodeIgniter
  *
@@ -27,7 +28,72 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/general/controllers.html
  */
-class CI_Controller {
+class CI_Controller
+{
+	/**
+	 * @var CI_Config
+	 */
+	var $config;
+
+	/**
+	 * @var CI_DB_active_record
+	 */
+	var $db;
+
+	/**
+	 * @var CI_Email
+	 */
+	var $email;
+
+	/**
+	 * @var CI_Form_validation
+	 */
+	var $form_validation;
+
+	/**
+	 * @var CI_Input
+	 */
+	var $input;
+
+	/**
+	 * @var CI_Loader
+	 */
+	var $load;
+
+	/**
+	 * @var CI_Router
+	 */
+	var $router;
+
+	/**
+	 * @var CI_Session
+	 */
+	var $session;
+
+	/**
+	 * @var CI_Table
+	 */
+	var $table;
+
+	/**
+	 * @var CI_Unit_test
+	 */
+	var $unit;
+
+	/**
+	 * @var CI_URI
+	 */
+	var $uri;
+
+	/**
+	 * @var CI_Pagination
+	 */
+	var $pagination;
+
+	/**
+	 * @var CI_DB_forge
+	 */
+	var $dbforge;
 
 	private static $instance;
 
@@ -36,28 +102,30 @@ class CI_Controller {
 	 */
 	public function __construct()
 	{
-		self::$instance =& $this;
-		
+		self::$instance = &$this;
+
 		// Assign all the class objects that were instantiated by the
 		// bootstrap file (CodeIgniter.php) to local class variables
 		// so that CI can run as one big super object.
 		foreach (is_loaded() as $var => $class)
 		{
-			$this->$var =& load_class($class);
+			$this->$var = &load_class($class);
 		}
 
-		$this->load =& load_class('Loader', 'core');
+		$this->load = &load_class('Loader', 'core');
 
 		$this->load->initialize();
-		
+
 		log_message('debug', "Controller Class Initialized");
 	}
 
-	public static function &get_instance()
+	public static function & get_instance()
 	{
 		return self::$instance;
 	}
+
 }
+
 // END Controller class
 
 /* End of file Controller.php */
