@@ -1,4 +1,4 @@
-<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or die('No direct script access allowed');
 
 /**
  * Add layout function.
@@ -7,6 +7,29 @@
  */
 class MY_Controller extends CI_Controller
 {
+	/**
+	 * Use to switch the database auto update
+	 *
+	 * @var boolean
+	 */
+	const AUTO_UPDATE = false;
+
+	/**
+	 * Entities, use for create database schema.
+	 *
+	 * @var array
+	 */
+	protected $_entity = array(
+		'models\\entity\\collection\\Collections',
+		'models\\entity\\collection\\Points',
+		'models\\entity\\collection\\Templates',
+		'models\\entity\\restaurant\\Cuisines',
+		'models\\entity\\restaurant\\Restaurants',
+		'models\\entity\\restaurant\\Restaurantgroups',
+		'models\\entity\\member\\Members',
+		'models\\entity\\member\\Membergroups'
+	);
+
 	/**
 	 * Data will set in view
 	 *
@@ -40,6 +63,27 @@ class MY_Controller extends CI_Controller
 		$this->_blocks = new stdClass();
 		$this->_data = array();
 		$this->_layout = $layout;
+
+		if (ENVIRONMENT == 'development' && self::AUTO_UPDATE)
+		{
+			$this->updateSchema();
+		}
+	}
+
+	/**
+	 * Update database
+	 */
+	private function updateSchema()
+	{
+		$this->load->library('doctrine');
+		$entity = array();
+
+		foreach ($this->_entity as $value)
+		{
+			$entity[] = $this->doctrine->em->getClassMetadata($value);
+		}
+
+		$this->doctrine->tool->updateSchema($entity);
 	}
 
 	/**
@@ -103,7 +147,6 @@ class MY_Controller extends CI_Controller
 		$this->_blocks->$property = $value;
 	}
 
-
 	/**
 	 * Set view data.
 	 *
@@ -146,4 +189,5 @@ class MY_Controller extends CI_Controller
 		$this->setData('blocks', $this->_blocks);
 		$this->load->view($this->_layout, $this->_data, $return);
 	}
+
 }
