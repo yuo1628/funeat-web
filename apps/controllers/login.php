@@ -70,7 +70,7 @@ class Login extends MY_Controller
 			if ($this->form_validation->run() == FALSE)
 			{
 				$this->load->helper('form');
-				$this->view("user/login");
+				$this->view("member/login");
 			}
 			else
 			{
