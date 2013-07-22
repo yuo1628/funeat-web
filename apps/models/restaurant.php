@@ -2,7 +2,7 @@
 
 namespace models;
 
-use models\model\Model as Model;
+use models\model\ORMModel as Model;
 
 /**
  * Restaurant model
