@@ -41,6 +41,44 @@ class Restaurant extends MY_Controller
 	protected $feature;
 
 	/**
+	 * Validation config
+	 *
+	 * @var array
+	 */
+	protected $restaurant_validation = array(
+		array(
+			'field' => 'name',
+			'label' => 'Name',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'address',
+			'label' => 'Address',
+			'rules' => 'required'
+		),
+		array(
+			'field' => 'tel',
+			'label' => 'Tel'
+		),
+		array(
+			'field' => 'hours',
+			'label' => 'Hours'
+		),
+		array(
+			'field' => 'website',
+			'label' => 'Website'
+		),
+		array(
+			'field' => 'images',
+			'label' => 'Images'
+		),
+		array(
+			'field' => 'features',
+			'label' => 'Features'
+		)
+	);
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -49,6 +87,7 @@ class Restaurant extends MY_Controller
 
 		// Load library
 		$this->load->library('doctrine');
+		$this->load->library('form_validation');
 	}
 
 	/**
@@ -68,6 +107,56 @@ class Restaurant extends MY_Controller
 			case self::OUTPUT_TYPE_RSS :
 				// TODO: output RSS
 				break;
+		}
+	}
+
+	/**
+	 *
+	 */
+	public function add()
+	{
+		$this->feature = new models\Feature();
+		$this->restaurant = new models\Restaurant();
+
+		$this->form_validation->set_rules($this->restaurant_validation);
+
+		if ($this->form_validation->run() == false)
+		{
+			$this->load->helper('form');
+
+			$this->setData('features', $this->feature->getItems());
+			$this->view('restaurant/add');
+		}
+		else
+		{
+			$restaurant = $this->restaurant->getInstance();
+
+			$restaurant->name = $this->input->post('name');
+			$restaurant->address = $this->input->post('address');
+
+			// TODO:
+			//$restaurant->tel = $this->input->post('tel');
+
+			// TODO:
+			//$restaurant->hours = $this->input->post('hours');
+
+			$restaurant->website = $this->input->post('website');
+
+			// TODO:
+			//$restaurant->images = $this->input->post('images');
+
+			$features = $restaurant->getFeatures();
+
+			foreach ($this->input->post('features') as $v)
+			{
+				$features[] = $this->feature->getItem((int)$v);
+			}
+
+			$restaurant->setFeatures($features);
+
+			$this->restaurant->save($restaurant);
+
+			// TODO: after save data?
 		}
 	}
 

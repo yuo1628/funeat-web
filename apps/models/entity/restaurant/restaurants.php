@@ -81,23 +81,65 @@ class Restaurants implements IEntity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=32, nullable=false)
+	 * @ORM\Column(type="string", length=32, nullable=true)
 	 */
 	private $password;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=10, unique=true, nullable=true)
+	 * @ORM\Column(type="string", length=10, nullable=true)
 	 */
 	private $sn;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=32, nullable=true)
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $avatar;
+	private $name;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $address;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $tel;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $hours;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $website;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $images;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $intro;
 
 	/**
 	 * @var DateTime
@@ -112,34 +154,6 @@ class Restaurants implements IEntity
 	 * @ORM\Column(type="string", length=15)
 	 */
 	private $createIP;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $website;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $intro;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $address;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $tel;
 
 	/**
 	 * @var string
@@ -195,6 +209,7 @@ class Restaurants implements IEntity
 	 */
 	public function __construct()
 	{
+		$this->features = array();
 		$this->activated = 0;
 		$this->blocked = 0;
 		$this->deleted = 0;
@@ -223,7 +238,6 @@ class Restaurants implements IEntity
 	 */
 	public function doEncodeOnPrePersist()
 	{
-		$this->password = md5($this->password);
 	}
 
 	/**
@@ -231,7 +245,6 @@ class Restaurants implements IEntity
 	 */
 	public function doEncodeOnPreUpdate()
 	{
-		$this->password = md5($this->password);
 	}
 
 	/**
@@ -276,6 +289,16 @@ class Restaurants implements IEntity
 	public function getRestaurantgroups()
 	{
 		return $this->restaurantgroups;
+	}
+
+	public function setFeatures($value)
+	{
+		$this->features = $value;
+	}
+
+	public function getFeatures()
+	{
+		return $this->features;
 	}
 
 	public function __get($key)
