@@ -33,14 +33,26 @@ class Member extends Model
 	 *
 	 * @return models\entity\member\Members | null when not found.
 	 */
-	public function verify($username, $password)
+	public function verify($identity, $password)
 	{
-		$find = array(
-			'username' => $username,
-			'password' => md5($password)
-		);
+		if (preg_match("/^[\w\-\.]+@[\w\-]+(\.\w+)+$/", $identity))
+		{
+			$find = array(
+				'email' => $identity,
+				'password' => md5($password)
+			);
 
-		$member = $this->_repository->findBy($find);
+			$member = $this->_repository->findBy($find);
+		}
+		else
+		{
+			$find = array(
+				'username' => $identity,
+				'password' => md5($password)
+			);
+
+			$member = $this->_repository->findBy($find);
+		}
 
 		if (empty($member))
 		{

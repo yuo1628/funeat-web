@@ -21,7 +21,7 @@ class Member extends MY_Controller
 		array(
 			'field' => 'password',
 			'label' => 'Password',
-			'rules' => 'trim|required|matches[confirmPassword]|md5'
+			'rules' => 'trim|required|matches[confirmPassword]'
 		),
 		array(
 			'field' => 'confirmPassword',
@@ -87,7 +87,9 @@ class Member extends MY_Controller
 			$email = $this->input->post('email');
 			$duplicate = $this->member->getItem($email, 'email');
 
-			if ($this->form_validation->run() == FALSE || $duplicate)
+			print_r($this->input->post());
+
+			if ($this->form_validation->run() == false || $duplicate)
 			{
 				$this->load->helper('form');
 				$this->view("member/register");
