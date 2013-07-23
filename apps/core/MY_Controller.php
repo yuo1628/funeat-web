@@ -24,6 +24,7 @@ class MY_Controller extends CI_Controller
 		'models\\entity\\collection\\Points',
 		'models\\entity\\collection\\Templates',
 		'models\\entity\\restaurant\\Cuisines',
+		'models\\entity\\restaurant\\Features',
 		'models\\entity\\restaurant\\Restaurants',
 		'models\\entity\\restaurant\\Restaurantgroups',
 		'models\\entity\\member\\Members',

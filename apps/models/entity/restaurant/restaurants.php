@@ -51,6 +51,18 @@ class Restaurants
 	private $cuisines;
 
 	/**
+	 * @var Features[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="Features")
+	 * @ORM\JoinTable(
+	 * 	name="Restaurant_Features_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="features_id", referencedColumnName="id")}
+	 * )
+	 */
+	private $features;
+
+	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, unique=true, nullable=false)
