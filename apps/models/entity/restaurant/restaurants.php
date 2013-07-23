@@ -3,6 +3,8 @@
 namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection as Collection;
+use models\entity\IEntity;
 
 /**
  * Restaurants ORM Class
@@ -15,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Restaurants
+class Restaurants implements IEntity
 {
 	/**
 	 * @var integer
@@ -65,7 +67,7 @@ class Restaurants
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $email;
 
@@ -89,13 +91,6 @@ class Restaurants
 	 * @ORM\Column(type="string", length=10, unique=true, nullable=true)
 	 */
 	private $sn;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=32, nullable=false)
-	 */
-	private $name;
 
 	/**
 	 * @var string
@@ -217,8 +212,10 @@ class Restaurants
 	 */
 	public function doRegisterOnPrePersist()
 	{
+		$CI = get_instance();
+
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP =  get_instance()->input->server('REMOTE_ADDR');
+		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
 
 	/**
@@ -235,6 +232,35 @@ class Restaurants
 	public function doEncodeOnPreUpdate()
 	{
 		$this->password = md5($this->password);
+	}
+
+	/**
+	 * Return array
+	 */
+	public function toArray($recursion = false)
+	{
+		$return = get_object_vars($this);
+		foreach ($return as $k => $v)
+		{
+			if ($v instanceof Collection)
+			{
+				if ($recursion)
+				{
+					$return[$k] = $v->toArray();
+
+					foreach ($return[$k] as $k2 => $v2)
+					{
+						$return[$k][$k2] = $v2->toArray();
+					}
+				}
+				else
+				{
+					unset($return[$k]);
+				}
+			}
+		}
+
+		return $return;
 	}
 
 	public function getId()

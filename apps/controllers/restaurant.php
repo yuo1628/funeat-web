@@ -6,9 +6,39 @@
 class Restaurant extends MY_Controller
 {
 	/**
-	 * @var models\entity\member\Restaurants
+	 * Feature action list constants
+	 */
+	const FEATURE_ACTION_LIST = 'list';
+
+	/**
+	 * Feature action list parameter for show restaurant
+	 */
+	const FEATURE_ACTION_LIST_RESTAURANT = 'restaurant';
+
+	/**
+	 * Feature action add constants
+	 */
+	const FEATURE_ACTION_ADD = 'add';
+
+	/**
+	 * Feature action update constants
+	 */
+	const FEATURE_ACTION_UPDATE = 'update';
+
+	/**
+	 * Feature action delete constants
+	 */
+	const FEATURE_ACTION_DELETE = 'delete';
+
+	/**
+	 * @var models\Restaurant
 	 */
 	protected $restaurant;
+
+	/**
+	 * @var models\Feature
+	 */
+	protected $feature;
 
 	/**
 	 * Constructor
@@ -19,7 +49,6 @@ class Restaurant extends MY_Controller
 
 		// Load library
 		$this->load->library('doctrine');
-		$this->load->library('form_validation');
 	}
 
 	/**
@@ -27,19 +56,64 @@ class Restaurant extends MY_Controller
 	 */
 	public function index($type = 'html')
 	{
-
-		$this->restaurant = new models\Restaurant();
 		switch ($type)
 		{
 			default :
-			case MY_Controller::OUTPUT_TYPE_HTML :
+			case self::OUTPUT_TYPE_HTML :
 				$this->view('restaurant/list');
 				break;
-			case MY_Controller::OUTPUT_TYPE_JSON :
+			case self::OUTPUT_TYPE_JSON :
 				// TODO: output JSON
 				break;
-			case MY_Controller::OUTPUT_TYPE_RSS :
+			case self::OUTPUT_TYPE_RSS :
 				// TODO: output RSS
+				break;
+		}
+	}
+
+	/**
+	 * Processing features mapping
+	 *
+	 * @param	action
+	 */
+	public function feature($action = 'list')
+	{
+		$this->feature = new models\Feature();
+
+		switch ($action)
+		{
+			default :
+			case self::FEATURE_ACTION_LIST :
+				$list = $this->feature->getItems();
+				$output = array();
+				foreach ($list as $v)
+				{
+					$showRestaurant = $this->input->get(self::FEATURE_ACTION_LIST_RESTAURANT);
+
+					if ($showRestaurant === false)
+					{
+						$output[] = $v->toArray(false);
+					}
+					else
+					{
+						$output[] = $v->toArray(true);
+					}
+				}
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
+				echo json_encode($output);
+				break;
+			case self::FEATURE_ACTION_ADD :
+				// TODO:
+				$data = $this->feature->getInstance();
+				//$this->feature->save($data);
+				break;
+			case self::FEATURE_ACTION_UPDATE :
+				// TODO:
+				break;
+			case self::FEATURE_ACTION_DELETE :
+				// TODO:
 				break;
 		}
 	}

@@ -3,6 +3,8 @@
 namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection as Collection;
+use models\entity\IEntity;
 
 /**
  * Feature ORM Class
@@ -15,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Features
+class Features implements IEntity
 {
 	/**
 	 * @var integer
@@ -55,16 +57,10 @@ class Features
 	private $createIP;
 
 	/**
-	 * @var CI
-	 */
-	private $CI;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct()
 	{
-		$this->CI = get_instance();
 	}
 
 	/**
@@ -79,8 +75,39 @@ class Features
 	 */
 	public function doRegisterOnPrePersist()
 	{
+		$CI = get_instance();
+
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP = $this->CI->input->server('REMOTE_ADDR');
+		$this->createIP = $CI->input->server('REMOTE_ADDR');
+	}
+
+	/**
+	 * Return array
+	 */
+	public function toArray($recursion = false)
+	{
+		$return = get_object_vars($this);
+		foreach ($return as $k => $v)
+		{
+			if ($v instanceof Collection)
+			{
+				if ($recursion)
+				{
+					$return[$k] = $v->toArray();
+
+					foreach ($return[$k] as $k2 => $v2)
+					{
+						$return[$k][$k2] = $v2->toArray();
+					}
+				}
+				else
+				{
+					unset($return[$k]);
+				}
+			}
+		}
+
+		return $return;
 	}
 
 	public function __get($key)
