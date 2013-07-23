@@ -15,6 +15,13 @@ class MY_Controller extends CI_Controller
 	const AUTO_UPDATE = false;
 
 	/**
+	 * Output type constants
+	 */
+	const OUTPUT_TYPE_HTML = 'html';
+	const OUTPUT_TYPE_JSON = 'json';
+	const OUTPUT_TYPE_RSS = 'rss';
+
+	/**
 	 * Entities, use for create database schema.
 	 *
 	 * @var array

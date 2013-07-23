@@ -40,6 +40,9 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
+$route['(:any)/html'] = '$1/index/html';
+$route['(:any)/json'] = '$1/index/json';
+$route['(:any)/rss'] = '$1/index/rss';
 
 
 /* End of file routes.php */
