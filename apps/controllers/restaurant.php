@@ -193,6 +193,7 @@ class Restaurant extends MY_Controller
 
 				echo json_encode($output);
 				break;
+
 			case self::FEATURE_ACTION_ADD :
 				$this->load->library('form_validation');
 
@@ -216,13 +217,67 @@ class Restaurant extends MY_Controller
 						$return = true;
 					}
 				}
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
 				echo json_encode($return);
 				break;
+
 			case self::FEATURE_ACTION_UPDATE :
-				// TODO:
+				$this->load->library('form_validation');
+
+				// Return
+				$return = false;
+
+				// TODO: Do auth
+
+				// Set rules
+				$this->form_validation->set_rules('id', 'ID', 'required');
+				$this->form_validation->set_rules('title', 'Title', 'required');
+
+				if ($this->form_validation->run() == true)
+				{
+					$id = (int) $this->input->post('id');
+					$item = $this->feature->getItem($id);
+
+					if (!empty($item))
+					{
+						$item->setTitle(trim($this->input->post('title')));
+						$this->feature->save($item);
+
+						$return = true;
+					}
+				}
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
+				echo json_encode($return);
 				break;
+
 			case self::FEATURE_ACTION_DELETE :
-				// TODO:
+				$this->load->library('form_validation');
+
+				// Return
+				$return = false;
+
+				// TODO: Do auth
+
+				// Set rules
+				$this->form_validation->set_rules('id', 'ID', 'required');
+
+				if ($this->form_validation->run() == true)
+				{
+					$id = (int) $this->input->post('id');
+					$item = $this->feature->getItem($id);
+
+					$this->feature->remove($item);
+
+					$return = $item ? true : false;
+				}
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
+				echo json_encode($return);
 				break;
 		}
 	}
