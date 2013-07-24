@@ -4,6 +4,7 @@ namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use models\entity\IEntity;
 
 /**
@@ -13,8 +14,9 @@ use models\entity\IEntity;
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  *
- * @ORM\Table(name="feature")
- * @ORM\Entity
+ * @Gedmo\Tree(type="nested")
+ * @ORM\Table(name="features")
+ * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Features implements IEntity
@@ -27,6 +29,47 @@ class Features implements IEntity
 	 * @ORM\GeneratedValue
 	 */
 	private $id;
+
+	/**
+	 * @Gedmo\TreeLeft
+	 * @ORM\Column(name="lft", type="integer")
+	 */
+	private $lft;
+
+	/**
+	 * @Gedmo\TreeRight
+	 * @ORM\Column(name="rgt", type="integer")
+	 */
+	private $rgt;
+
+	/**
+	 * @Gedmo\TreeLevel
+	 * @ORM\Column(name="level", type="integer")
+	 */
+	private $level;
+
+	/**
+	 * @Gedmo\TreeRoot
+	 * @ORM\Column(name="root", type="integer", nullable=true)
+	 */
+	private $root;
+
+	/**
+	 * @var Features
+	 *
+	 * @Gedmo\TreeParent
+	 * @ORM\ManyToOne(targetEntity="Features", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+	 */
+	private $parent;
+
+	/**
+	 * @var Features[]
+	 *
+	 * @ORM\OneToMany(targetEntity="Features", mappedBy="parent")
+	 * @ORM\OrderBy({"lft" = "ASC"})
+	 */
+	private $children;
 
 	/**
 	 * @var Restaurants[]
@@ -61,7 +104,7 @@ class Features implements IEntity
 	 *
 	 * @ORM\Column(type="string")
 	 */
-	private $creater;
+	private $creator;
 
 	/**
 	 * Constructor
@@ -97,7 +140,14 @@ class Features implements IEntity
 		$return = get_object_vars($this);
 		foreach ($return as $k => $v)
 		{
-			if ($v instanceof Collection)
+			if ($k == 'parent')
+			{
+				if ($recursion && ( $v instanceof Features ) )
+				{
+					$return[$k] = $v->toArray();
+				}
+			}
+			elseif ($v instanceof Collection)
 			{
 				if ($recursion)
 				{
@@ -116,6 +166,11 @@ class Features implements IEntity
 		}
 
 		return $return;
+	}
+
+	public function getChildren()
+	{
+		return $this->children;
 	}
 
 	public function getCreateAt()
@@ -138,6 +193,11 @@ class Features implements IEntity
 		return $this->id;
 	}
 
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
 	public function getRestaurants()
 	{
 		return $this->restaurants;
@@ -151,6 +211,11 @@ class Features implements IEntity
 	public function setCreater($v)
 	{
 		$this->creater = $v;
+	}
+
+	public function setParent(Features $v = null)
+	{
+		$this->parent = $v;
 	}
 
 	public function setRestaurants($v)

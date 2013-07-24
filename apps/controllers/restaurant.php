@@ -169,6 +169,13 @@ class Restaurant extends MY_Controller
 	{
 		$this->feature = new models\Feature();
 
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		// Output default value
+		$output = null;
+
 		switch ($action)
 		{
 			default :
@@ -188,17 +195,16 @@ class Restaurant extends MY_Controller
 						$output[] = $v->toArray(true);
 					}
 				}
-				header('Cache-Control: no-cache');
-				header('Content-type: application/json');
 
-				echo json_encode($output);
 				break;
 
 			case self::FEATURE_ACTION_ADD :
 				$this->load->library('form_validation');
 
-				// Return
-				$return = false;
+				// Output default value
+				$output = false;
+
+				// TODO: Do auth and set creator
 
 				// Set rules
 				$this->form_validation->set_rules('title', 'Title', 'required');
@@ -210,24 +216,30 @@ class Restaurant extends MY_Controller
 
 					if (empty($duplicate))
 					{
+						$parent = (int)$this->input->post('parent');
+
 						$data = $this->feature->getInstance();
 						$data->setTitle(trim($this->input->post('title')));
+
+						if ($parent !== 0)
+						{
+							$parentItem = $this->feature->getItem($parent);
+							$data->setParent($parentItem);
+						}
+
 						$this->feature->save($data);
 
-						$return = true;
+						$output = $data->toArray();
+						// unset($output['parent']['__isInitialized__']);
 					}
 				}
-				header('Cache-Control: no-cache');
-				header('Content-type: application/json');
-
-				echo json_encode($return);
 				break;
 
 			case self::FEATURE_ACTION_UPDATE :
 				$this->load->library('form_validation');
 
-				// Return
-				$return = false;
+				// Output default value
+				$output = false;
 
 				// TODO: Do auth
 
@@ -237,28 +249,34 @@ class Restaurant extends MY_Controller
 
 				if ($this->form_validation->run() == true)
 				{
-					$id = (int) $this->input->post('id');
+					$id = (int)$this->input->post('id');
 					$item = $this->feature->getItem($id);
 
 					if (!empty($item))
 					{
+						$parent = (int) $this->input->post('parent');
+
 						$item->setTitle(trim($this->input->post('title')));
+
+						if ($parent !== 0)
+						{
+							$parentItem = $this->feature->getItem($parent);
+							$item->setParent($parentItem);
+						}
+
 						$this->feature->save($item);
 
-						$return = true;
+						$output = $item->toArray(true);
+						// unset($output['parent']['__isInitialized__']);
 					}
 				}
-				header('Cache-Control: no-cache');
-				header('Content-type: application/json');
-
-				echo json_encode($return);
 				break;
 
 			case self::FEATURE_ACTION_DELETE :
 				$this->load->library('form_validation');
 
-				// Return
-				$return = false;
+				// Output default value
+				$output = false;
 
 				// TODO: Do auth
 
@@ -267,19 +285,16 @@ class Restaurant extends MY_Controller
 
 				if ($this->form_validation->run() == true)
 				{
-					$id = (int) $this->input->post('id');
+					$id = (int)$this->input->post('id');
 					$item = $this->feature->getItem($id);
 
 					$this->feature->remove($item);
 
-					$return = $item ? true : false;
+					$output = $item ? true : false;
 				}
-				header('Cache-Control: no-cache');
-				header('Content-type: application/json');
-
-				echo json_encode($return);
 				break;
 		}
+		echo json_encode($output);
 	}
 
 }
