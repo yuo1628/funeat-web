@@ -38,7 +38,7 @@ class Features implements IEntity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=255, unique=true)
 	 */
 	private $title;
 
@@ -55,6 +55,13 @@ class Features implements IEntity
 	 * @ORM\Column(type="string", length=15)
 	 */
 	private $createIP;
+
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(type="string")
+	 */
+	private $creater;
 
 	/**
 	 * Constructor
@@ -79,6 +86,7 @@ class Features implements IEntity
 
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
+		$this->creater = 0;
 	}
 
 	/**
@@ -110,14 +118,49 @@ class Features implements IEntity
 		return $return;
 	}
 
-	public function __get($key)
+	public function getCreateAt()
 	{
-		return $this->$key;
+		return $this->createAt;
 	}
 
-	public function __set($key, $value)
+	public function getCreateIP()
 	{
-		$this->$key = $value;
+		return $this->createIP;
+	}
+
+	public function getCreater()
+	{
+		return $this->creater;
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function getRestaurants()
+	{
+		return $this->restaurants;
+	}
+
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	public function setCreater($v)
+	{
+		$this->creater = $v;
+	}
+
+	public function setRestaurants($v)
+	{
+		$this->restaurants = $v;
+	}
+
+	public function setTitle($v)
+	{
+		$this->title = $v;
 	}
 
 }

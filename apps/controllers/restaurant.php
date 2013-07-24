@@ -194,9 +194,29 @@ class Restaurant extends MY_Controller
 				echo json_encode($output);
 				break;
 			case self::FEATURE_ACTION_ADD :
-				// TODO:
-				$data = $this->feature->getInstance();
-				//$this->feature->save($data);
+				$this->load->library('form_validation');
+
+				// Return
+				$return = false;
+
+				// Set rules
+				$this->form_validation->set_rules('title', 'Title', 'required');
+
+				if ($this->form_validation->run() == true)
+				{
+					$title = trim($this->input->post('title'));
+					$duplicate = $this->feature->getItem($title, 'title');
+
+					if (empty($duplicate))
+					{
+						$data = $this->feature->getInstance();
+						$data->setTitle(trim($this->input->post('title')));
+						$this->feature->save($data);
+
+						$return = true;
+					}
+				}
+				echo json_encode($return);
 				break;
 			case self::FEATURE_ACTION_UPDATE :
 				// TODO:

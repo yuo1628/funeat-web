@@ -13,7 +13,7 @@ $features; // 店家服務特色標籤
 	圖片: <input type="file" name="images[]" /><br/>
 	服務特色:<br/>
 	<?php foreach ($features as $v): ?>
-		<input type="checkbox" name="features[]" value="<?php echo $v->id; ?>" /><?php echo $v->title; ?><br/>
+		<input type="checkbox" name="features[]" value="<?php echo $v->getId(); ?>" /><?php echo $v->getTitle(); ?><br/>
 	<?php endforeach; ?>
 	<input type="submit" />
 <?php echo form_close(); ?>
