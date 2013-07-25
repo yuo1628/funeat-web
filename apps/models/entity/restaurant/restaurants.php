@@ -27,9 +27,16 @@ class Restaurants implements IEntity
 	 *
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue
+	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
 	private $id;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=36, unique=true)
+	 */
+	private $uuid;
 
 	/**
 	 * @Gedmo\TreeLeft
@@ -71,14 +78,6 @@ class Restaurants implements IEntity
 	 * @ORM\OrderBy({"lft" = "ASC"})
 	 */
 	private $children;
-
-	/**
-	 * @var string
-	 *
-     * @ORM\Column(type="guid", nullable=true)
-     * @ORM\GeneratedValue(strategy="UUID")
-	 */
-	private $uuid;
 
 	/**
 	 * @var Cuisines[]
@@ -143,41 +142,6 @@ class Restaurants implements IEntity
 	 *
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $address;
-
-	/**
-	 * @var array
-	 *
-	 * @ORM\Column(type="json_array", nullable=true)
-	 */
-	private $tel;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $email;
-
-	/**
-	 * @var models\restaurant\Hours
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $hours;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $website;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
 	private $logo;
 
 	/**
@@ -192,7 +156,49 @@ class Restaurants implements IEntity
 	 *
 	 * @ORM\Column(type="text", nullable=true)
 	 */
+	private $address;
+
+	/**
+	 * @var array
+	 *
+	 * @ORM\Column(type="json_array", nullable=true)
+	 */
+	private $tels;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="json_array", nullable=true)
+	 */
+	private $emails;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $website;
+
+	/**
+	 * @var models\restaurant\Hours
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $hours;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
 	private $intro;
+
+	/**
+	 * @var models\entity\member\Members
+	 *
+	 * @ORM\ManyToOne(targetEntity="models\entity\member\Members", inversedBy="restaurants")
+	 */
+	private $creator;
 
 	/**
 	 * @var DateTime
@@ -258,11 +264,14 @@ class Restaurants implements IEntity
 	private $points;
 
 	/**
-	 * Constructor
+	 * Constructor, initial data
 	 */
 	public function __construct()
 	{
 		$this->features = array();
+		$this->images = array();
+		$this->tels = array();
+		$this->emails = array();
 		$this->hours = new Hours();
 		$this->activated = 0;
 		$this->blocked = 0;
@@ -279,25 +288,20 @@ class Restaurants implements IEntity
 	/**
 	 * @ORM\PrePersist
 	 */
-	public function doRegisterOnPrePersist()
+	public function onPrePersist()
 	{
 		$CI = get_instance();
+		$CI->load->library('uuid');
 
+		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
 
 	/**
-	 * @ORM\PrePersist
-	 */
-	public function doEncodeOnPrePersist()
-	{
-	}
-
-	/**
 	 * @ORM\PreUpdate
 	 */
-	public function doEncodeOnPreUpdate()
+	public function onPreUpdate()
 	{
 	}
 

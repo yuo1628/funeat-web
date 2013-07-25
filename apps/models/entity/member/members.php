@@ -190,7 +190,14 @@ class Members
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
 	 */
-	private $restaurant;
+	private $restaurantOwner;
+
+	/**
+	 * @var Restaurants[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurantCreated;
 
 	/**
 	 * Constructor
