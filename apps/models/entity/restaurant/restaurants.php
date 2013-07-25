@@ -5,6 +5,7 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use models\entity\IEntity;
+use models\restaurant\Hours;
 
 /**
  * Restaurants ORM Class
@@ -114,7 +115,7 @@ class Restaurants implements IEntity
 	private $tel;
 
 	/**
-	 * @var string
+	 * @var models\restaurant\Hours
 	 *
 	 * @ORM\Column(type="text", nullable=true)
 	 */
@@ -210,6 +211,7 @@ class Restaurants implements IEntity
 	public function __construct()
 	{
 		$this->features = array();
+		$this->hours = new Hours();
 		$this->activated = 0;
 		$this->blocked = 0;
 		$this->deleted = 0;
