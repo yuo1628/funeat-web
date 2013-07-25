@@ -46,6 +46,11 @@ class Restaurant extends MY_Controller
 	protected $feature;
 
 	/**
+	 * @var models\Member
+	 */
+	protected $member;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -55,10 +60,12 @@ class Restaurant extends MY_Controller
 		// Load library
 		$this->load->library('doctrine');
 		$this->load->library('form_validation');
+		$this->load->library('session');
 
 		// Load models
 		$this->feature = new models\Feature();
 		$this->restaurant = new models\Restaurant();
+		$this->member = new models\Member();
 	}
 
 	/**
@@ -234,6 +241,66 @@ class Restaurant extends MY_Controller
 
 			// TODO: after save data?
 		}
+	}
+
+	/**
+	 * Like action for restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function like($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			$member = $this->member->getLoginMember($this->session);
+
+			if (!$restaurant->like->contains($member))
+			{
+				if ($restaurant->dislike->contains($member))
+				{
+					$restaurant->dislike->removeElement($member);
+				}
+				$restaurant->like->add($member);
+				$this->restaurant->save($restaurant);
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
+	 * Dislike action for restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function dislike($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			$member = $this->member->getLoginMember($this->session);
+
+			if (!$restaurant->dislike->contains($member))
+			{
+				if ($restaurant->like->contains($member))
+				{
+					$restaurant->like->removeElement($member);
+				}
+				$restaurant->dislike->add($member);
+				$this->restaurant->save($restaurant);
+				$success = true;
+			}
+		}
+		echo json_encode($success);
 	}
 
 	/**

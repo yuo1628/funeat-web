@@ -264,6 +264,28 @@ class Restaurants implements IEntity
 	private $points;
 
 	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
+	 * @ORM\JoinTable(name="Restaurant_Like_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
+	 * )
+	 */
+	private $like;
+
+	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
+	 * @ORM\JoinTable(name="Restaurant_Dislike_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
+	 * )
+	 */
+	private $dislike;
+
+	/**
 	 * Constructor, initial data
 	 */
 	public function __construct()

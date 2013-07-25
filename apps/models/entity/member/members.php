@@ -200,6 +200,20 @@ class Members
 	private $restaurantCreated;
 
 	/**
+	 * @var models\entity\restaurant\Restaurants[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurantLike;
+
+	/**
+	 * @var models\entity\restaurant\Restaurants[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurantDislike;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -221,8 +235,10 @@ class Members
 	 */
 	public function doRegisterOnPrePersist()
 	{
+		$CI = get_instance();
+
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP =  get_instance()->input->server('REMOTE_ADDR');
+		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
 
 	/**
