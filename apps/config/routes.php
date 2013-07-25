@@ -40,9 +40,10 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
-$route['(:any)/html'] = '$1/index/html';
-$route['(:any)/json'] = '$1/index/json';
-$route['(:any)/rss'] = '$1/index/rss';
+$route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/profile/$1';
+$route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/(:any)'] = 'restaurant/profile/$1/$2';
+$route['restaurant/(:num)'] = 'restaurant/profile/$1';
+$route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 
 
 /* End of file routes.php */

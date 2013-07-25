@@ -6,6 +6,11 @@
 class Restaurant extends MY_Controller
 {
 	/**
+	 * Use id to select restaurant
+	 */
+	const IDENTITY_SELECT_ID = false;
+
+	/**
 	 * Feature action list constants
 	 */
 	const FEATURE_ACTION_LIST = 'list';
@@ -59,18 +64,51 @@ class Restaurant extends MY_Controller
 	/**
 	 * Index page
 	 */
-	public function index($type = 'html')
+	public function index($format = 'html')
 	{
-		switch ($type)
+		switch ($format)
 		{
 			default :
-			case self::OUTPUT_TYPE_HTML :
+			case self::OUTPUT_FORMAT_HTML :
 				$this->view('restaurant/list');
 				break;
-			case self::OUTPUT_TYPE_JSON :
+			case self::OUTPUT_FORMAT_JSON :
 				// TODO: output JSON
 				break;
-			case self::OUTPUT_TYPE_RSS :
+			case self::OUTPUT_FORMAT_RSS :
+				// TODO: output RSS
+				break;
+		}
+	}
+
+	/**
+	 * Restaurant profile page
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
+	{
+		$restaurant = $this->_loadRestaurant($identity);
+		switch ($format)
+		{
+			default :
+			case self::OUTPUT_FORMAT_HTML :
+				$this->setData('restaurant', $restaurant);
+				$this->view('restaurant/profile');
+				break;
+
+			case self::OUTPUT_FORMAT_JSON :
+				if ($restaurant === null)
+				{
+					echo json_encode(null);
+				}
+				else
+				{
+					echo json_encode($restaurant->toArray(true));
+				}
+				break;
+
+			case self::OUTPUT_FORMAT_RSS :
 				// TODO: output RSS
 				break;
 		}
@@ -348,7 +386,7 @@ class Restaurant extends MY_Controller
 			$items = $this->restaurant->getItem($identity, 'uuid');
 			$restaurant = $items[0];
 		}
-		elseif (preg_match('/^\d+$/', $identity))
+		elseif (preg_match('/^\d+$/', $identity) && self::IDENTITY_SELECT_ID)
 		{
 			// match [0-9]
 			$items = $this->restaurant->getItem($identity);
