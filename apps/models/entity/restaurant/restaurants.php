@@ -4,6 +4,7 @@ namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use models\entity\IEntity;
 use models\restaurant\Hours;
 
@@ -14,8 +15,9 @@ use models\restaurant\Hours;
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  *
+ * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="restaurants")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Restaurants implements IEntity
@@ -30,24 +32,53 @@ class Restaurants implements IEntity
 	private $id;
 
 	/**
+	 * @Gedmo\TreeLeft
+	 * @ORM\Column(name="lft", type="integer")
+	 */
+	private $lft;
+
+	/**
+	 * @Gedmo\TreeRight
+	 * @ORM\Column(name="rgt", type="integer")
+	 */
+	private $rgt;
+
+	/**
+	 * @Gedmo\TreeLevel
+	 * @ORM\Column(name="level", type="integer")
+	 */
+	private $level;
+
+	/**
+	 * @Gedmo\TreeRoot
+	 * @ORM\Column(name="root", type="integer", nullable=true)
+	 */
+	private $root;
+
+	/**
+	 * @var Restaurants
+	 *
+	 * @Gedmo\TreeParent
+	 * @ORM\ManyToOne(targetEntity="Restaurants", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+	 */
+	private $parent;
+
+	/**
+	 * @var Restaurants[]
+	 *
+	 * @ORM\OneToMany(targetEntity="Restaurants", mappedBy="parent")
+	 * @ORM\OrderBy({"lft" = "ASC"})
+	 */
+	private $children;
+
+	/**
 	 * @var string
 	 *
      * @ORM\Column(type="guid", nullable=true)
      * @ORM\GeneratedValue(strategy="UUID")
 	 */
 	private $uuid;
-
-	/**
-	 * @var Restaurantgroups[]
-	 *
-	 * @ORM\ManyToMany(targetEntity="Restaurantgroups")
-	 * @ORM\JoinTable(
-	 * 	name="Restaurant_Groups_Mapping",
-	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
-	 * 	inverseJoinColumns={@ORM\JoinColumn(name="restaurantgroups_id", referencedColumnName="id")}
-	 * )
-	 */
-	private $restaurantgroups;
 
 	/**
 	 * @var Cuisines[]
@@ -302,16 +333,6 @@ class Restaurants implements IEntity
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	public function setRestaurantgroups(Restaurantgroups $value)
-	{
-		$this->restaurantgroups = $value;
-	}
-
-	public function getRestaurantgroups()
-	{
-		return $this->restaurantgroups;
 	}
 
 	public function setFeatures($value)
