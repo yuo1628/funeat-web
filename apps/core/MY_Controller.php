@@ -15,6 +15,14 @@ class MY_Controller extends CI_Controller
 	const AUTO_UPDATE = false;
 
 	/**
+	 * Output type constants
+	 */
+	const OUTPUT_FORMAT = 'format';
+	const OUTPUT_FORMAT_HTML = 'html';
+	const OUTPUT_FORMAT_JSON = 'json';
+	const OUTPUT_FORMAT_RSS = 'rss';
+
+	/**
 	 * Entities, use for create database schema.
 	 *
 	 * @var array
@@ -24,8 +32,8 @@ class MY_Controller extends CI_Controller
 		'models\\entity\\collection\\Points',
 		'models\\entity\\collection\\Templates',
 		'models\\entity\\restaurant\\Cuisines',
+		'models\\entity\\restaurant\\Features',
 		'models\\entity\\restaurant\\Restaurants',
-		'models\\entity\\restaurant\\Restaurantgroups',
 		'models\\entity\\member\\Members',
 		'models\\entity\\member\\Membergroups'
 	);

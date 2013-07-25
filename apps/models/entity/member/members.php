@@ -69,7 +69,7 @@ class Members
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=32, nullable=false)
+	 * @ORM\Column(type="string", length=32, nullable=true)
 	 */
 	private $name;
 
@@ -184,6 +184,20 @@ class Members
 	 * @ORM\OneToMany(targetEntity="models\entity\collection\Collections", mappedBy="members")
 	 */
 	private $collection;
+
+	/**
+	 * @var Restaurants[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurantOwner;
+
+	/**
+	 * @var Restaurants[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurantCreated;
 
 	/**
 	 * Constructor

@@ -48,13 +48,6 @@ class Cuisines
 	private $data;
 
 	/**
-	 * @var Restaurantgroups
-	 *
-	 * @ORM\ManyToOne(targetEntity="Restaurantgroups", inversedBy="cuisines")
-	 */
-	private $restaurantgroups;
-
-	/**
 	 * @var Restaurants[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Restaurants", mappedBy="cuisines")
@@ -109,16 +102,6 @@ class Cuisines
 	public function getData()
 	{
 		return json_decode($this->data);
-	}
-
-	public function setRestaurantgroups(Restaurantgroups $value)
-	{
-		$this->restaurantgroups = $value;
-	}
-
-	public function getRestaurantgroups()
-	{
-		return $this->restaurantgroups;
 	}
 
 	public function setRestaurants(Restaurant $value)

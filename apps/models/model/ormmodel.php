@@ -91,8 +91,12 @@ class ORMModel extends Model
 	{
 		if ($entity instanceof $this->_entity)
 		{
+			$meta = $this->_em->getClassMetadata(get_class($entity));
+			$identifier = $meta->getSingleIdentifierFieldName();
+			$funcName = 'get' . ucfirst($identifier);
+
 			// TODO: use the entity primary key.
-			if ($entity->id === null)
+			if ($entity->$funcName() === null)
 			{
 				$this->_em->persist($entity);
 			}

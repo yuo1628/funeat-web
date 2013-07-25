@@ -6,6 +6,13 @@ logs/log-*.php
 cache/*
 !cache/index.html
 !cache/.htaccess
+
+# ORM proxy files
+
+apps/Proxies/*
+
+# Aptana files
+
 .project
 
 # Design files
