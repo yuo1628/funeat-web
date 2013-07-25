@@ -41,44 +41,6 @@ class Restaurant extends MY_Controller
 	protected $feature;
 
 	/**
-	 * Validation config
-	 *
-	 * @var array
-	 */
-	protected $restaurant_validation = array(
-		array(
-			'field' => 'name',
-			'label' => 'Name',
-			'rules' => 'required'
-		),
-		array(
-			'field' => 'address',
-			'label' => 'Address',
-			'rules' => 'required'
-		),
-		array(
-			'field' => 'tel',
-			'label' => 'Tel'
-		),
-		array(
-			'field' => 'hours',
-			'label' => 'Hours'
-		),
-		array(
-			'field' => 'website',
-			'label' => 'Website'
-		),
-		array(
-			'field' => 'images',
-			'label' => 'Images'
-		),
-		array(
-			'field' => 'features',
-			'label' => 'Features'
-		)
-	);
-
-	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -88,6 +50,10 @@ class Restaurant extends MY_Controller
 		// Load library
 		$this->load->library('doctrine');
 		$this->load->library('form_validation');
+
+		// Load models
+		$this->feature = new models\Feature();
+		$this->restaurant = new models\Restaurant();
 	}
 
 	/**
@@ -111,48 +77,120 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
-	 *
+	 * Add action
 	 */
 	public function add()
 	{
-		$this->feature = new models\Feature();
-		$this->restaurant = new models\Restaurant();
+		$this->load->helper('form');
 
-		$this->form_validation->set_rules($this->restaurant_validation);
+		$this->setData('features', $this->feature->getItems());
+		$this->setData('restaurant', $this->restaurant->getInstance());
+		$this->view('restaurant/edit');
+	}
 
-		if ($this->form_validation->run() == false)
+	/**
+	 * Edit action
+	 */
+	public function edit($identity)
+	{
+		$this->load->helper('form');
+
+		$this->setData('features', $this->feature->getItems());
+		$this->setData('restaurant', $this->_loadRestaurant($identity));
+		$this->view('restaurant/edit');
+	}
+
+	/**
+	 * Save action
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 *
+	 * @param 		name
+	 * @param		address
+	 * @param		tels[]
+	 * @param		emails[]
+	 * @param		hours[]
+	 * @param		website
+	 * @param		logo (file)
+	 * @param		images[] (files)
+	 * @param		features[] (another table data)
+	 */
+	public function save($identity = null)
+	{
+		// preload data
+		$restaurant = null;
+
+		if ($identity === null)
 		{
-			$this->load->helper('form');
+			// Set rules
+			$this->form_validation->set_rules('name', 'Name', 'required');
+			$this->form_validation->set_rules('address', 'Address', 'required');
 
-			$this->setData('features', $this->feature->getItems());
-			$this->view('restaurant/add');
+			if ($this->form_validation->run() !== false)
+			{
+				$restaurant = $this->restaurant->getInstance();
+			}
 		}
 		else
 		{
-			$restaurant = $this->restaurant->getInstance();
+			$identity = trim($identity);
 
-			$restaurant->name = $this->input->post('name');
-			$restaurant->address = $this->input->post('address');
+			$restaurant = $this->_loadRestaurant($identity);
+		}
+
+		if ($restaurant === null)
+		{
+			if ($identity === null)
+			{
+				$this->load->helper('form');
+
+				$this->setData('features', $this->feature->getItems());
+				$this->view('restaurant/add');
+			}
+			else
+			{
+				$this->load->helper('form');
+
+				$this->setData('features', $this->feature->getItems());
+				$this->view('restaurant/edit');
+			}
+		}
+		else
+		{
+			// Load data
+			$name = trim($this->input->post('name'));
+			$address = trim($this->input->post('address'));
+			$tels = trim($this->input->post('tels'));
+			$emails = trim($this->input->post('emails'));
+			$hours = trim($this->input->post('hours'));
+			$website = trim($this->input->post('website'));
+			$logo = trim($this->input->post('logo'));
+			$images = trim($this->input->post('images'));
+			$features = trim($this->input->post('features'));
+
+			$restaurant->name = empty($name) ? $restaurant->name : $name;
+			$restaurant->address = empty($address) ? $restaurant->address : $address;
 
 			// TODO:
-			//$restaurant->tel = $this->input->post('tel');
+			//$restaurant->tels = $tels;
 
 			// TODO:
-			//$restaurant->hours = $this->input->post('hours');
+			//$restaurant->hours = $hours;
 
-			$restaurant->website = $this->input->post('website');
+			$restaurant->website = empty($website) ? $restaurant->website : $website;
 
 			// TODO:
 			//$restaurant->images = $this->input->post('images');
 
-			$features = $restaurant->getFeatures();
-
-			foreach ($this->input->post('features') as $v)
+			if ($features)
 			{
-				$features[] = $this->feature->getItem((int)$v);
+				$featuresData;
+				foreach ($features->input->post('features') as $v)
+				{
+					$featuresData[] = $this->feature->getItem((int)$v);
+				}
+				$restaurant->setFeatures($featuresData);
 			}
-
-			$restaurant->setFeatures($features);
 
 			$this->restaurant->save($restaurant);
 
@@ -167,8 +205,6 @@ class Restaurant extends MY_Controller
 	 */
 	public function feature($action = 'list')
 	{
-		$this->feature = new models\Feature();
-
 		// Set html header
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
@@ -254,7 +290,7 @@ class Restaurant extends MY_Controller
 
 					if (!empty($item))
 					{
-						$parent = (int) $this->input->post('parent');
+						$parent = (int)$this->input->post('parent');
 
 						$item->setTitle(trim($this->input->post('title')));
 
@@ -295,6 +331,41 @@ class Restaurant extends MY_Controller
 				break;
 		}
 		echo json_encode($output);
+	}
+
+	/**
+	 * Load restaurant from identity
+	 *
+	 * @param		identity identity Can use ID, UUID or username.
+	 */
+	private function _loadRestaurant($identity)
+	{
+		$this->load->library('uuid');
+		$restaurant = null;
+
+		if ($this->uuid->is_valid($identity))
+		{
+			$items = $this->restaurant->getItem($identity, 'uuid');
+			$restaurant = $items[0];
+		}
+		elseif (preg_match('/^\d+$/', $identity))
+		{
+			// match [0-9]
+			$items = $this->restaurant->getItem($identity);
+			$restaurant = $items;
+		}
+		elseif (preg_match('/^\w+$/', $identity))
+		{
+			// match [0-9a-zA-Z_]
+			$items = $this->restaurant->getItem($identity, 'username');
+
+			if ($items)
+			{
+				$restaurant = $items[0];
+			}
+		}
+
+		return $restaurant;
 	}
 
 }

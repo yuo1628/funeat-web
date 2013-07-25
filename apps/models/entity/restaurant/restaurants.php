@@ -339,6 +339,11 @@ class Restaurants implements IEntity
 		return $this->id;
 	}
 
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
+
 	public function setFeatures($value)
 	{
 		$this->features = $value;
