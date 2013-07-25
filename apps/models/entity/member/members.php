@@ -186,6 +186,13 @@ class Members
 	private $collection;
 
 	/**
+	 * @var Restaurants[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	private $restaurant;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()

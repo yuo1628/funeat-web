@@ -30,6 +30,14 @@ class Restaurants implements IEntity
 	private $id;
 
 	/**
+	 * @var string
+	 *
+     * @ORM\Column(type="guid", nullable=true)
+     * @ORM\GeneratedValue(strategy="UUID")
+	 */
+	private $uuid;
+
+	/**
 	 * @var Restaurantgroups[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Restaurantgroups")
@@ -57,9 +65,8 @@ class Restaurants implements IEntity
 	 * @var Features[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Features")
-	 * @ORM\JoinTable(
-	 * 	name="Restaurant_Features_Mapping",
-	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id")},
+	 * @ORM\JoinTable(name="Restaurant_Features_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
 	 * 	inverseJoinColumns={@ORM\JoinColumn(name="features_id", referencedColumnName="id")}
 	 * )
 	 */
@@ -68,9 +75,9 @@ class Restaurants implements IEntity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255, nullable=true)
+	 * @ORM\ManyToOne(targetEntity="models\entity\member\Members", inversedBy="restaurants")
 	 */
-	private $email;
+	private $owner;
 
 	/**
 	 * @var string
@@ -108,11 +115,18 @@ class Restaurants implements IEntity
 	private $address;
 
 	/**
-	 * @var string
+	 * @var array
 	 *
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="json_array", nullable=true)
 	 */
 	private $tel;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $email;
 
 	/**
 	 * @var models\restaurant\Hours
@@ -132,6 +146,13 @@ class Restaurants implements IEntity
 	 * @var string
 	 *
 	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $logo;
+
+	/**
+	 * @var array
+	 *
+	 * @ORM\Column(type="json_array", nullable=true)
 	 */
 	private $images;
 
