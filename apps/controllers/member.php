@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
 use models\Member as MemberModel;
+use models\entity\member\Comments as Comments;
 
 /**
  * Member function
@@ -50,6 +51,11 @@ class Member extends MY_Controller
 	protected $member;
 
 	/**
+	 * @var models\Comment
+	 */
+	protected $comment;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -60,8 +66,10 @@ class Member extends MY_Controller
 		$this->load->library('doctrine');
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->library('form_validation');
 
 		$this->member = new MemberModel();
+		$this->comment = new models\member\Comment();
 	}
 
 	/**
@@ -158,6 +166,112 @@ class Member extends MY_Controller
 	}
 
 	/**
+	 * Comment the member action
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function comment($identity)
+	{
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\member\Members
+		 */
+		$memberSelect = $this->_loadMember($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($memberSelect))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				/**
+				 * @var models\entity\member\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setMember($memberSelect);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
+	 * Reply the comment action
+	 *
+	 * @param		identity Can use ID, UUID.
+	 *
+	 * @param		comment
+	 */
+	public function reply($identity)
+	{
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\member\Members
+		 */
+		$reply = $this->_loadComment($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($reply))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				/**
+				 * @var models\entity\member\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setReply($reply);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
 	 * Load member from identity
 	 *
 	 * @param		identity Identity Can use ID, UUID, username.
@@ -189,4 +303,30 @@ class Member extends MY_Controller
 		return $member;
 	}
 
+	/**
+	 * Load comment from identity
+	 *
+	 * @param		identity Identity Can use ID, UUID.
+	 *
+	 * @return		models\entity\restaurant\Comments
+	 */
+	private function _loadComment($identity)
+	{
+		$identity = trim($identity);
+
+		$this->load->library('uuid');
+		$comment = null;
+
+		if ($this->uuid->is_valid($identity))
+		{
+			$comment = $this->comment->getItem($identity, 'uuid');
+		}
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
+		{
+			// integer
+			$comment = $this->comment->getItem((int)$identity);
+		}
+
+		return $comment;
+	}
 }

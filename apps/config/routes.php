@@ -40,6 +40,9 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'member/comment/$1';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/reply'] = 'member/reply/$1';
 $route['restaurant/add'] = 'restaurant/add';
 $route['restaurant/feature'] = 'restaurant/feature';
 $route['restaurant/feature/(:any)'] = 'restaurant/feature/$1';
@@ -60,7 +63,6 @@ $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
 $route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
-$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
