@@ -3,6 +3,7 @@
 namespace models\entity\member;
 
 use Doctrine\ORM\Mapping as ORM;
+use models\entity\IEntity;
 
 /**
  * Members ORM Class
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Members
+class Members implements IEntity
 {
 	/**
 	 * @var integer
@@ -255,6 +256,37 @@ class Members
 	public function doEncodeOnPreUpdate()
 	{
 		$this->password = md5($this->password);
+	}
+
+	/**
+	 * Return array
+	 *
+	 * @return		array
+	 */
+	public function toArray($recursion = false)
+	{
+		$return = get_object_vars($this);
+		foreach ($return as $k => $v)
+		{
+			if ($v instanceof Collection)
+			{
+				if ($recursion)
+				{
+					$return[$k] = $v->toArray();
+
+					foreach ($return[$k] as $k2 => $v2)
+					{
+						$return[$k][$k2] = $v2->toArray();
+					}
+				}
+				else
+				{
+					unset($return[$k]);
+				}
+			}
+		}
+
+		return $return;
 	}
 
 	public function getId()

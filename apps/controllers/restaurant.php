@@ -560,24 +560,17 @@ class Restaurant extends MY_Controller
 
 		if ($this->uuid->is_valid($identity))
 		{
-			$items = $this->restaurant->getItem($identity, 'uuid');
-			$restaurant = $items[0];
+			$restaurant = $this->restaurant->getItem($identity, 'uuid');
 		}
-		elseif (preg_match('/^\d+$/', $identity) && self::IDENTITY_SELECT_ID)
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
 		{
 			// match [0-9]
-			$items = $this->restaurant->getItem($identity);
-			$restaurant = $items;
+			$restaurant = $this->restaurant->getItem((int)$identity);
 		}
 		elseif (preg_match('/^\w+$/', $identity))
 		{
 			// match [0-9a-zA-Z_]
-			$items = $this->restaurant->getItem($identity, 'username');
-
-			if ($items)
-			{
-				$restaurant = $items[0];
-			}
+			$restaurant = $this->restaurant->getItem($identity, 'username');
 		}
 
 		return $restaurant;
@@ -597,14 +590,12 @@ class Restaurant extends MY_Controller
 
 		if ($this->uuid->is_valid($identity))
 		{
-			$items = $this->comment->getItem($identity, 'uuid');
-			$comment = $items[0];
+			$comment = $this->comment->getItem($identity, 'uuid');
 		}
 		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
 		{
 			// match [0-9]
-			$items = $this->comment->getItem((int)$identity);
-			$comment = $items;
+			$comment = $this->comment->getItem((int)$identity);
 		}
 
 		return $comment;

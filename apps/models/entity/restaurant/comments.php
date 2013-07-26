@@ -4,6 +4,7 @@ namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use models\entity\IEntity;
 use models\entity\restaurant\Restaurants as Restaurants;
 
 /**
@@ -18,7 +19,7 @@ use models\entity\restaurant\Restaurants as Restaurants;
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Comments
+class Comments implements IEntity
 {
 	/**
 	 * Type constants
@@ -132,6 +133,13 @@ class Comments
 	 */
 	public function __construct()
 	{
+	}
+
+	/**
+	 * @ORM\PrePersist
+	 */
+	public function onPrePersist()
+	{
 		$CI = get_instance();
 		$CI->load->library('uuid');
 
@@ -145,6 +153,37 @@ class Comments
 	 */
 	public function __clone()
 	{
+	}
+
+	/**
+	 * Return array
+	 *
+	 * @return		array
+	 */
+	public function toArray($recursion = false)
+	{
+		$return = get_object_vars($this);
+		foreach ($return as $k => $v)
+		{
+			if ($v instanceof Collection)
+			{
+				if ($recursion)
+				{
+					$return[$k] = $v->toArray();
+
+					foreach ($return[$k] as $k2 => $v2)
+					{
+						$return[$k][$k2] = $v2->toArray();
+					}
+				}
+				else
+				{
+					unset($return[$k]);
+				}
+			}
+		}
+
+		return $return;
 	}
 
 	public function getId()
