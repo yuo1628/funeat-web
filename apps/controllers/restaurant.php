@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
+use models\entity\restaurant\Comments as Comments;
+
 /**
  * Restaurant
  */
@@ -49,6 +51,11 @@ class Restaurant extends MY_Controller
 	 * @var models\Member
 	 */
 	protected $member;
+
+	/**
+	 * @var models\Comment
+	 */
+	protected $comment;
 
 	/**
 	 * Constructor
@@ -436,6 +443,57 @@ class Restaurant extends MY_Controller
 				break;
 		}
 		echo json_encode($output);
+	}
+
+	/**
+	 * Comment the restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 *
+	 * @param		comment
+	 */
+	public function comment($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				// TODO
+				$this->comment = new models\Comment();
+
+				/**
+				 * @var models\entity\restaurant\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setRestaurant($restaurant);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
 	}
 
 	/**

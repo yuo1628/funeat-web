@@ -44,11 +44,15 @@ $route['restaurant/add'] = 'restaurant/add';
 $route['restaurant/edit/(:any)'] = 'restaurant/edit/$1';
 $route['restaurant/like/(:any)'] = 'restaurant/like/$1';
 $route['restaurant/dislike/(:any)'] = 'restaurant/dislike/$1';
+$route['restaurant/comment/(:any)'] = 'restaurant/comment/$1';
+$route['restaurant/comment'] = 'errors/page_missing';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/profile/$1';
+$route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'restaurant/comment/$1';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(:num)'] = 'restaurant/profile/$1';
 $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
+$route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
 
 
