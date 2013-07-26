@@ -142,6 +142,9 @@ class Restaurant extends MY_Controller
 
 		$this->setData('features', $this->feature->getItems());
 		$this->setData('restaurant', $this->restaurant->getInstance());
+
+		// TODO: Temporary use this layout
+		$this->setLayout('restaurant/edit');
 		$this->view('restaurant/edit');
 	}
 

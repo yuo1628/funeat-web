@@ -1,10 +1,12 @@
 <?php
-// Pretreatment
+// Load library
+$this->load->helper('url');
 $this->load->helper('html');
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
+		<base href="<?php echo base_url(); ?>" />
 		<meta charset="utf-8">
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
