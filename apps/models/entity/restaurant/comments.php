@@ -171,6 +171,11 @@ class Comments extends Entity
 		return $this->id;
 	}
 
+	public function getLike()
+	{
+		return $this->like;
+	}
+
 	public function getType()
 	{
 		return $this->type;
