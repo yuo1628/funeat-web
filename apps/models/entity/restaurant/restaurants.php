@@ -286,6 +286,13 @@ class Restaurants implements IEntity
 	private $dislike;
 
 	/**
+	 * @var Comments[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Comments", mappedBy="restaurant")
+	 */
+	private $comments;
+
+	/**
 	 * Constructor, initial data
 	 */
 	public function __construct()
