@@ -87,8 +87,6 @@ class Member extends MY_Controller
 			$email = $this->input->post('email');
 			$duplicate = $this->member->getItem($email, 'email');
 
-			print_r($this->input->post());
-
 			if ($this->form_validation->run() == false || $duplicate)
 			{
 				$this->load->helper('form');

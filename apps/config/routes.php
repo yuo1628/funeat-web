@@ -41,12 +41,22 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 $route['restaurant/add'] = 'restaurant/add';
+$route['restaurant/feature'] = 'restaurant/feature';
+$route['restaurant/feature/(:any)'] = 'restaurant/feature/$1';
 $route['restaurant/edit/(:any)'] = 'restaurant/edit/$1';
+$route['restaurant/like/(:any)'] = 'restaurant/like/$1';
+$route['restaurant/dislike/(:any)'] = 'restaurant/dislike/$1';
+$route['restaurant/comment/(:any)'] = 'restaurant/comment/$1';
+$route['restaurant/comment'] = 'errors/page_missing';
+$route['restaurant/reply/(:any)'] = 'restaurant/reply/$1';
+$route['restaurant/reply'] = 'errors/page_missing';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/profile/$1';
+$route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'restaurant/comment/$1';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(:num)'] = 'restaurant/profile/$1';
 $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
+$route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
 
 

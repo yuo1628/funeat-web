@@ -91,9 +91,10 @@ class Member extends Model
 	}
 
 	/**
-	 * Check user is login
+	 * Check member is login
 	 *
 	 * @param Session
+	 *
 	 * @return boolean
 	 */
 	public function isLogin($session)
@@ -106,6 +107,26 @@ class Member extends Model
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Get login member object
+	 *
+	 * @param Session
+	 *
+	 * @return models\entity\member\Members
+	 */
+	public function getLoginMember($session)
+	{
+		$result = null;
+
+		if ($this->isLogin($session))
+		{
+			$sess = $session->userdata(self::SESSION_NAMESPACE);
+			$result = $this->getItem($sess[self::SESSION_ID]);
+		}
+
+		return $result;
 	}
 
 }

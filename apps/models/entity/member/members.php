@@ -3,6 +3,7 @@
 namespace models\entity\member;
 
 use Doctrine\ORM\Mapping as ORM;
+use models\entity\Entity;
 
 /**
  * Members ORM Class
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Members
+class Members extends Entity
 {
 	/**
 	 * @var integer
@@ -24,7 +25,7 @@ class Members
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @var Membergroups[]
@@ -36,21 +37,21 @@ class Members
 	 * 	inverseJoinColumns={@ORM\JoinColumn(name="membergroups_id", referencedColumnName="id")}
 	 * )
 	 */
-	private $membergroups;
+	protected $membergroups;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, unique=true, nullable=false)
 	 */
-	private $email;
+	protected $email;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $username;
+	protected $username;
 
 	/**
 	 * @var string
@@ -71,133 +72,147 @@ class Members
 	 *
 	 * @ORM\Column(type="string", length=32, nullable=true)
 	 */
-	private $name;
+	protected $name;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=32, nullable=true)
 	 */
-	private $avatar;
+	protected $avatar;
 
 	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime", length=32)
 	 */
-	private $createAt;
+	protected $createAt;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=15)
 	 */
-	private $createIP;
+	protected $createIP;
 
 	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint", nullable=true)
 	 */
-	private $gender;
+	protected $gender;
 
 	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
-	private $birthday;
+	protected $birthday;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $nickname;
+	protected $nickname;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $website;
+	protected $website;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $interest;
+	protected $interest;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $intro;
+	protected $intro;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $country;
+	protected $country;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $language;
+	protected $language;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="text", nullable=true)
 	 */
-	private $metadata;
+	protected $metadata;
 
 	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
 	 */
-	private $activated;
+	protected $activated;
 
 	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
 	 */
-	private $blocked;
+	protected $blocked;
 
 	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
 	 */
-	private $deleted;
+	protected $deleted;
 
 	/**
 	 * @var Collection[]
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\collection\Collections", mappedBy="members")
 	 */
-	private $collection;
+	protected $collection;
 
 	/**
 	 * @var Restaurants[]
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
 	 */
-	private $restaurantOwner;
+	protected $restaurantOwner;
 
 	/**
 	 * @var Restaurants[]
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
 	 */
-	private $restaurantCreated;
+	protected $restaurantCreated;
+
+	/**
+	 * @var models\entity\restaurant\Restaurants[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	protected $restaurantLike;
+
+	/**
+	 * @var models\entity\restaurant\Restaurants[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Restaurants", mappedBy="members")
+	 */
+	protected $restaurantDislike;
 
 	/**
 	 * Constructor
@@ -221,8 +236,10 @@ class Members
 	 */
 	public function doRegisterOnPrePersist()
 	{
+		$CI = get_instance();
+
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
-		$this->createIP =  get_instance()->input->server('REMOTE_ADDR');
+		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
 
 	/**

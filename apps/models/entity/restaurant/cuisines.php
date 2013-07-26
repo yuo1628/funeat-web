@@ -3,6 +3,7 @@
 namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
+use models\entity\Entity;
 
 /**
  * Cuisines ORM Class
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Cuisines
+class Cuisines extends Entity
 {
 	/**
 	 * @var integer

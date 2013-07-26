@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
+use models\entity\restaurant\Comments as Comments;
+
 /**
  * Restaurant
  */
@@ -46,6 +48,16 @@ class Restaurant extends MY_Controller
 	protected $feature;
 
 	/**
+	 * @var models\Member
+	 */
+	protected $member;
+
+	/**
+	 * @var models\Comment
+	 */
+	protected $comment;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -55,10 +67,13 @@ class Restaurant extends MY_Controller
 		// Load library
 		$this->load->library('doctrine');
 		$this->load->library('form_validation');
+		$this->load->library('session');
 
 		// Load models
 		$this->feature = new models\Feature();
 		$this->restaurant = new models\Restaurant();
+		$this->member = new models\Member();
+		$this->comment = new models\Comment();
 	}
 
 	/**
@@ -98,6 +113,10 @@ class Restaurant extends MY_Controller
 				break;
 
 			case self::OUTPUT_FORMAT_JSON :
+				// Set html header
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
 				if ($restaurant === null)
 				{
 					echo json_encode(null);
@@ -237,6 +256,66 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Like action for restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function like($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			$member = $this->member->getLoginMember($this->session);
+
+			if (!$restaurant->like->contains($member))
+			{
+				if ($restaurant->dislike->contains($member))
+				{
+					$restaurant->dislike->removeElement($member);
+				}
+				$restaurant->like->add($member);
+				$this->restaurant->save($restaurant);
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
+	 * Dislike action for restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function dislike($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			$member = $this->member->getLoginMember($this->session);
+
+			if (!$restaurant->dislike->contains($member))
+			{
+				if ($restaurant->like->contains($member))
+				{
+					$restaurant->like->removeElement($member);
+				}
+				$restaurant->dislike->add($member);
+				$this->restaurant->save($restaurant);
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
 	 * Processing features mapping
 	 *
 	 * @param	action
@@ -372,6 +451,106 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Comment the restaurant
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 *
+	 * @param		comment
+	 */
+	public function comment($identity)
+	{
+		$identity = trim($identity);
+		$restaurant = $this->_loadRestaurant($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				$this->comment = new models\Comment();
+
+				/**
+				 * @var models\entity\restaurant\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setRestaurant($restaurant);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
+	 * Reply the comment
+	 *
+	 * @param		identity Can use ID, UUID.
+	 *
+	 * @param		comment
+	 */
+	public function reply($identity)
+	{
+		$identity = trim($identity);
+		$reply = $this->_loadComment($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($reply))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				$this->comment = new models\Comment();
+
+				/**
+				 * @var models\entity\restaurant\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setReply($reply);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
 	 * Load restaurant from identity
 	 *
 	 * @param		identity identity Can use ID, UUID or username.
@@ -383,27 +562,45 @@ class Restaurant extends MY_Controller
 
 		if ($this->uuid->is_valid($identity))
 		{
-			$items = $this->restaurant->getItem($identity, 'uuid');
-			$restaurant = $items[0];
+			$restaurant = $this->restaurant->getItem($identity, 'uuid');
 		}
-		elseif (preg_match('/^\d+$/', $identity) && self::IDENTITY_SELECT_ID)
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
 		{
 			// match [0-9]
-			$items = $this->restaurant->getItem($identity);
-			$restaurant = $items;
+			$restaurant = $this->restaurant->getItem((int)$identity);
 		}
 		elseif (preg_match('/^\w+$/', $identity))
 		{
 			// match [0-9a-zA-Z_]
-			$items = $this->restaurant->getItem($identity, 'username');
-
-			if ($items)
-			{
-				$restaurant = $items[0];
-			}
+			$restaurant = $this->restaurant->getItem($identity, 'username');
 		}
 
 		return $restaurant;
+	}
+
+	/**
+	 * Load comment from identity
+	 *
+	 * @param		identity Identity Can use ID, UUID.
+	 *
+	 * @return		models\entity\restaurant\Comments
+	 */
+	private function _loadComment($identity)
+	{
+		$this->load->library('uuid');
+		$comment = null;
+
+		if ($this->uuid->is_valid($identity))
+		{
+			$comment = $this->comment->getItem($identity, 'uuid');
+		}
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
+		{
+			// match [0-9]
+			$comment = $this->comment->getItem((int)$identity);
+		}
+
+		return $comment;
 	}
 
 }

@@ -4,6 +4,7 @@ namespace models\entity\collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use models\entity\restaurant\Restaurants;
+use models\entity\Entity;
 
 /**
  * Templates ORM Class
@@ -16,7 +17,7 @@ use models\entity\restaurant\Restaurants;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Templates
+class Templates extends Entity
 {
 	/**
 	 * @var integer

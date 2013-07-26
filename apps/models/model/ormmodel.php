@@ -42,8 +42,10 @@ class ORMModel extends Model
 	{
 		parent::__construct();
 
+		$CI = get_instance();
+
 		$this->_entity = $entity;
-		$this->_em =  get_instance()->doctrine->em;
+		$this->_em = $CI->doctrine->em;
 		$this->_repository = $this->_em->getRepository($entity);
 	}
 
@@ -66,22 +68,38 @@ class ORMModel extends Model
 	 */
 	public function getItem($id, $column = null)
 	{
+		$item = null;
+
 		if ($column === null)
 		{
-			return $this->_repository->find($id);
+			$item = $this->_repository->find($id);
 		}
 		else
 		{
-			return $this->_repository->findBy(array($column => $id));
+			$items = $this->_repository->findBy(array($column => $id));
+
+			if ($items)
+			{
+				$item = $items[0];
+			}
 		}
+
+		return $item;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getItems()
+	public function getItems($condition = null)
 	{
-		return $this->_repository->findAll();
+		if ($condition === null)
+		{
+			return $this->_repository->findAll();
+		}
+		else
+		{
+			return $this->_repository->findBy($condition);
+		}
 	}
 
 	/**
