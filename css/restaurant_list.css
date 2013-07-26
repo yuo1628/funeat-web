@@ -1,0 +1,201 @@
+.resListBox {
+	width: 1020px;
+	margin: 0 auto;
+	padding: 111px 0 0 0;
+}
+
+/**
+ * 	myLocationBox
+ */
+
+.myLocationBox {
+	background-color:#fff;
+	box-shadow: 0px 2px 1px #ccc;
+	padding: 10px;
+	margin: 0 10px;
+}
+
+.myLocationItem {
+	color:#666;
+	font-size: 16px;
+	margin: 0 10px 0 0;
+
+	display: inline-block;
+}
+
+.myLocationItem input[type=text] {
+	padding: 5px;
+	color:#666;
+	background-color:#f4f4f4;
+	border: 1px solid #e0e0e0;
+}
+
+.myLocationItem input[type=button] {
+	padding: 5px 15px;
+	color:#666;
+	background-color:#f0f0f0;
+	border: 1px solid #e0e0e0;
+	cursor : pointer;
+}
+
+
+.myLocationItem input[type=button]:hover {
+	border: 1px solid #ccc;
+}
+
+/**
+ * 	resListMenu
+ */
+
+.resListMenu {
+	margin: 20px auto;
+	width: 1000px;
+
+}
+
+.resListItem {
+	float:left;
+	background-color:#fff;
+
+	box-shadow: 0px 2px 2px #b0b0b0;
+	margin: 0 20px 20px 0;
+
+	width :320px;
+}
+
+.resListTitle {
+	padding: 10px;
+	color:#666;
+	font-size: 24px;
+}
+
+.resListImg {
+	overflow:hidden;
+	width: 320px;
+	min-height: 160px;
+	text-align :center;
+
+}
+
+
+.resListImg img {
+	max-width: 320px;
+}
+
+.resListItem:nth-of-type(3n) {
+	margin: 0 0px 20px 0;
+}
+
+
+.resListDesc {
+	padding: 10px;
+	font-size: 13px;
+}
+
+.resListBar {
+	/*
+	background: rgb(255,255,255);
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(232,232,232,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(232,232,232,1)));
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%);
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%);
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%);
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e8e8e8',GradientType=0 ); */
+
+background-color:#fff;
+
+	border-top: 1px solid #e7e7e7;
+}
+
+.resListInfo {
+	padding: 10px;
+	width: 160px;
+
+	position: relative;
+}
+
+.resListInfoPriceBox {
+	position: absolute;
+	width: 130px;
+	height: 30px;
+	font-size: 24px;
+	right: -154px;
+	top: 10px;
+	color:#fff;
+	padding: 10px;
+	text-align :center;
+
+	background-color:#55C1DE;
+
+	box-shadow: 0px 2px 1px #999;
+	z-index: 1000;
+
+	font-family: 'ABeeZee', sans-serif;
+}
+
+.arrowRight {
+	position : absolute;
+	background: url(../img/layout/res_title-02.png) no-repeat;
+
+	width: 14px;
+	height: 25px;
+}
+
+.priceArrowRight {
+	right: -154px;
+	top: 52px;
+	z-index: 999;
+}
+
+
+
+.resListInfoItem {
+	margin: 5px 0;
+	width: 150px;
+}
+
+.resListInfoIcon {
+	width: 20px;
+	height: 20px;
+	margin: 0 10px 0 0;
+	float:left;
+}
+
+.resListInfoCount {
+	color:#888;
+	float:left;
+	font-family: 'ABeeZee', sans-serif;
+}
+
+.resListBarItem {
+	float: left;
+	width: 79px;
+	height: 20px;
+	text-align: center;
+	padding: 10px 40px;
+
+	cursor: pointer;
+}
+
+.resListBarItem:hover {
+	background-color:#f3f3f3;
+}
+
+.resListBarItem img {
+	float:left;
+	margin: 0 5px 0 0;
+}
+
+.resListBarItemDesc {
+	float:left;
+}
+
+.resListBarItemVerLine {
+	float: left;
+	width: 1px;
+	height: 20px;
+	margin: 10px 0;
+	background-color:#ccc;
+}
+

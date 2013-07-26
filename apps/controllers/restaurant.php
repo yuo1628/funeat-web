@@ -85,6 +85,8 @@ class Restaurant extends MY_Controller
 		{
 			default :
 			case self::OUTPUT_FORMAT_HTML :
+				// TODO: Temporary use this layout
+				$this->setLayout('restaurant/list');
 				$this->view('restaurant/list');
 				break;
 			case self::OUTPUT_FORMAT_JSON :
