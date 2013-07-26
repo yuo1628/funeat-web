@@ -1,6 +1,6 @@
 <?php
 
-namespace models;
+namespace models\restaurant;
 
 use models\model\ORMModel as Model;
 

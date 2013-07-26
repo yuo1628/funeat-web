@@ -73,7 +73,7 @@ class Restaurant extends MY_Controller
 		$this->feature = new models\Feature();
 		$this->restaurant = new models\Restaurant();
 		$this->member = new models\Member();
-		$this->comment = new models\Comment();
+		$this->comment = new models\restaurant\Comment();
 	}
 
 	/**
@@ -489,8 +489,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				$this->comment = new models\Comment();
-
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
@@ -545,8 +543,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				$this->comment = new models\Comment();
-
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */

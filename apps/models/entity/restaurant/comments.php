@@ -15,7 +15,7 @@ use models\entity\restaurant\Restaurants as Restaurants;
  * @version			1.0
  *
  * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="comments")
+ * @ORM\Table(name="restaurant_comments")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
