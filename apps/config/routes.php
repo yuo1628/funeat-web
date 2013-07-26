@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  defined('BASEPATH') or die('No direct script access allowed');
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -60,7 +60,7 @@ $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
 $route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
-
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -10,6 +10,11 @@ use models\Member as MemberModel;
 class Member extends MY_Controller
 {
 	/**
+	 * Use id to select member
+	 */
+	const IDENTITY_SELECT_ID = false;
+
+	/**
 	 * Register validation config
 	 *
 	 * @var array
@@ -108,6 +113,80 @@ class Member extends MY_Controller
 				// TODO: after save data?
 			}
 		}
+	}
+
+	/**
+	 * Like the member action
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function like($identity)
+	{
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Comments
+		 */
+		$memberSelect = $this->_loadMember($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($memberSelect))
+		{
+			/**
+			 * @var models\entity\member\Members
+			 */
+			$member = $this->member->getLoginMember($this->session);
+			$like = $memberSelect->getLike();
+
+			if ($like->contains($member))
+			{
+				$like->removeElement($member);
+			}
+			else
+			{
+				$like->add($member);
+			}
+
+			$this->member->save($memberSelect);
+
+			$success = true;
+		}
+		echo json_encode($success);
+	}
+
+	/**
+	 * Load member from identity
+	 *
+	 * @param		identity Identity Can use ID, UUID, username.
+	 *
+	 * @return		models\entity\member\Members
+	 */
+	private function _loadMember($identity)
+	{
+		$identity = trim($identity);
+
+		$this->load->library('uuid');
+		$member = null;
+
+		if ($this->uuid->is_valid($identity))
+		{
+			$member = $this->member->getItem($identity, 'uuid');
+		}
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
+		{
+			// integer
+			$member = $this->member->getItem((int)$identity);
+		}
+		elseif (preg_match('/^\w+$/', $identity))
+		{
+			// match [0-9a-zA-Z_]+
+			$member = $this->member->getItem($identity, 'username');
+		}
+
+		return $member;
 	}
 
 }

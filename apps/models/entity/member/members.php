@@ -297,6 +297,16 @@ class Members extends Entity
 		return $this->id;
 	}
 
+	/**
+	 * Get like member collection
+	 *
+	 * @return		models\entity\member\Members[]
+	 */
+	public function getLike()
+	{
+		return $this->like;
+	}
+
 	public function setMembergroups(Membergroups $value)
 	{
 		$this->membergroups = $value;
