@@ -1,11 +1,11 @@
 <?php
 
-namespace models\entity\restaurant;
+namespace models\entity\member;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use models\entity\Entity;
-use models\entity\restaurant\Restaurants as Restaurants;
+use models\entity\member\Members as Members;
 
 /**
  * Comments ORM Class
@@ -15,7 +15,7 @@ use models\entity\restaurant\Restaurants as Restaurants;
  * @version			1.0
  *
  * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="restaurant_comments")
+ * @ORM\Table(name="member_comments")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -115,17 +115,17 @@ class Comments extends Entity
 	protected $creator;
 
 	/**
-	 * @var models\entity\restaurant\Restaurants
+	 * @var models\entity\member\Members
 	 *
-	 * @ORM\ManyToOne(targetEntity="models\entity\restaurant\Restaurants", inversedBy="comments")
+	 * @ORM\ManyToOne(targetEntity="models\entity\member\Members", inversedBy="comments")
 	 */
-	protected $restaurant;
+	protected $member;
 
 	/**
 	 * @var models\entity\member\Members[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
-	 * @ORM\JoinTable(name="Restaurant_Comments_Like_Mapping",
+	 * @ORM\JoinTable(name="Member_Comments_Like_Mapping",
 	 * 	joinColumns={@ORM\JoinColumn(name="comments_id", referencedColumnName="id", onDelete="CASCADE")},
 	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
 	 * )
@@ -191,9 +191,9 @@ class Comments extends Entity
 		return $this->creator;
 	}
 
-	public function getRestaurant()
+	public function getMember()
 	{
-		return $this->restaurant;
+		return $this->member;
 	}
 
 	public function getReply()
@@ -240,9 +240,9 @@ class Comments extends Entity
 		}
 	}
 
-	public function setRestaurant(Restaurants $v)
+	public function setMember(Members $v)
 	{
-		$this->restaurant = $v;
+		$this->member = $v;
 	}
 
 	public function setReply(Comments $v)
