@@ -4,6 +4,8 @@ use models\Member as MemberModel;
 
 /**
  * Member function
+ *
+ * @author		Miles <jangconan@gmail.com>
  */
 class Member extends MY_Controller
 {
