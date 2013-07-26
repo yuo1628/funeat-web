@@ -1,0 +1,295 @@
+/**
+ * 	style
+ */
+.selectStyle {
+	padding: 5px;
+	font-size: 13px;
+	color: #666;
+	border-radius: 3px;
+	background-color: #fff;
+	min-width: 100px;
+}
+
+.filterItem {
+	color: #fff;
+	margin: 0 0 10px 0;
+}
+
+.filterItem input[type=text] {
+	background-color: transparent;
+	padding: 5px;
+	border: 0;
+	border-bottom: 1px solid #DE8738;
+	color: #fff;
+	width: 50px;
+}
+
+.searchBox {
+	position: absolute;
+	width: 480px;
+	left: 300px;
+	top: 24px;
+}
+
+.searchText {
+	border: 2px solid #ffbc79;
+	padding: 5px;
+	width: 300px;
+	background-color: transparent;
+	position: absolute;
+	left: 60px;
+	top: 0;
+	color: #666;
+}
+
+.searchBtn {
+	border: 0;
+	padding: 5px 15px;
+	font-size: 13px;
+	color: #fff;
+	background-color: transparent;
+	background-image: url(../img/icon/search.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	right: 50px;
+	top: 0;
+}
+
+.randomBtn {
+	border: 0;
+	padding: 5px 15px;
+	font-size: 13px;
+	color: #fff;
+	background-color: transparent;
+	background-image: url(../img/icon/random.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.slideBtn {
+	border: 0;
+	background-color: transparent;
+	padding: 5px 15px;
+	font-size: 13px;
+	color: #fff;
+	background-image: url(../img/icon/slide.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.quickBox {
+	position: absolute;
+	right: 10px;
+	top: 20px;
+	font-size: 13px;
+}
+
+.quickItem {
+	float: right;
+	padding: 5px 15px;
+	border-left: 1px solid #e7e7e7;
+	color: #fff;
+}
+
+.quickItem:hover {
+	color: #5a9ee9;
+}
+
+.quickItem:last-child {
+	border-left: 0;
+}
+
+.registerBtn {
+	background-image: url(../img/icon/register.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+}
+
+.loginBtn {
+	background-image: url(../img/icon/login.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+}
+
+/**
+ * 	left
+ */
+.leftBanner {
+	background-color: #f2a830;
+	font-size: 15px;
+	color: #fff;
+	padding: 6px;
+	position: absolute;
+	right: -27px;
+	margin-top: -93px;
+	top: 50%;
+	box-shadow: 1px 2px 1px #666;
+}
+
+.leftCLose {
+	font-family: Arial;
+	font-size: 11px;
+	padding: 2px 4px;
+	color: #fff;
+}
+
+.leftItem {
+	float: left;
+	padding: 10px;
+	margin: 10px 10px 0 10px;
+}
+
+.leftItem:hover {
+}
+
+.leftItem:last-child {
+	border-bottom: 0;
+}
+
+.leftItemImg {
+	width: 90px;
+	height: 90px;
+	overflow: hidden;
+	margin: 0 10px 0 0;
+	float: left;
+}
+
+.leftItemDesc {
+	width: 170px;
+	margin: 0 0 0px 0;
+	float: left;
+	height: 100px;
+}
+
+.leftItemDescTitle {
+	font-size: 21px;
+	color: #fff;
+	padding: 5px;
+}
+
+.leftItemDescOther {
+	font-size: 13px;
+	color: #666;
+	padding: 5px;
+}
+
+/**
+ * 	local box
+ */
+.localBox {
+	position: absolute;
+	z-index: 1000;
+	left: 40%;
+	top: 40%;
+	width: 400px;
+	background-color: #fff;
+	min-height: 250px;
+	box-shadow: 10px 30px 4px #aaa;
+	border: 1px solid #e0e0e0;
+	opacity: 1;
+}
+
+.localImg {
+	position: absolute;
+	left: -10px;
+	top: -10px;
+	width: 150px;
+	height: 150px;
+	background-color: #fff;
+	box-shadow: 1px 2px 1px #666;
+	overflow: hidden;
+}
+
+.localImg img {
+	min-width: 150px;
+	height: 150px;
+}
+
+.localTitle {
+	width: 230px;
+	margin: 30px 0;
+	border-top: 1px solid #e7e7e7;
+	border-bottom: 1px solid #e7e7e7;
+	padding: 10px 10px 10px 160px;
+	background-color: #f3f3f3;
+	font-size: 21px;
+}
+
+.localPrice {
+	position: absolute;
+	bottom: 15px;
+	left: -10px;
+	color: #fff;
+	padding: 5px 15px;
+	font-size: 13px;
+	background-color: #1d58e2;
+	text-align: center;
+	width: 120px;
+	box-shadow: 1px 2px 1px #666;
+}
+
+.localDescBox {
+	width: 230px;
+	padding: 0px 10px 10px 160px;
+	color: #666;
+	background-color: #fff;
+	font-size: 15px;
+}
+
+.localDescItem {
+	padding: 5px 0;
+}
+
+.localDescBar {
+	padding: 0px;
+	margin: 20px 0 0 0;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.localDescBarItem {
+	padding: 5px 10px;
+	color: #666;
+	box-shadow: 0px 2px 1px #ccc;
+	float: right;
+	font-size: 13px;
+	cursor: pointer;
+	border-radius: 3px;
+	background: rgb(247,247,247); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(247,247,247,1) 1%, rgba(232,232,232,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(247,247,247,1)), color-stop(100%,rgba(232,232,232,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(247,247,247,1) 1%,rgba(232,232,232,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(247,247,247,1) 1%,rgba(232,232,232,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(247,247,247,1) 1%,rgba(232,232,232,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(247,247,247,1) 1%,rgba(232,232,232,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#e8e8e8',GradientType=0 ); /* IE6-9 */
+}
+
+.localDescBarItem:hover {
+	background: rgb(232,232,232); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(232,232,232,1) 0%, rgba(247,247,247,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(232,232,232,1)), color-stop(100%,rgba(247,247,247,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(247,247,247,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(247,247,247,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(247,247,247,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(232,232,232,1) 0%,rgba(247,247,247,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#f7f7f7',GradientType=0 ); /* IE6-9 */
+}
