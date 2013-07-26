@@ -154,9 +154,37 @@ class Restaurants extends Entity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\Column(type="text")
 	 */
 	protected $address;
+
+	/**
+	 * @var float
+	 *
+	 * @ORM\Column(type="float")
+	 */
+	protected $latitude;
+
+	/**
+	 * @var float
+	 *
+	 * @ORM\Column(type="float")
+	 */
+	protected $longitude;
+
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	protected $priceHigh;
+
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	protected $priceLow;
 
 	/**
 	 * @var array
