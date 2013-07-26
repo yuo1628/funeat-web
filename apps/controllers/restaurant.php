@@ -73,7 +73,7 @@ class Restaurant extends MY_Controller
 		$this->feature = new models\Feature();
 		$this->restaurant = new models\Restaurant();
 		$this->member = new models\Member();
-		$this->comment = new models\Comment();
+		$this->comment = new models\restaurant\Comment();
 	}
 
 	/**
@@ -262,7 +262,13 @@ class Restaurant extends MY_Controller
 	 */
 	public function like($identity)
 	{
-		$identity = trim($identity);
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Restaurants
+		 */
 		$restaurant = $this->_loadRestaurant($identity);
 
 		$success = false;
@@ -292,7 +298,13 @@ class Restaurant extends MY_Controller
 	 */
 	public function dislike($identity)
 	{
-		$identity = trim($identity);
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Restaurants
+		 */
 		$restaurant = $this->_loadRestaurant($identity);
 
 		$success = false;
@@ -459,7 +471,13 @@ class Restaurant extends MY_Controller
 	 */
 	public function comment($identity)
 	{
-		$identity = trim($identity);
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Restaurants
+		 */
 		$restaurant = $this->_loadRestaurant($identity);
 
 		$success = false;
@@ -471,8 +489,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				$this->comment = new models\Comment();
-
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
@@ -509,7 +525,13 @@ class Restaurant extends MY_Controller
 	 */
 	public function reply($identity)
 	{
-		$identity = trim($identity);
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Comments
+		 */
 		$reply = $this->_loadComment($identity);
 
 		$success = false;
@@ -521,8 +543,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				$this->comment = new models\Comment();
-
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
@@ -551,12 +571,56 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Member like the comment / reply
+	 *
+	 * @param		identity Can use ID, UUID or username.
+	 */
+	public function commentLike($identity)
+	{
+		// Set html header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		/**
+		 * @var models\entity\restaurant\Comments
+		 */
+		$comment = $this->_loadComment($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($comment))
+		{
+			/**
+			 * @var models\entity\member\Members
+			 */
+			$member = $this->member->getLoginMember($this->session);
+			$like = $comment->getLike();
+
+			if ($like->contains($member))
+			{
+				$like->removeElement($member);
+			}
+			else
+			{
+				$like->add($member);
+			}
+
+			$this->comment->save($comment);
+
+			$success = true;
+		}
+		echo json_encode($success);
+	}
+
+	/**
 	 * Load restaurant from identity
 	 *
 	 * @param		identity identity Can use ID, UUID or username.
 	 */
 	private function _loadRestaurant($identity)
 	{
+		$identity = trim($identity);
+
 		$this->load->library('uuid');
 		$restaurant = null;
 
@@ -566,12 +630,12 @@ class Restaurant extends MY_Controller
 		}
 		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
 		{
-			// match [0-9]
+			// integer
 			$restaurant = $this->restaurant->getItem((int)$identity);
 		}
 		elseif (preg_match('/^\w+$/', $identity))
 		{
-			// match [0-9a-zA-Z_]
+			// match [0-9a-zA-Z_]+
 			$restaurant = $this->restaurant->getItem($identity, 'username');
 		}
 
@@ -587,6 +651,8 @@ class Restaurant extends MY_Controller
 	 */
 	private function _loadComment($identity)
 	{
+		$identity = trim($identity);
+
 		$this->load->library('uuid');
 		$comment = null;
 
@@ -596,7 +662,7 @@ class Restaurant extends MY_Controller
 		}
 		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
 		{
-			// match [0-9]
+			// integer
 			$comment = $this->comment->getItem((int)$identity);
 		}
 

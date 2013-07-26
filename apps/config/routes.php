@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  defined('BASEPATH') or die('No direct script access allowed');
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -40,15 +40,20 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'member/comment/$1';
+$route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/reply'] = 'member/reply/$1';
 $route['restaurant/add'] = 'restaurant/add';
 $route['restaurant/feature'] = 'restaurant/feature';
 $route['restaurant/feature/(:any)'] = 'restaurant/feature/$1';
 $route['restaurant/edit/(:any)'] = 'restaurant/edit/$1';
 $route['restaurant/like/(:any)'] = 'restaurant/like/$1';
 $route['restaurant/dislike/(:any)'] = 'restaurant/dislike/$1';
-$route['restaurant/comment/(:any)'] = 'restaurant/comment/$1';
+$route['restaurant/comment/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/comment/$1';
+$route['restaurant/comment/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'restaurant/commentLike/$1';
 $route['restaurant/comment'] = 'errors/page_missing';
-$route['restaurant/reply/(:any)'] = 'restaurant/reply/$1';
+$route['restaurant/reply/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/reply/$1';
+$route['restaurant/reply/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'restaurant/commentLike/$1';
 $route['restaurant/reply'] = 'errors/page_missing';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})'] = 'restaurant/profile/$1';
 $route['restaurant/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'restaurant/comment/$1';
@@ -58,7 +63,6 @@ $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
 $route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

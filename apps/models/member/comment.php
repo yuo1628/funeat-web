@@ -1,6 +1,6 @@
 <?php
 
-namespace models;
+namespace models\member;
 
 use models\model\ORMModel as Model;
 
@@ -16,7 +16,7 @@ class Comment extends Model
 	/**
 	 * Constructor.
 	 */
-	public function __construct($entity = "models\\entity\\restaurant\\Comments")
+	public function __construct($entity = "models\\entity\\member\\Comments")
 	{
 		parent::__construct($entity);
 	}

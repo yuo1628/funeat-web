@@ -28,6 +28,13 @@ class Members extends Entity
 	protected $id;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=36, unique=true)
+	 */
+	protected $uuid;
+
+	/**
 	 * @var Membergroups[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Membergroups")
@@ -159,6 +166,17 @@ class Members extends Entity
 	protected $metadata;
 
 	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="Members")
+	 * @ORM\JoinTable(name="Members_Like_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="like_members_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $like;
+
+	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
@@ -215,6 +233,20 @@ class Members extends Entity
 	protected $restaurantDislike;
 
 	/**
+	 * @var models\entity\restaurant\Comments[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Comments", mappedBy="members")
+	 */
+	protected $commentsLike;
+
+	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="Members", mappedBy="members")
+	 */
+	protected $memberLike;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -237,7 +269,9 @@ class Members extends Entity
 	public function doRegisterOnPrePersist()
 	{
 		$CI = get_instance();
+		$CI->load->library('uuid');
 
+		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
@@ -261,6 +295,16 @@ class Members extends Entity
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * Get like member collection
+	 *
+	 * @return		models\entity\member\Members[]
+	 */
+	public function getLike()
+	{
+		return $this->like;
 	}
 
 	public function setMembergroups(Membergroups $value)
