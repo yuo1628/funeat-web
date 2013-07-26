@@ -73,6 +73,7 @@ class Restaurant extends MY_Controller
 		$this->feature = new models\Feature();
 		$this->restaurant = new models\Restaurant();
 		$this->member = new models\Member();
+		$this->comment = new models\Comment();
 	}
 
 	/**
@@ -497,6 +498,57 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Reply the comment
+	 *
+	 * @param		identity Can use ID, UUID.
+	 *
+	 * @param		comment
+	 */
+	public function reply($identity)
+	{
+		$identity = trim($identity);
+		$reply = $this->_loadComment($identity);
+
+		$success = false;
+
+		if ($this->member->isLogin($this->session) && !empty($reply))
+		{
+			// Set rules
+			$this->form_validation->set_rules('comment', 'Comment', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				// TODO
+				$this->comment = new models\Comment();
+
+				/**
+				 * @var models\entity\restaurant\Comments
+				 */
+				$commentInstance = $this->comment->getInstance();
+
+				/**
+				 * @var models\entity\member\Members
+				 */
+				$member = $this->member->getLoginMember($this->session);
+
+				// TODO How to decide type?
+				$type = Comments::TYPE_MEMBER;
+
+				$comment = trim($this->input->post('comment'));
+
+				$commentInstance->setComment($comment);
+				$commentInstance->setCreator($member, $type);
+				$commentInstance->setReply($reply);
+
+				$this->comment->save($commentInstance);
+
+				$success = true;
+			}
+		}
+		echo json_encode($success);
+	}
+
+	/**
 	 * Load restaurant from identity
 	 *
 	 * @param		identity identity Can use ID, UUID or username.
@@ -529,6 +581,33 @@ class Restaurant extends MY_Controller
 		}
 
 		return $restaurant;
+	}
+
+	/**
+	 * Load comment from identity
+	 *
+	 * @param		identity Identity Can use ID, UUID.
+	 *
+	 * @return		models\entity\restaurant\Comments
+	 */
+	private function _loadComment($identity)
+	{
+		$this->load->library('uuid');
+		$comment = null;
+
+		if ($this->uuid->is_valid($identity))
+		{
+			$items = $this->comment->getItem($identity, 'uuid');
+			$comment = $items[0];
+		}
+		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
+		{
+			// match [0-9]
+			$items = $this->comment->getItem((int)$identity);
+			$comment = $items;
+		}
+
+		return $comment;
 	}
 
 }
