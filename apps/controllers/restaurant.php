@@ -111,6 +111,9 @@ class Restaurant extends MY_Controller
 			default :
 			case self::OUTPUT_FORMAT_HTML :
 				$this->setData('restaurant', $restaurant);
+
+				// TODO: Temporary use this layout
+				$this->setLayout('restaurant/profile');
 				$this->view('restaurant/profile');
 				break;
 
