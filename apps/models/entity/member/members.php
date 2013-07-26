@@ -215,6 +215,13 @@ class Members extends Entity
 	protected $restaurantDislike;
 
 	/**
+	 * @var models\entity\restaurant\Comments[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\restaurant\Comments", mappedBy="members")
+	 */
+	protected $commentsLike;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()

@@ -122,6 +122,17 @@ class Comments extends Entity
 	protected $restaurant;
 
 	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
+	 * @ORM\JoinTable(name="Comments_Like_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="comments_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $like;
+
+	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="text")
