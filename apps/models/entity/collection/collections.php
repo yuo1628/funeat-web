@@ -4,6 +4,7 @@ namespace models\entity\collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use models\entity\member\Members;
+use models\entity\Entity;
 
 /**
  * Collections ORM Class
@@ -15,7 +16,7 @@ use models\entity\member\Members;
  * @ORM\Table(name="collections")
  * @ORM\Entity
  */
-class Collections
+class Collections extends Entity
 {
 	/**
 	 * @var integer

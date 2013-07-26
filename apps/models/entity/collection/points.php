@@ -4,6 +4,7 @@ namespace models\entity\collection;
 
 use Doctrine\ORM\Mapping as ORM;
 use models\entity\store\Stores;
+use models\entity\Entity;
 
 /**
  * Points ORM Class
@@ -15,7 +16,7 @@ use models\entity\store\Stores;
  * @ORM\Table(name="points")
  * @ORM\Entity
  */
-class Points
+class Points extends Entity
 {
 	/**
 	 * @var integer

@@ -5,7 +5,7 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use models\entity\IEntity;
+use models\entity\Entity;
 
 /**
  * Feature ORM Class
@@ -19,7 +19,7 @@ use models\entity\IEntity;
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Features implements IEntity
+class Features extends Entity
 {
 	/**
 	 * @var integer
@@ -28,31 +28,31 @@ class Features implements IEntity
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @Gedmo\TreeLeft
 	 * @ORM\Column(name="lft", type="integer")
 	 */
-	private $lft;
+	protected $lft;
 
 	/**
 	 * @Gedmo\TreeRight
 	 * @ORM\Column(name="rgt", type="integer")
 	 */
-	private $rgt;
+	protected $rgt;
 
 	/**
 	 * @Gedmo\TreeLevel
 	 * @ORM\Column(name="level", type="integer")
 	 */
-	private $level;
+	protected $level;
 
 	/**
 	 * @Gedmo\TreeRoot
 	 * @ORM\Column(name="root", type="integer", nullable=true)
 	 */
-	private $root;
+	protected $root;
 
 	/**
 	 * @var Features
@@ -61,7 +61,7 @@ class Features implements IEntity
 	 * @ORM\ManyToOne(targetEntity="Features", inversedBy="children")
 	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
-	private $parent;
+	protected $parent;
 
 	/**
 	 * @var Features[]
@@ -69,42 +69,42 @@ class Features implements IEntity
 	 * @ORM\OneToMany(targetEntity="Features", mappedBy="parent")
 	 * @ORM\OrderBy({"lft" = "ASC"})
 	 */
-	private $children;
+	protected $children;
 
 	/**
 	 * @var Restaurants[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Restaurants", mappedBy="features")
 	 */
-	private $restaurants;
+	protected $restaurants;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=255, unique=true)
 	 */
-	private $title;
+	protected $title;
 
 	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime")
 	 */
-	private $createAt;
+	protected $createAt;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=15)
 	 */
-	private $createIP;
+	protected $createIP;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
-	private $creator;
+	protected $creator;
 
 	/**
 	 * Constructor

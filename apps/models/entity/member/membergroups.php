@@ -5,6 +5,7 @@ namespace models\entity\member;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use models\entity\Entity;
 
 /**
  * Membergroups ORM class
@@ -20,7 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="membergroups")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  */
-class Membergroups
+class Membergroups extends Entity
 {
 	/**
 	 * @var integer

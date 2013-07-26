@@ -113,6 +113,10 @@ class Restaurant extends MY_Controller
 				break;
 
 			case self::OUTPUT_FORMAT_JSON :
+				// Set html header
+				header('Cache-Control: no-cache');
+				header('Content-type: application/json');
+
 				if ($restaurant === null)
 				{
 					echo json_encode(null);
@@ -467,7 +471,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				// TODO
 				$this->comment = new models\Comment();
 
 				/**
@@ -518,7 +521,6 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() == true)
 			{
-				// TODO
 				$this->comment = new models\Comment();
 
 				/**

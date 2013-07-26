@@ -4,7 +4,7 @@ namespace models\entity\restaurant;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use models\entity\IEntity;
+use models\entity\Entity;
 use models\entity\restaurant\Restaurants as Restaurants;
 
 /**
@@ -19,7 +19,7 @@ use models\entity\restaurant\Restaurants as Restaurants;
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Comments implements IEntity
+class Comments extends Entity
 {
 	/**
 	 * Type constants
@@ -36,38 +36,38 @@ class Comments implements IEntity
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=36, unique=true)
 	 */
-	private $uuid;
+	protected $uuid;
 
 	/**
 	 * @Gedmo\TreeLeft
 	 * @ORM\Column(name="lft", type="integer")
 	 */
-	private $lft;
+	protected $lft;
 
 	/**
 	 * @Gedmo\TreeRight
 	 * @ORM\Column(name="rgt", type="integer")
 	 */
-	private $rgt;
+	protected $rgt;
 
 	/**
 	 * @Gedmo\TreeLevel
 	 * @ORM\Column(name="level", type="integer")
 	 */
-	private $level;
+	protected $level;
 
 	/**
 	 * @Gedmo\TreeRoot
 	 * @ORM\Column(name="root", type="integer", nullable=true)
 	 */
-	private $root;
+	protected $root;
 
 	/**
 	 * @var Restaurants
@@ -76,7 +76,7 @@ class Comments implements IEntity
 	 * @ORM\ManyToOne(targetEntity="Comments", inversedBy="replies")
 	 * @ORM\JoinColumn(name="reply_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
-	private $reply;
+	protected $reply;
 
 	/**
 	 * @var Restaurants[]
@@ -84,49 +84,49 @@ class Comments implements IEntity
 	 * @ORM\OneToMany(targetEntity="Comments", mappedBy="reply")
 	 * @ORM\OrderBy({"lft" = "ASC"})
 	 */
-	private $replies;
+	protected $replies;
 
 	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="integer")
 	 */
-	private $type;
+	protected $type;
 
 	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime")
 	 */
-	private $createAt;
+	protected $createAt;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string", length=15)
 	 */
-	private $createIP;
+	protected $createIP;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="string")
 	 */
-	private $creator;
+	protected $creator;
 
 	/**
 	 * @var models\entity\restaurant\Restaurants
 	 *
 	 * @ORM\ManyToOne(targetEntity="models\entity\restaurant\Restaurants", inversedBy="comments")
 	 */
-	private $restaurant;
+	protected $restaurant;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(type="text")
 	 */
-	private $comment;
+	protected $comment;
 
 	/**
 	 * Constructor
@@ -153,37 +153,6 @@ class Comments implements IEntity
 	 */
 	public function __clone()
 	{
-	}
-
-	/**
-	 * Return array
-	 *
-	 * @return		array
-	 */
-	public function toArray($recursion = false)
-	{
-		$return = get_object_vars($this);
-		foreach ($return as $k => $v)
-		{
-			if ($v instanceof Collection)
-			{
-				if ($recursion)
-				{
-					$return[$k] = $v->toArray();
-
-					foreach ($return[$k] as $k2 => $v2)
-					{
-						$return[$k][$k2] = $v2->toArray();
-					}
-				}
-				else
-				{
-					unset($return[$k]);
-				}
-			}
-		}
-
-		return $return;
 	}
 
 	public function getId()

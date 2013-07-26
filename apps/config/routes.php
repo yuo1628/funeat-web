@@ -41,6 +41,8 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 $route['restaurant/add'] = 'restaurant/add';
+$route['restaurant/feature'] = 'restaurant/feature';
+$route['restaurant/feature/(:any)'] = 'restaurant/feature/$1';
 $route['restaurant/edit/(:any)'] = 'restaurant/edit/$1';
 $route['restaurant/like/(:any)'] = 'restaurant/like/$1';
 $route['restaurant/dislike/(:any)'] = 'restaurant/dislike/$1';
