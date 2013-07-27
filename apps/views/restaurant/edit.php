@@ -1,4 +1,7 @@
 <?php
+// Import class
+use models\entity\Entity as Entity;
+
 // Load library
 $this->load->helper('url');
 
@@ -16,12 +19,13 @@ $features;
  */
 $restaurant;
 
-// 資料目標連結
+// Form action
 $target = ($restaurant->getId() === null) ? 'restaurant/save' : 'restaurant/save/' . $restaurant->uuid;
 
-$name = set_value('name');
-$address = set_value('address');
-$website = set_value('website');
+// Preset data
+$name = Entity::preset(set_value('name'), $restaurant->getName());
+$address = Entity::preset(set_value('address'), $restaurant->getAddress());
+$website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 ?>
 <?php echo form_open_multipart($target); ?>
 <div class="resEditBox">
@@ -35,7 +39,7 @@ $website = set_value('website');
 					*店名
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="name" value="<?php echo empty($name) ? $restaurant->name : $name; ?>" required />
+					<input type="text" name="name" value="<?php echo $name; ?>" required />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -50,7 +54,7 @@ $website = set_value('website');
 					*地址
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="address" value="<?php echo empty($address) ? $restaurant->address : $address; ?>" required />
+					<input type="text" name="address" value="<?php echo $address; ?>" required />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -100,7 +104,7 @@ $website = set_value('website');
 					網站
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="website" value="<?php echo empty($website) ? $restaurant->website : $website; ?>" />
+					<input type="text" name="website" value="<?php echo $website; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>

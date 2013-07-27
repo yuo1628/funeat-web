@@ -5,7 +5,7 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use models\entity\Entity;
+use models\entity\Entity as Entity;
 use models\restaurant\Hours;
 
 /**
@@ -367,9 +367,14 @@ class Restaurants extends Entity
 		return $this->id;
 	}
 
-	public function getUuid()
+	public function getAddress()
 	{
-		return $this->uuid;
+		return $this->address;
+	}
+
+	public function getFeatures()
+	{
+		return $this->features;
 	}
 
 	public function getName()
@@ -377,39 +382,49 @@ class Restaurants extends Entity
 		return $this->name;
 	}
 
-	public function getAddress()
+	public function getUuid()
 	{
-		return $this->address;
+		return $this->uuid;
+	}
+
+	public function getWebsite()
+	{
+		return $this->website;
 	}
 
 	/**
-	 * Set name will do trim()
+	 * Set address
 	 *
-	 * @param		name
-	 */
-	public function setName($name)
-	{
-		$this->name = trim($name);
-	}
-
-	/**
-	 * Set address will do trim()
-	 *
-	 * @param		name
+	 * @param		string $address If this parameter is empty, then nothing to change.
 	 */
 	public function setAddress($address)
 	{
-		$this->address = trim($address);
+		$this->address = Entity::preset($address, $this->address);
 	}
 
-	public function setFeatures($value)
+	public function setFeatures($features)
 	{
-		$this->features = $value;
+		$this->features = $features;
 	}
 
-	public function getFeatures()
+	/**
+	 * Set name
+	 *
+	 * @param		string $name If this parameter is empty, then nothing to change.
+	 */
+	public function setName($name)
 	{
-		return $this->features;
+		$this->name = Entity::preset($name, $this->name);
+	}
+
+	/**
+	 * Set website
+	 *
+	 * @param		string $name If this parameter is empty, then nothing to change.
+	 */
+	public function setWebsite($website)
+	{
+		$this->name = Entity::preset($website, $this->website);
 	}
 
 	public function __get($key)

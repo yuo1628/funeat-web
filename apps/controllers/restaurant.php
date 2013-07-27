@@ -189,7 +189,9 @@ class Restaurant extends MY_Controller
 	 */
 	public function save($identity = null)
 	{
-		// preload data
+		/**
+		 * @var		models\entity\restaurant\Restaurants
+		 */
 		$restaurant = null;
 
 		if ($identity === null)
@@ -230,18 +232,15 @@ class Restaurant extends MY_Controller
 		else
 		{
 			// Load data
-			$name = trim($this->input->post('name'));
-			$address = trim($this->input->post('address'));
 			$tels = trim($this->input->post('tels'));
 			$emails = trim($this->input->post('emails'));
 			$hours = trim($this->input->post('hours'));
-			$website = trim($this->input->post('website'));
 			$logo = trim($this->input->post('logo'));
 			$images = trim($this->input->post('images'));
 			$features = trim($this->input->post('features'));
 
-			$restaurant->name = empty($name) ? $restaurant->name : $name;
-			$restaurant->address = empty($address) ? $restaurant->address : $address;
+			$restaurant->setName($this->input->post('name'));
+			$restaurant->setAddress($this->input->post('address'));
 
 			// TODO:
 			//$restaurant->tels = $tels;
@@ -249,7 +248,7 @@ class Restaurant extends MY_Controller
 			// TODO:
 			//$restaurant->hours = $hours;
 
-			$restaurant->website = empty($website) ? $restaurant->website : $website;
+			$restaurant->setWebsite($this->input->post('website'));
 
 			// TODO:
 			//$restaurant->images = $this->input->post('images');
