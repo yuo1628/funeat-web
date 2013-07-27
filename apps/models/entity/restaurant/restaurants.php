@@ -141,6 +141,7 @@ class Restaurants extends Entity
 	 * @var Galleries
 	 *
 	 * @ORM\OneToOne(targetEntity="Galleries")
+ 	 * @ORM\JoinColumn(name="galleries_id", referencedColumnName="id", onDelete="CASCADE"))
 	 */
 	protected $logo;
 
@@ -161,44 +162,51 @@ class Restaurants extends Entity
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(type="float")
+	 * @ORM\Column(type="float", nullable=true)
 	 */
 	protected $latitude;
 
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(type="float")
+	 * @ORM\Column(type="float", nullable=true)
 	 */
 	protected $longitude;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	protected $priceHigh;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	protected $priceLow;
 
 	/**
-	 * @var array
+	 * @var string
 	 *
-	 * @ORM\Column(type="json_array", nullable=true)
+	 * @ORM\Column(type="string", nullable=true)
 	 */
-	protected $tels;
+	protected $tel;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="json_array", nullable=true)
+	 * @ORM\Column(type="string", nullable=true)
 	 */
-	protected $emails;
+	protected $fax;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	protected $email;
 
 	/**
 	 * @var string
