@@ -22,6 +22,7 @@ $head;
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<base href="<?php echo base_url(); ?>" />
+		<?php echo ENVIRONMENT == 'development' ? meta('cache-control', 'no-cache', 'equiv') : '' ?>
 		<meta charset="utf-8">
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -37,8 +38,9 @@ $head;
 		<title><?php echo $title; ?></title>
 		<link href="css/layout.css" rel="stylesheet" />
 		<link href="css/default.css" rel="stylesheet" />
-		<script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+		<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
 		<script src="js/jquery.color.js" type="text/javascript"></script>
+		<script src="js/funeat.core.js" type="text/javascript"></script>
 		<script src="js/layout.js" type="text/javascript"></script>
 		<?php echo ltrim($head->fetch()); ?>
 	</head>
@@ -56,10 +58,10 @@ $head;
 				</div>
 				<div class="quickBox">
 					<div class="quickItem">
-						<div class="registerBtn"></div>
+						<div class="registerBtn" onclick="Listener.TopBox.registerBtn()"></div>
 					</div>
 					<div class="quickItem">
-						<div class="loginBtn"></div>
+						<div class="loginBtn" onclick="Listener.TopBox.loginBtn()"></div>
 					</div>
 				</div>
 				<div class="navBox">
