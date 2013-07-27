@@ -15,6 +15,6 @@ class Welcome extends MY_Controller
 	 */
 	public function index()
 	{
-		$this->view('welcome_message');
+		$this->view('welcome/default');
 	}
 }

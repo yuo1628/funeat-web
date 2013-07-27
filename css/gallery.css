@@ -1,0 +1,24 @@
+.gallery {
+	position: relative;
+	overflow: hidden;
+	width:100%;
+	height: 100%;
+}
+
+.galleryMenu {
+	position: absolute;
+	
+}
+
+.galleryItem {
+	float:left;
+	width: 100%;
+	height: 100%;
+	
+	overflow: hidden;
+	
+}
+
+.clearfix {
+	clear: both;
+}

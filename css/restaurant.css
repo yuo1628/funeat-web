@@ -1,0 +1,454 @@
+
+
+.resBox {
+	width:1000px;
+	height: 100%;
+	margin: 0 auto;
+	padding: 111px 0 0 0;
+}
+
+.resContent {
+	width: 800px;
+	height: 100%;
+	margin: 0 auto;
+	box-shadow: 0px 0px 6px #ccc;
+	background-color:#fff;
+	position: relative;
+}
+
+.resImg {
+	position : absolute;
+	top: 20px;
+	left: 20px;
+	width: 150px;
+	height: 150px;
+	
+	overflow: hidden;
+	z-index: 1000;
+	box-shadow: 1px 2px 2px #999;
+}
+
+.resImg img {
+	min-width: 150px;
+	
+}
+
+.resTitle {
+	position : absolute;
+	z-index: 999;
+	
+	width: 560px;
+	padding: 20px 0 20px 290px;
+	
+	top: 60px;
+	left: -25px;
+	color:#fff;
+	
+	background-color:#55C1DE;
+	border-top: 1px solid #28aed0;
+	border-bottom: 1px solid #28aed0;
+	
+	font-size: 32px;
+	
+	box-shadow: 0px 2px 1px #aaa;
+}
+
+/**
+ * 	arrow 
+ */
+
+.arrowLeft {
+	position : absolute;
+	background: url(../img/res_title-01.png) no-repeat;
+	
+	width: 25px;
+	height: 25px;
+}
+
+.arrowRight {
+	position : absolute;
+	background: url(../img/res_title-02.png) no-repeat;
+	
+	width: 25px;
+	height: 25px;
+}
+
+.localTitleArrowLeft {
+	left: -25px;
+	top: 140px;
+	
+	z-index: 998;
+}
+
+.localTitleArrowRight {
+	right: -25px;
+	top: 140px;
+	
+	z-index: 998;
+}
+
+/**
+ * 	gallery
+ */
+
+.resGalleryBox {
+	width: 850px;
+	height: 400px;
+	
+	position: absolute;
+	z-index: 1000;
+	left: -25px;
+	
+	box-shadow: 0px 2px 2px  #666;
+}
+
+.galleryArrowLeft {
+	left: -25px;
+	top: 621px;
+	
+	z-index: 998;
+}
+
+.galleryArrowRight {
+	right: -25px;
+	top: 621px;
+	
+	z-index: 998;
+}
+
+/**
+ * 	resInfoBox
+ */
+
+.resDescBox {
+	margin : 0px 0;
+	
+	padding: 20px 0;
+	
+}
+
+.resInfoBox {
+	padding: 20px;
+	
+	float:left;
+	min-height: 200px;
+}
+
+.resInfoItem {
+	padding: 5px 0;
+}
+
+.resInfoItem img {
+	float: left;
+	max-width: 30px;
+	max-height: 30px;
+	
+}
+
+.resInfoItemDesc {
+	float: left;
+	margin: 0 0 0 15px;
+}
+
+.resServiceBox {
+	position : absolute;
+	margin: 20px 0;
+	right: -25px;
+	
+	background-color:#fff;
+	border: 1px solid #e0e0e0;
+	width: 240px;
+	height: 200px;
+	
+	z-index: 1000;
+	
+	box-shadow: 0px 2px 4px #ccc;
+}
+
+.descArrowRight {
+	right: -25px;
+	top: 862px;
+	
+	z-index: 998;
+}
+
+/**
+ * 	resLikeBtn
+ */
+
+.resLikeBtnBox {
+	padding: 4px;
+	border-radius: 50px;
+	
+	float:left;
+	background: rgb(232,232,232); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(232,232,232,1) 0%, rgba(249,249,249,1) 77%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(232,232,232,1)), color-stop(77%,rgba(249,249,249,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(249,249,249,1) 77%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(249,249,249,1) 77%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(249,249,249,1) 77%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(232,232,232,1) 0%,rgba(249,249,249,1) 77%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+
+.resLikeBtn {
+	padding: 8px 8px;
+	width: 22px;
+	height: 22px;
+	text-align: center;
+	font-size: 18px;
+	
+	border-radius: 50px;
+	
+	box-shadow: 0px 2px 1px #ccc;
+	color:#5a9ee9;
+	float:left;
+	cursor: pointer;
+	
+	
+	background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(232,232,232,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(232,232,232,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(232,232,232,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e8e8e8',GradientType=0 ); /* IE6-9 */
+
+}
+
+.resLikeBtn:hover {
+	background: rgb(232,232,232); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(232,232,232,1) 0%, rgba(255,255,255,1) 49%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(232,232,232,1)), color-stop(49%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(255,255,255,1) 49%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(255,255,255,1) 49%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(232,232,232,1) 0%,rgba(255,255,255,1) 49%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(232,232,232,1) 0%,rgba(255,255,255,1) 49%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+
+.resLikeCount {
+	color:#5a9ee9;
+	float:left;
+	font-size: 32px;
+	padding: 5px 10px;
+	font-family: 'ABeeZee', sans-serif;
+}
+
+/**
+ * 	res map
+ */
+
+.resMapBox {
+	height: 400px;
+	width: 100%;
+	
+	position:relative;
+}
+
+.resMapTopShadow {
+	position:absolute;
+	top:0;
+	
+	left: 0;
+	width: 100%;
+	height: 5px;
+	box-shadow: 0px 2px 3px #aaa;
+	background-color:#fff;
+	z-index: 1000;
+}
+
+.resMapBottomShadow {
+	position:absolute;
+	z-index: 1000;
+	width: 100%;
+	height: 5px;
+	bottom:0;
+	left: 0;
+	background-color:#f3f3f3;
+	box-shadow: 0px -2px 3px #aaa;
+}
+
+.otherStoreBox {
+	background-color:#f5f5f5;
+	padding: 10px;
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.otherStoreBtn {
+	background-color:#fff;
+	border: 1px solid #e0e0e0;
+	padding: 5px 15px;
+	color:#666;
+	float:right;
+	cursor: pointer;
+	box-shadow: 0px 2px 1px #ccc;
+}
+
+.otherStoreBtn:hover {
+	border: 1px solid #5a9ee9;
+	color:#5a9ee9;
+}
+
+/**
+ * 	resFoodMenuBox
+ */
+
+.resFoodMenuBox {
+	margin: 30px 0;
+}
+
+.resFoodMenuTitle {
+	padding: 10px;
+	font-size: 50px;
+	color:#5a9ee9;
+	
+	font-family: Arial;
+}
+
+.resFoodMenuImg {
+	border-top: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+	text-align:center;
+	
+	
+}
+
+.resFoodMenuImg img {
+	max-width: 800px;
+}
+
+.resFoodMenu {
+	border-top: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+	padding: 10px;
+}
+
+
+/**
+ * 	resDiscussBox
+ */
+
+.resDiscussBox {
+	padding: 10px ;
+	
+	
+}
+
+.resDiscussTitle {
+	color:#5A9EE9;
+	font-size: 40px;
+	padding: 10px;
+}
+
+.resDiscussItem {
+	margin: 10px 0;
+	padding: 10px;
+	
+	position : relative;
+}
+
+.resDiscussImg {
+	float:left;
+	width: 50px;
+	height: 50px;
+	
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+.msgArrow {
+	width: 20px;
+	height: 20px;
+	background-image: url(../img/msg_arrow.png);
+	
+	position : absolute;
+	left: 61px;
+	top: 26px;
+	z-index: 1000;
+}
+
+.resDiscussMsgBox {
+	float: left;
+	margin: 0 0 0 20px;
+	border: 1px solid #e0e0e0;
+	background-color:#fff;
+	
+	box-shadow: 0px 2px 2px #ccc;
+	
+	min-width: 400px;
+	max-width: 680px;
+	
+}
+
+.resDiscussMsgName {
+	padding: 10px;
+	font-size: 18px;
+	border-bottom: 1px solid #e0e0e0;
+	
+}
+
+.resDiscussMsgDesc {
+	padding: 10px;
+	font-size: 13px;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+}
+
+.resDiscussMsgBar {
+	padding: 5px;
+	border-top	: 1px solid #e0e0e0;
+	
+	background-color:#f5f5f5;
+}
+
+.likeBtn {
+	
+	padding: 2px 10px;
+	font-size: 11px;
+	background-color:#fff;
+	cursor: pointer;
+}
+
+.likeBtn:hover {
+	background-color:#f3f3f3;
+}
+
+.replyBtn {
+	float:right;
+	border: 1px solid #e0e0e0;
+	color:#666;
+	padding: 2px 10px;
+	font-size: 11px;
+	background-color:#fff;
+	box-shadow: 0px 2px 1px #ccc;
+	
+	cursor: pointer;
+}
+
+.replyBtn:hover {
+	background-color:#f3f3f3;
+}
+
+/**
+ * 	reply
+ */
+
+.replyDiscussImg {
+	float: right;
+}
+
+.replyArrow {
+	
+	left: auto;
+	right: 61px;
+	background-image: url(../img/msg_arrow-02.png);
+}
+
+.replyDiscussMsgBox {
+	float: right;
+	
+	margin: 0 20px 0 0;
+}

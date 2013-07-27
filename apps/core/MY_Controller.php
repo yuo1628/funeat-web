@@ -10,7 +10,7 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Use to switch the database auto update
 	 *
-	 * @var boolean
+	 * @var			boolean
 	 */
 	const AUTO_UPDATE = false;
 
@@ -25,7 +25,7 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Entities, use for create database schema.
 	 *
-	 * @var array
+	 * @var			array
 	 */
 	protected $_entity = array(
 		'models\\entity\\collection\\Collections',
@@ -43,32 +43,42 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Data will set in view
 	 *
-	 * @var object
+	 * @var			Head
+	 */
+	public $head;
+
+	/**
+	 * Data will set in view
+	 *
+	 * @var			stdClass
 	 */
 	protected $_blocks;
 
 	/**
 	 * Data will set in view
 	 *
-	 * @var array
+	 * @var			array
 	 */
 	protected $_data;
 
 	/**
 	 * Main layout
 	 *
-	 * @var string
+	 * @var			string
 	 */
 	protected $_layout;
 
 	/**
 	 * Constructor
 	 *
-	 * @param string Default layout
+	 * @param		string Default layout
 	 */
 	public function __construct($layout)
 	{
 		parent::__construct();
+
+		// Load library
+		$this->load->library('Head');
 
 		$this->_blocks = new stdClass();
 		$this->_data = array();
@@ -99,9 +109,9 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Get blocks data.
 	 *
-	 * @param mixed The blocks array key
+	 * @param		mixed The blocks array key
 	 *
-	 * @return mixed
+	 * @return		mixed
 	 */
 	public function getBlock($property = null)
 	{
@@ -118,9 +128,9 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Get view data.
 	 *
-	 * @param mixed The data array key
+	 * @param		mixed The data array key
 	 *
-	 * @return mixed
+	 * @return		mixed
 	 */
 	public function getData($key = null)
 	{
@@ -137,7 +147,7 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Get layout.
 	 *
-	 * @return string
+	 * @return		string
 	 */
 	public function getLayout()
 	{
@@ -147,10 +157,10 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Set blocks data.
 	 *
-	 * @param mixed The block array key
-	 * @param mixed Value
+	 * @param		mixed The block array key
+	 * @param		mixed Value
 	 *
-	 * @return void
+	 * @return		void
 	 */
 	public function setBlock($property, $value)
 	{
@@ -160,10 +170,10 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Set view data.
 	 *
-	 * @param mixed The data array key
-	 * @param mixed Value
+	 * @param		mixed The data array key
+	 * @param		mixed Value
 	 *
-	 * @return void
+	 * @return		void
 	 */
 	public function setData($key, $value)
 	{
@@ -173,9 +183,9 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Set layout.
 	 *
-	 * @param string
+	 * @param		string
 	 *
-	 * @return void
+	 * @return		void
 	 */
 	public function setLayout($layout)
 	{
@@ -185,13 +195,15 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Do $this->load->view use layout.
 	 *
-	 * @param string
-	 * @param boolean
+	 * @param		string
+	 * @param		boolean
 	 *
-	 * @return mixed
+	 * @return		mixed
 	 */
 	public function view($view = null, $return = false)
 	{
+		$this->_data['head'] = $this->head;
+
 		if (!is_null($view))
 		{
 			$this->_blocks->body = $view;
