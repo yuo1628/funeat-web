@@ -138,9 +138,9 @@ class Restaurants extends Entity
 	protected $name;
 
 	/**
-	 * @var string
+	 * @var Galleries
 	 *
-	 * @ORM\Column(type="text", nullable=true)
+	 * @ORM\OneToOne(targetEntity="Galleries")
 	 */
 	protected $logo;
 
@@ -290,6 +290,13 @@ class Restaurants extends Entity
 	 * @ORM\OneToMany(targetEntity="models\entity\collection\Points", mappedBy="restaurants")
 	 */
 	private $points;
+
+	/**
+	 * @var Galleries[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Galleries", mappedBy="restaurants")
+	 */
+	private $galleries;
 
 	/**
 	 * @var models\entity\member\Members[]
