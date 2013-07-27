@@ -372,6 +372,36 @@ class Restaurants extends Entity
 		return $this->uuid;
 	}
 
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * Set name will do trim()
+	 *
+	 * @param		name
+	 */
+	public function setName($name)
+	{
+		$this->name = trim($name);
+	}
+
+	/**
+	 * Set address will do trim()
+	 *
+	 * @param		name
+	 */
+	public function setAddress($address)
+	{
+		$this->address = trim($address);
+	}
+
 	public function setFeatures($value)
 	{
 		$this->features = $value;

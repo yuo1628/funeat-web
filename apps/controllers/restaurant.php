@@ -85,8 +85,10 @@ class Restaurant extends MY_Controller
 		{
 			default :
 			case self::OUTPUT_FORMAT_HTML :
-				// TODO: Temporary use this layout
-				$this->setLayout('restaurant/list');
+				// Add style sheet
+				$this->head->addStyleSheet('css/gallery.css');
+				$this->head->addStyleSheet('css/restaurant_list.css');
+
 				$this->view('restaurant/list');
 				break;
 			case self::OUTPUT_FORMAT_JSON :
@@ -112,8 +114,11 @@ class Restaurant extends MY_Controller
 			case self::OUTPUT_FORMAT_HTML :
 				$this->setData('restaurant', $restaurant);
 
-				// TODO: Temporary use this layout
-				$this->setLayout('restaurant/profile');
+				// Add style sheet
+				$this->head->addStyleSheet('css/gallery.css');
+				$this->head->addStyleSheet('css/restaurant.css');
+				$this->head->addStyleSheet('http://fonts.googleapis.com/css?family=ABeeZee');
+
 				$this->view('restaurant/profile');
 				break;
 
@@ -148,8 +153,10 @@ class Restaurant extends MY_Controller
 		$this->setData('features', $this->feature->getItems());
 		$this->setData('restaurant', $this->restaurant->getInstance());
 
-		// TODO: Temporary use this layout
-		$this->setLayout('restaurant/edit');
+		// Add style sheet
+		$this->head->addStyleSheet('css/gallery.css');
+		$this->head->addStyleSheet('css/restaurant_edit.css');
+
 		$this->view('restaurant/edit');
 	}
 
