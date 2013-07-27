@@ -141,7 +141,7 @@ class Restaurants extends Entity
 	 * @var Galleries
 	 *
 	 * @ORM\OneToOne(targetEntity="Galleries")
- 	 * @ORM\JoinColumn(name="galleries_id", referencedColumnName="id", onDelete="CASCADE"))
+	 * @ORM\JoinColumn(name="galleries_id", referencedColumnName="id", onDelete="CASCADE"))
 	 */
 	protected $logo;
 
@@ -304,7 +304,7 @@ class Restaurants extends Entity
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Galleries", mappedBy="restaurants")
 	 */
-	private $galleries;
+	protected $galleries;
 
 	/**
 	 * @var models\entity\member\Members[]
@@ -387,6 +387,11 @@ class Restaurants extends Entity
 		return $this->address;
 	}
 
+	public function getFax()
+	{
+		return $this->fax;
+	}
+
 	public function getFeatures()
 	{
 		return $this->features;
@@ -395,6 +400,21 @@ class Restaurants extends Entity
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	public function getPriceHigh()
+	{
+		return $this->priceHigh;
+	}
+
+	public function getPriceLow()
+	{
+		return $this->priceLow;
+	}
+
+	public function getTel()
+	{
+		return $this->tel;
 	}
 
 	public function getUuid()

@@ -26,6 +26,10 @@ $target = ($restaurant->getId() === null) ? 'restaurant/save' : 'restaurant/save
 $name = Entity::preset(set_value('name'), $restaurant->getName());
 $address = Entity::preset(set_value('address'), $restaurant->getAddress());
 $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
+$tel = Entity::preset(set_value('tel'), $restaurant->getTel());
+$fax = Entity::preset(set_value('fax'), $restaurant->getFax());
+$priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
+$priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 ?>
 <?php echo form_open_multipart($target); ?>
 <div class="resEditBox">
@@ -74,7 +78,7 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 					*電話
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="tel" value="<?php echo set_value('tel'); ?>" />
+					<input type="text" name="tel" value="<?php echo $tel; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -89,7 +93,7 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 					傳真
 				</div>
 				<div class="resEditInput">
-					<input type="text" />
+					<input type="text" name="fax" value="<?php echo $fax; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -120,9 +124,9 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 				*價格區間
 			</div>
 			<div class="resEditInput">
-				<input class="textItem" style="width:275px" type="text" />
+				<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
 				~
-				<input class="textItem" style="width:275px" type="text" />
+				<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
 				元
 			</div>
 			<div class="clearfix"></div>
@@ -318,7 +322,7 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 				店家大頭照
 			</div>
 			<div class="resEditInput">
-				<input type="file" />
+				<input type="file" name="logo" />
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -336,16 +340,7 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 			</div>
 			<div class="resEditInput">
 				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
+					<input type="file" name="image[]" multiple />
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -363,7 +358,7 @@ $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 				菜單照片
 			</div>
 			<div class="resEditInput">
-				<input type="file" />
+				<input type="file" name="menu[]" multiple />
 			</div>
 			<div class="clearfix"></div>
 		</div>
