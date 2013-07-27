@@ -2,6 +2,21 @@
 // Load library
 $this->load->helper('url');
 $this->load->helper('html');
+
+// Page title
+$title = 'FunEat';
+
+/**
+ * Blocks data
+ *
+ * @var		stdClass
+ */
+$blocks;
+
+/**
+ * @var		Head
+ */
+$head;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -19,12 +34,13 @@ $this->load->helper('html');
 		<meta property="og:type" content="website" />
 		<meta property="fb:admins" content="tuan.zhang.90" />
 		<meta property="fb:app_id" content="516696985050303" />
-		<title>FunEat</title>
+		<title><?php echo $title; ?></title>
 		<link href="css/layout.css" rel="stylesheet" />
 		<link href="css/default.css" rel="stylesheet" />
-		<script src="js/jquery-1.9.1.js" type="text/javascript" ></script>
-		<script src="js/jquery.color.js" type="text/javascript" ></script>
-		<script src="js/layout.js" type="text/javascript" ></script>
+		<script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+		<script src="js/jquery.color.js" type="text/javascript"></script>
+		<script src="js/layout.js" type="text/javascript"></script>
+		<?php echo ltrim($head->fetch()); ?>
 	</head>
 	<body>
 		<div class="container">
