@@ -406,13 +406,43 @@ class Restaurants extends Entity
 	}
 
 	/**
+	 * Get gallery
+	 *
+	 * @return		models\entity\image\Images[]
+	 */
+	public function getGallery()
+	{
+		return $this->gallery;
+	}
+
+	/**
+	 * Get like collection
+	 *
+	 * @return		Doctrine\ORM\PersistentCollection
+	 */
+	public function getLike()
+	{
+		return $this->like;
+	}
+
+	/**
 	 * Get logo
 	 *
-	 * @return		models\entity\image\Images $logo
+	 * @return		models\entity\image\Images
 	 */
 	public function getLogo()
 	{
 		return $this->logo;
+	}
+
+	/**
+	 * Get menu
+	 *
+	 * @return		models\entity\image\Images[]
+	 */
+	public function getMenu()
+	{
+		return $this->menu;
 	}
 
 	public function getName()
