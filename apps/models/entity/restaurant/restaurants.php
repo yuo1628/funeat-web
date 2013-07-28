@@ -395,6 +395,16 @@ class Restaurants extends Entity
 		return $this->address;
 	}
 
+	/**
+	 * Get dislike collection
+	 *
+	 * @return		Doctrine\ORM\PersistentCollection
+	 */
+	public function getDislike()
+	{
+		return $this->dislike;
+	}
+
 	public function getFax()
 	{
 		return $this->fax;
@@ -413,6 +423,11 @@ class Restaurants extends Entity
 	public function getGallery()
 	{
 		return $this->gallery;
+	}
+
+	public function getIntro()
+	{
+		return $this->intro;
 	}
 
 	/**

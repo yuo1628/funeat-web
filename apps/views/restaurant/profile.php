@@ -1,6 +1,8 @@
-<?php
+<?php defined('BASEPATH') or die('No direct script access allowed');
 
+// Import class
 use models\entity\image\Images as Images;
+
 // Load library
 $this->load->helper('url');
 

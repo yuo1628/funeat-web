@@ -90,6 +90,8 @@ class Restaurant extends MY_Controller
 				$this->head->addStyleSheet('css/gallery.css');
 				$this->head->addStyleSheet('css/restaurant_list.css');
 
+				$this->setData('restaurants', $this->restaurant->getItems());
+
 				$this->view('restaurant/list');
 				break;
 			case self::OUTPUT_FORMAT_JSON :
@@ -262,14 +264,16 @@ class Restaurant extends MY_Controller
 			$restaurant->setGallery($image->upload($upload, $creator, 'gallery', true));
 			$restaurant->setMenu($image->upload($upload, $creator, 'menu', true));
 
-
 			// TODO: Assign special data
 			//$restaurant->hours = $hours;
 
 			// Saving data
 			$this->restaurant->save($restaurant);
 
-			// TODO: after save data?
+			// After save data
+			$this->load->helper('url');
+
+			redirect('/restaurant/' . $restaurant->getUuid(), 'location', 301);
 		}
 		else
 		{

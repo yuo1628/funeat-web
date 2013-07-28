@@ -1,4 +1,5 @@
-<?php
+<?php defined('BASEPATH') or die('No direct script access allowed');
+
 // Import class
 use models\entity\Entity as Entity;
 
@@ -381,5 +382,6 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 	<div class="clearfix"></div>
 	<br>
 	<br>
+	<input type="submit" />
 </div>
 <?php echo form_close(); ?>
