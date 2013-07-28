@@ -19,3 +19,10 @@ apps/Proxies/*
 
 *.ai
 *.psd
+
+# User upload data
+
+tmp/*
+!tmp/index.html
+upload/*
+!upload/index.html

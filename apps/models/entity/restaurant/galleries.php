@@ -35,11 +35,15 @@ class Galleries extends Entity
 	const MENU = 1;
 
 	/**
-	 * Path relative to root
+	 * Upload path
 	 *
 	 * @var string
 	 */
-	const PATH = '';
+	public static $UPLOAD_CONFIG = array(
+		'upload_path' => 'upload/',
+		'allowed_types' => 'gif|jpg|png',
+		'encrypt_name' => true
+	);
 
 	/**
 	 * @var integer
