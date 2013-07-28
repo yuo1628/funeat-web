@@ -240,6 +240,13 @@ class Members extends Entity
 	protected $commentsLike;
 
 	/**
+	 * @var models\entity\image\Images[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\image\Images", mappedBy="members")
+	 */
+	protected $imageOwn;
+
+	/**
 	 * @var models\entity\member\Members[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="Members", mappedBy="members")

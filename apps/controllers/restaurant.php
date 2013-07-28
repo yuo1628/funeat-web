@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
 use models\entity\restaurant\Comments as Comments;
+use models\entity\image\Images as Images;
 
 /**
  * Restaurant
@@ -88,6 +89,8 @@ class Restaurant extends MY_Controller
 				// Add style sheet
 				$this->head->addStyleSheet('css/gallery.css');
 				$this->head->addStyleSheet('css/restaurant_list.css');
+
+				$this->setData('restaurants', $this->restaurant->getItems());
 
 				$this->view('restaurant/list');
 				break;
@@ -189,12 +192,16 @@ class Restaurant extends MY_Controller
 	 */
 	public function save($identity = null)
 	{
-		// preload data
+		/**
+		 * @var		models\entity\restaurant\Restaurants
+		 */
 		$restaurant = null;
 
 		if ($identity === null)
 		{
-			// Set rules
+			// Initial restaurant data when identity is null.
+
+			// Set form validation rules
 			$this->form_validation->set_rules('name', 'Name', 'required');
 			$this->form_validation->set_rules('address', 'Address', 'required');
 
@@ -205,14 +212,78 @@ class Restaurant extends MY_Controller
 		}
 		else
 		{
+			// Load restaurant data when identity is not null.
 			$identity = trim($identity);
 
 			$restaurant = $this->_loadRestaurant($identity);
 		}
 
-		if ($restaurant === null)
+		// It not vaild when restaurant is null
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
 		{
-			if ($identity === null)
+			// Do data saving
+
+			/**
+			 * Load creator
+			 *
+			 * @var models/entity/member/Members
+			 */
+			$creator = $this->member->getLoginMember($this->session);
+
+			// Assign normal data
+			$restaurant->setName($this->input->post('name'));
+			$restaurant->setAddress($this->input->post('address'));
+			$restaurant->setTel($this->input->post('tel'));
+			$restaurant->setFax($this->input->post('fax'));
+			$restaurant->setWebsite($this->input->post('website'));
+			$restaurant->setEmail($this->input->post('email'));
+			$restaurant->setPriceHigh($this->input->post('priceHigh'));
+			$restaurant->setPriceLow($this->input->post('priceLow'));
+
+			// Assign Many-To-Many relation data
+			$restaurant->setFeatures($this->input->post('features'), $this->feature);
+
+			// Assign upload image data
+			$this->load->library('upload');
+			$this->load->helper('file');
+
+			/**
+			 * @var MY_Upload
+			 */
+			$upload = $this->upload;
+
+			/**
+			 * @var models\Image
+			 */
+			$image = new models\Image();
+
+			// Image stack
+			$images = array();
+
+			$restaurant->setLogo($image->upload($upload, $creator, 'logo'));
+			$restaurant->setGallery($image->upload($upload, $creator, 'gallery', true));
+			$restaurant->setMenu($image->upload($upload, $creator, 'menu', true));
+
+			// TODO: Assign special data
+			//$restaurant->hours = $hours;
+
+			// Saving data
+			$this->restaurant->save($restaurant);
+
+			// After save data
+			$this->load->helper('url');
+
+			redirect('/restaurant/' . $restaurant->getUuid(), 'location', 301);
+		}
+		else
+		{
+			if (!$this->member->isLogin($this->session))
+			{
+				$this->load->helper('url');
+
+				redirect('/login', 'location', 301);
+			}
+			else if ($identity === null)
 			{
 				$this->load->helper('form');
 
@@ -226,47 +297,6 @@ class Restaurant extends MY_Controller
 				$this->setData('features', $this->feature->getItems());
 				$this->view('restaurant/edit');
 			}
-		}
-		else
-		{
-			// Load data
-			$name = trim($this->input->post('name'));
-			$address = trim($this->input->post('address'));
-			$tels = trim($this->input->post('tels'));
-			$emails = trim($this->input->post('emails'));
-			$hours = trim($this->input->post('hours'));
-			$website = trim($this->input->post('website'));
-			$logo = trim($this->input->post('logo'));
-			$images = trim($this->input->post('images'));
-			$features = trim($this->input->post('features'));
-
-			$restaurant->name = empty($name) ? $restaurant->name : $name;
-			$restaurant->address = empty($address) ? $restaurant->address : $address;
-
-			// TODO:
-			//$restaurant->tels = $tels;
-
-			// TODO:
-			//$restaurant->hours = $hours;
-
-			$restaurant->website = empty($website) ? $restaurant->website : $website;
-
-			// TODO:
-			//$restaurant->images = $this->input->post('images');
-
-			if ($features)
-			{
-				$featuresData;
-				foreach ($features->input->post('features') as $v)
-				{
-					$featuresData[] = $this->feature->getItem((int)$v);
-				}
-				$restaurant->setFeatures($featuresData);
-			}
-
-			$this->restaurant->save($restaurant);
-
-			// TODO: after save data?
 		}
 	}
 

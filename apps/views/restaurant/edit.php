@@ -1,4 +1,8 @@
-<?php
+<?php defined('BASEPATH') or die('No direct script access allowed');
+
+// Import class
+use models\entity\Entity as Entity;
+
 // Load library
 $this->load->helper('url');
 
@@ -16,12 +20,17 @@ $features;
  */
 $restaurant;
 
-// 資料目標連結
+// Form action
 $target = ($restaurant->getId() === null) ? 'restaurant/save' : 'restaurant/save/' . $restaurant->uuid;
 
-$name = set_value('name');
-$address = set_value('address');
-$website = set_value('website');
+// Preset data
+$name = Entity::preset(set_value('name'), $restaurant->getName());
+$address = Entity::preset(set_value('address'), $restaurant->getAddress());
+$website = Entity::preset(set_value('website'), $restaurant->getWebsite());
+$tel = Entity::preset(set_value('tel'), $restaurant->getTel());
+$fax = Entity::preset(set_value('fax'), $restaurant->getFax());
+$priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
+$priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 ?>
 <?php echo form_open_multipart($target); ?>
 <div class="resEditBox">
@@ -35,7 +44,7 @@ $website = set_value('website');
 					*店名
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="name" value="<?php echo empty($name) ? $restaurant->name : $name; ?>" required />
+					<input type="text" name="name" value="<?php echo $name; ?>" required />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -50,7 +59,7 @@ $website = set_value('website');
 					*地址
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="address" value="<?php echo empty($address) ? $restaurant->address : $address; ?>" required />
+					<input type="text" name="address" value="<?php echo $address; ?>" required />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -70,7 +79,7 @@ $website = set_value('website');
 					*電話
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="tel" value="<?php echo set_value('tel'); ?>" />
+					<input type="text" name="tel" value="<?php echo $tel; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -85,7 +94,7 @@ $website = set_value('website');
 					傳真
 				</div>
 				<div class="resEditInput">
-					<input type="text" />
+					<input type="text" name="fax" value="<?php echo $fax; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -100,7 +109,7 @@ $website = set_value('website');
 					網站
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="website" value="<?php echo empty($website) ? $restaurant->website : $website; ?>" />
+					<input type="text" name="website" value="<?php echo $website; ?>" />
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -116,9 +125,9 @@ $website = set_value('website');
 				*價格區間
 			</div>
 			<div class="resEditInput">
-				<input class="textItem" style="width:275px" type="text" />
+				<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
 				~
-				<input class="textItem" style="width:275px" type="text" />
+				<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
 				元
 			</div>
 			<div class="clearfix"></div>
@@ -314,7 +323,7 @@ $website = set_value('website');
 				店家大頭照
 			</div>
 			<div class="resEditInput">
-				<input type="file" />
+				<input type="file" name="logo" />
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -332,16 +341,7 @@ $website = set_value('website');
 			</div>
 			<div class="resEditInput">
 				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
-				</div>
-				<div class="resEditGalleryInputItem">
-					<input type="file" />
+					<input type="file" name="gallery[]" multiple />
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -359,7 +359,7 @@ $website = set_value('website');
 				菜單照片
 			</div>
 			<div class="resEditInput">
-				<input type="file" />
+				<input type="file" name="menu[]" multiple />
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -382,5 +382,6 @@ $website = set_value('website');
 	<div class="clearfix"></div>
 	<br>
 	<br>
+	<input type="submit" />
 </div>
 <?php echo form_close(); ?>

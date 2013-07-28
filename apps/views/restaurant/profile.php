@@ -1,4 +1,8 @@
-<?php
+<?php defined('BASEPATH') or die('No direct script access allowed');
+
+// Import class
+use models\entity\image\Images as Images;
+
 // Load library
 $this->load->helper('url');
 
@@ -8,16 +12,18 @@ $this->load->helper('url');
  * @var models\entity\restaurant\Restaurants
  */
 $restaurant;
+
+//var_dump($restaurant->logo);
 ?>
 <div class="resBox">
 	<div class="resContent">
 		<!-- logo -->
 		<div class="resImg">
-			<img src="http://news.xinhuanet.com/jiaju/2011-10/13/122138270_111n.jpg"  />
+			<img src="<?php echo Images::UPLOAD_PATH, $restaurant->getLogo()->getFilename(); ?>" />
 		</div>
 		<!-- title -->
 		<div class="resTitle">
-			標題測試
+			<?php echo $restaurant->getName(); ?>
 		</div>
 		<div class="arrowLeft localTitleArrowLeft"></div>
 		<div class="arrowRight localTitleArrowRight"></div>
@@ -26,9 +32,12 @@ $restaurant;
 		<div class="resGalleryBox">
 			<div class="gallery">
 				<div class="galleryMenu">
+					<?php foreach ($restaurant->getGallery() as $gallery):
+					?>
 					<div class="galleryItem">
-						<img src="http://lorempixel.com/850/400/food/" />
+						<img src="<?php echo Images::UPLOAD_PATH, $gallery->getFilename(); ?>" />
 					</div>
+					<?php endforeach; ?>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -43,20 +52,21 @@ $restaurant;
 					<div class="resInfoItem">
 						<img src="img/icon/res_address.png" />
 						<div class="resInfoItemDesc">
-							台中市大連路三段
+							<?php echo $restaurant->getAddress(); ?>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="resInfoItem">
 						<img src="img/icon/res_phone.png" />
 						<div class="resInfoItemDesc">
-							04-36063088
+							<?php echo $restaurant->getTel(); ?>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="resInfoItem">
 						<img src="img/icon/res_time.png" />
 						<div class="resInfoItemDesc">
+							<!-- TODO: Hours design -->
 							0900 - 1800
 						</div>
 						<div class="clearfix"></div>
@@ -64,7 +74,7 @@ $restaurant;
 					<div class="resInfoItem">
 						<img src="img/icon/res_time.png" />
 						<div class="resInfoItemDesc">
-							NT. 30~180
+							<?php echo "NT. {$restaurant->getPriceLow()} ~ NT. {$restaurant->getPriceHigh()}"; ?>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -77,7 +87,7 @@ $restaurant;
 							</div>
 						</div>
 						<div class="resLikeCount">
-							251
+							<?php echo $restaurant->getLike()->count(); ?>
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -106,9 +116,12 @@ $restaurant;
 			<div class="resFoodMenuTitle">
 				Menu
 			</div>
+			<?php foreach ($restaurant->getMenu() as $menu):
+			?>
 			<div class="resFoodMenuImg">
-				<img src="http://lorempixel.com/584/1024/food/" />
+				<img src="<?php echo Images::UPLOAD_PATH, $menu->getFilename(); ?>" />
 			</div>
+			<?php endforeach; ?>
 		</div>
 		<div class="resDiscussBox">
 			<div class="resDiscussTitle">

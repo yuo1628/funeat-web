@@ -35,6 +35,7 @@ class MY_Controller extends CI_Controller
 		'models\\entity\\restaurant\\Cuisines',
 		'models\\entity\\restaurant\\Features',
 		'models\\entity\\restaurant\\Restaurants',
+		'models\\entity\\image\\Images',
 		'models\\entity\\member\\Comments',
 		'models\\entity\\member\\Members',
 		'models\\entity\\member\\Membergroups'
