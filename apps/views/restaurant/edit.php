@@ -340,7 +340,7 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 			</div>
 			<div class="resEditInput">
 				<div class="resEditGalleryInputItem">
-					<input type="file" name="image[]" multiple />
+					<input type="file" name="gallery[]" multiple />
 				</div>
 			</div>
 			<div class="clearfix"></div>
