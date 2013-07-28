@@ -5,8 +5,10 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
+use models\entity\image\Images as Images;
 
 /**
  * Restaurants ORM Class
@@ -138,19 +140,33 @@ class Restaurants extends Entity
 	protected $name;
 
 	/**
-	 * @var Galleries
+	 * @var models\entity\image\Images
 	 *
-	 * @ORM\OneToOne(targetEntity="Galleries")
-	 * @ORM\JoinColumn(name="galleries_id", referencedColumnName="id", onDelete="CASCADE"))
+	 * @ORM\OneToOne(targetEntity="models\entity\image\Images", cascade={"persist", "remove"})
 	 */
 	protected $logo;
 
 	/**
-	 * @var array
+	 * @var models\entity\image\Images[]
 	 *
-	 * @ORM\Column(type="json_array", nullable=true)
+	 * @ORM\ManyToMany(targetEntity="models\entity\image\Images", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="Restaurant_Images_Gallery",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="images_id", referencedColumnName="id")}
+	 * )
 	 */
-	protected $images;
+	protected $gallery;
+
+	/**
+	 * @var models\entity\image\Images[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\image\Images", cascade={"persist", "remove"})
+	 * @ORM\JoinTable(name="Restaurant_Images_Menu",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="images_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $menu;
 
 	/**
 	 * @var string
@@ -300,13 +316,6 @@ class Restaurants extends Entity
 	private $points;
 
 	/**
-	 * @var Galleries[]
-	 *
-	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Galleries", mappedBy="restaurants")
-	 */
-	protected $galleries;
-
-	/**
 	 * @var models\entity\member\Members[]
 	 *
 	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
@@ -341,7 +350,6 @@ class Restaurants extends Entity
 	public function __construct()
 	{
 		$this->features = array();
-		$this->images = array();
 		$this->tels = array();
 		$this->emails = array();
 		$this->hours = new Hours();
@@ -397,6 +405,16 @@ class Restaurants extends Entity
 		return $this->features;
 	}
 
+	/**
+	 * Get logo
+	 *
+	 * @return		models\entity\image\Images $logo
+	 */
+	public function getLogo()
+	{
+		return $this->logo;
+	}
+
 	public function getName()
 	{
 		return $this->name;
@@ -437,9 +455,75 @@ class Restaurants extends Entity
 		$this->address = Entity::preset($address, $this->address);
 	}
 
-	public function setFeatures($features)
+	/**
+	 * Set Email
+	 *
+	 * @param		string $email If this parameter is empty, then nothing to change.
+	 */
+	public function setEmail($email)
 	{
-		$this->features = $features;
+		$this->email = Entity::preset($email, $this->email);
+	}
+
+	/**
+	 * Set fax
+	 *
+	 * @param		string $name If this parameter is empty, then nothing to change.
+	 */
+	public function setFax($fax)
+	{
+		$this->fax = Entity::preset($fax, $this->fax);
+	}
+
+	/**
+	 * Set features
+	 *
+	 * @param		array $features checkbox array. If this parameter is empty, then nothing to change.
+	 * @param		models\Feature $model Feature model.
+	 */
+	public function setFeatures($features, Feature $model)
+	{
+		if (is_array($features) && !empty($features))
+		{
+			$featuresData = array();
+
+			foreach ($features as $v)
+			{
+				$featuresData[] = $model->getItem((int)$v);
+			}
+
+			$this->features = $featuresData;
+		}
+	}
+
+	/**
+	 * Set gallery
+	 *
+	 * @param		models\entity\image\Images[] $images
+	 */
+	public function setGallery($gallery)
+	{
+		$this->gallery = !empty($gallery) ? $gallery : null;
+	}
+
+	/**
+	 * Set logo
+	 *
+	 * @param		models\entity\image\Images $logo
+	 */
+	public function setLogo(Images $logo)
+	{
+		$this->logo = !empty($logo) ? $logo : null;
+	}
+
+	/**
+	 * Set menu
+	 *
+	 * @param		models\entity\image\Images[] $menu
+	 */
+	public function setMenu($menu)
+	{
+		$this->menu = !empty($menu) ? $menu : null;
 	}
 
 	/**
@@ -453,13 +537,43 @@ class Restaurants extends Entity
 	}
 
 	/**
+	 * Set higher price
+	 *
+	 * @param		string $priceHigh If this parameter is empty, then nothing to change.
+	 */
+	public function setPriceHigh($priceHigh)
+	{
+		$this->priceHigh = Entity::preset($priceHigh, $this->priceHigh);
+	}
+
+	/**
+	 * Set lower price
+	 *
+	 * @param		string $priceLow If this parameter is empty, then nothing to change.
+	 */
+	public function setPriceLow($priceLow)
+	{
+		$this->priceLow = Entity::preset($priceLow, $this->priceLow);
+	}
+
+	/**
+	 * Set telephone
+	 *
+	 * @param		string $tel If this parameter is empty, then nothing to change.
+	 */
+	public function setTel($tel)
+	{
+		$this->tel = Entity::preset($tel, $this->tel);
+	}
+
+	/**
 	 * Set website
 	 *
-	 * @param		string $name If this parameter is empty, then nothing to change.
+	 * @param		string $website If this parameter is empty, then nothing to change.
 	 */
 	public function setWebsite($website)
 	{
-		$this->name = Entity::preset($website, $this->website);
+		$this->website = Entity::preset($website, $this->website);
 	}
 
 	public function __get($key)

@@ -1,38 +1,31 @@
 <?php
 
-namespace models\entity\restaurant;
+namespace models\entity\image;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use models\entity\Entity as Entity;
-use models\entity\restaurant\Restaurants as Restaurants;
+use models\entity\member\Members as Members;
 
 /**
- * Galleries ORM Class
+ * Images ORM Class
  *
  * @category		Models.Entity
  * @author			Miles <jangconan@gmail.com>
  * @version			1.0
  *
- * @ORM\Table(name="restaurant_galleries")
+ * @ORM\Table(name="images")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Galleries extends Entity
+class Images extends Entity
 {
 	/**
-	 * Gallery image type
+	 * Gallery type
 	 *
 	 * @var integer
 	 */
-	const IMAGE = 0;
-
-	/**
-	 * Gallery menu type
-	 *
-	 * @var integer
-	 */
-	const MENU = 1;
+	const UPLOAD_PATH = 'upload/';
 
 	/**
 	 * Upload path
@@ -40,7 +33,7 @@ class Galleries extends Entity
 	 * @var string
 	 */
 	public static $UPLOAD_CONFIG = array(
-		'upload_path' => 'upload/',
+		'upload_path' => self::UPLOAD_PATH,
 		'allowed_types' => 'gif|jpg|png',
 		'encrypt_name' => true
 	);
@@ -62,11 +55,18 @@ class Galleries extends Entity
 	protected $uuid;
 
 	/**
-	 * @var integer
+	 * @var string
 	 *
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string", length=255)
 	 */
-	protected $type;
+	protected $origin;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=50, unique=true)
+	 */
+	protected $filename;
 
 	/**
 	 * @var string
@@ -74,13 +74,6 @@ class Galleries extends Entity
 	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	protected $title;
-
-	/**
-	 * @var Restaurants
-	 *
-	 * @ORM\ManyToOne(targetEntity="Restaurants", inversedBy="galleries")
-	 */
-	protected $restaurant;
 
 	/**
 	 * @var DateTime
@@ -97,9 +90,9 @@ class Galleries extends Entity
 	protected $createIP;
 
 	/**
-	 * @var integer
+	 * @var models\entity\member\Members
 	 *
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\ManyToOne(targetEntity="models\entity\member\Members", inversedBy="images")
 	 */
 	protected $creator;
 
@@ -123,7 +116,9 @@ class Galleries extends Entity
 	public function doRegisterOnPrePersist()
 	{
 		$CI = get_instance();
+		$CI->load->library('uuid');
 
+		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
 	}
@@ -143,14 +138,19 @@ class Galleries extends Entity
 		return $this->creater;
 	}
 
+	public function getFilename()
+	{
+		return $this->filename;
+	}
+
 	public function getId()
 	{
 		return $this->id;
 	}
 
-	public function getRestaurant()
+	public function getOrigin()
 	{
-		return $this->restaurant;
+		return $this->origin;
 	}
 
 	public function getTitle()
@@ -158,14 +158,27 @@ class Galleries extends Entity
 		return $this->title;
 	}
 
-	public function setCreater($v)
+	/**
+	 * Set creator
+	 *
+	 * @param		Members $creator
+	 */
+	public function setCreater(Members $creator)
 	{
-		$this->creater = $v;
+		$this->creator = $creator;
 	}
 
-	public function setRestaurant(Restaurants $restaurant)
+	/**
+	 * Set file into database
+	 *
+	 * @param		string $origin
+	 * @param		string $filename
+	 * @param		int $type
+	 */
+	public function setFile($origin, $filename)
 	{
-		$this->restaurant = $restaurant;
+		$this->origin = Entity::preset($origin, $this->origin);
+		$this->filename = Entity::preset($filename, $this->filename);
 	}
 
 	public function setTitle($title)
