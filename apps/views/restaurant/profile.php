@@ -10,10 +10,16 @@ $this->load->helper('url');
  * 店家資料
  *
  * @var models\entity\restaurant\Restaurants
+ * @var models\entity\member\members
  */
 $restaurant;
+$member;
+
+
 ?>
 <!-- @formatter:off -->
+<input id="restaurant_uuid" type="hidden" value="<?php echo $restaurant->getUuid() ?>" />
+
 <div class="resBox">
 	<div class="resContent">
 		<!-- logo -->
@@ -126,9 +132,19 @@ $restaurant;
 					<br>
 					<br>
 					<div class="resInfoItem">
-						<div class="resLikeBtnBox">
-							<div class="resLikeBtn">
-								<img src="img/icon/like.png" />
+						<?php 
+							
+							$like_class = 'resLikeBtn';
+							$path = 'like.png';
+							if($restaurant->getLike()->contains($member)){
+								$like_class = 'hasLike';
+								$path = 'has_like.png';
+							}
+							
+						?>
+						<div class="resLikeBtnBox" >
+							<div class="<?php echo $like_class ?>">
+								<img src="img/icon/<?php echo $path ?>" />
 							</div>
 						</div>
 						<div class="resLikeCount">

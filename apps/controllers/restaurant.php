@@ -111,17 +111,25 @@ class Restaurant extends MY_Controller
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
 		$restaurant = $this->_loadRestaurant($identity);
+		
+		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		{
+			$member = $this->member->getLoginMember($this->session);
+		}
+		
 		switch ($format)
 		{
 			default :
 			case self::OUTPUT_FORMAT_HTML :
 				$this->setData('restaurant', $restaurant);
+				$this->setData('member', $member);
 
 				// Add style sheet
 				$this->head->addStyleSheet('css/gallery.css');
 				$this->head->addStyleSheet('css/restaurant.css');
 				$this->head->addStyleSheet('http://fonts.googleapis.com/css?family=ABeeZee');
 				$this->head->addScript('js/gallery.js');
+				$this->head->addScript('js/restaurant_like.js');
 
 				$this->view('restaurant/profile');
 				break;
