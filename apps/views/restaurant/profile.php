@@ -188,8 +188,43 @@ $member;
 			<div class="resDiscussTitle">
 				留言討論
 			</div>
+			
+			
+			<div class="discussMainPostBox">
+				<input class="reply_to_uuid" type="hidden" value="" />
+				<div class="discussReply">
+					<div class="replyTagToLabel">
+						留給：
+					</div>
+					<div class="replyTagMenu">
+						<div class="replyTagItem">
+							所有人
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				<div class="discussContent">
+					<div class="contentLabel">
+						留言
+					</div>
+					<div class="contentText">
+						<textarea class="mainPostText"></textarea>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+					
+			
 			<div class="resDiscussMenu">
+				
 				<div class="resDiscussItem">
+					<input class="user_uuid" type="hidden" value="uuid" />
+					<input class="user_name" type="hidden" value="test" />
 					<div class="resDiscussImg">
 						<img src="" />
 					</div>
@@ -216,34 +251,77 @@ $member;
 					</div>
 					<div class="clearfix"></div>
 				</div>
+				
 				<!-- reply -->
-				<div class="resDiscussItem replyDiscussItem">
-					<div class="resDiscussImg replyDiscussImg">
-						<img src="" />
-					</div>
-					<div class="msgArrow replyArrow"></div>
-					<div class="resDiscussMsgBox replyDiscussMsgBox">
-						<div class="resDiscussMsgName">
-							name
+				<div class="replyBox">
+					<div class="resDiscussItem replyDiscussItem">
+						<div class="resDiscussImg replyDiscussImg">
+							<img src="" />
 						</div>
-						<div class="resDiscussMsgDesc">
-							teareafaksljf
-						</div>
-						<div class="resDiscussMsgBar">
-							<div class="resDiscussMsgBarItem">
-								<div class="left likeBtn">
-									讚
-								</div>
-								<div class="replyBtn">
-									回覆
-								</div>
-								<div class="clearfix"></div>
+						<div class="msgArrow replyArrow"></div>
+						<div class="resDiscussMsgBox replyDiscussMsgBox">
+							<div class="resDiscussMsgName">
+								name
 							</div>
+							<div class="resDiscussMsgDesc">
+								teareafaksljf
+							</div>
+							<div class="resDiscussMsgBar">
+								<div class="resDiscussMsgBarItem">
+									<div class="left likeBtn">
+										讚
+									</div>
+									<div class="replyBtn">
+										回覆
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					<div class="clearfix"></div>
+					
+					<div class="resDiscussItem replyDiscussItem">
+						<div class="resDiscussImg replyDiscussImg">
+							<img src="" />
+						</div>
+						<div class="msgArrow replyArrow"></div>
+						<div class="discussPostBox">
+							<input class="reply_to_uuid" type="hidden" value="" />
+							<div class="discussReply">
+								<div class="replyTagToLabel">
+									留給：
+								</div>
+								<div class="replyTagMenu">
+									<div class="replyTagItem">
+										所有人
+									</div>
+								</div>
+								
+								<div class="clearReplyTag">
+									x
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="discussContent">
+								<div class="contentLabel">
+									留言
+								</div>
+								<div class="contentText">
+									<textarea></textarea>
+								</div>
+								
+								<div class="clearfix"></div>
+							</div>
+							
+							<div class="clearfix"></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
 				</div>
+				
+				
 				<div class="resDiscussItem">
 					<div class="resDiscussImg">
 						<img src="" />

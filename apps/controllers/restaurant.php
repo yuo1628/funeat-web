@@ -130,6 +130,7 @@ class Restaurant extends MY_Controller
 				$this->head->addStyleSheet('http://fonts.googleapis.com/css?family=ABeeZee');
 				$this->head->addScript('js/gallery.js');
 				$this->head->addScript('js/restaurant_like.js');
+				$this->head->addScript('js/restaurant_reply.js');
 
 				$this->view('restaurant/profile');
 				break;
