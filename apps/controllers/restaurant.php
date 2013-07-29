@@ -151,16 +151,25 @@ class Restaurant extends MY_Controller
 	 */
 	public function add()
 	{
-		$this->load->helper('form');
+		if ($this->member->isLogin($this->session))
+		{
+			$this->load->helper('form');
 
-		$this->setData('features', $this->feature->getItems());
-		$this->setData('restaurant', $this->restaurant->getInstance());
+			$this->setData('features', $this->feature->getItems());
+			$this->setData('restaurant', $this->restaurant->getInstance());
 
-		// Add style sheet
-		$this->head->addStyleSheet('css/gallery.css');
-		$this->head->addStyleSheet('css/restaurant_edit.css');
+			// Add style sheet
+			$this->head->addStyleSheet('css/gallery.css');
+			$this->head->addStyleSheet('css/restaurant_edit.css');
 
-		$this->view('restaurant/edit');
+			$this->view('restaurant/edit');
+		}
+		else
+		{
+			$this->load->helper('url');
+
+			redirect('/login', 'location', 301);
+		}
 	}
 
 	/**

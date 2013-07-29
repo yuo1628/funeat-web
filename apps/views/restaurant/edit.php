@@ -32,6 +32,7 @@ $fax = Entity::preset(set_value('fax'), $restaurant->getFax());
 $priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
 $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 ?>
+<!-- @formatter:off -->
 <?php echo form_open_multipart($target); ?>
 <div class="resEditBox">
 	<div class="resEditTitle">

@@ -12,14 +12,17 @@ $this->load->helper('url');
  * @var models\entity\restaurant\Restaurants
  */
 $restaurant;
-
-//var_dump($restaurant->logo);
 ?>
+<!-- @formatter:off -->
 <div class="resBox">
 	<div class="resContent">
 		<!-- logo -->
 		<div class="resImg">
-			<img src="<?php echo Images::UPLOAD_PATH, $restaurant->getLogo()->getFilename(); ?>" />
+			<?php if (is_null($restaurant->getLogo())): ?>
+				<img src="" />
+			<?php else: ?>
+				<img src="<?php echo Images::UPLOAD_PATH, $restaurant->getLogo()->getFilename(); ?>" />
+			<?php endif; ?>
 		</div>
 		<!-- title -->
 		<div class="resTitle">

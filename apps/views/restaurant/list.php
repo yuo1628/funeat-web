@@ -17,6 +17,7 @@ $restaurants;
  */
 $rest;
 ?>
+<!-- @formatter:off -->
 <div class="resListBox">
 	<div class="myLocationBox">
 		<div class="myLocationItem">
@@ -30,14 +31,17 @@ $rest;
 		</div>
 	</div>
 	<div class="resListMenu">
-		<?php foreach ($restaurants as $k => $rest):
-		?>
+		<?php foreach ($restaurants as $k => $rest): ?>
 		<div class="resListItem">
 			<div class="resListTitle">
-				<?php echo $rest->getName(); ?>
+				<a href="<?php echo site_url('restaurant/' . $rest->getUuid()); ?>"><?php echo $rest->getName(); ?></a>
 			</div>
 			<div class="resListImg">
-				<img src="<?php echo Images::UPLOAD_PATH, $rest->getLogo()->getFilename(); ?>" />
+				<?php if (is_null($rest->getLogo())): ?>
+					<img src="" />
+				<?php else: ?>
+					<img src="<?php echo Images::UPLOAD_PATH, $rest->getLogo()->getFilename(); ?>" />
+				<?php endif; ?>
 			</div>
 			<div class="resListDesc">
 				<?php echo $rest->getIntro(); ?>
