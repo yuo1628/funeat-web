@@ -33,21 +33,63 @@ $restaurant;
 		<div style="padding-top: 220px;"></div>
 		<!-- gallery -->
 		<div class="resGalleryBox">
-			<div class="gallery">
-				<div class="galleryMenu">
-					<?php foreach ($restaurant->getGallery() as $gallery):
-					?>
-					<div class="galleryItem">
-						<img src="<?php echo Images::UPLOAD_PATH, $gallery->getFilename(); ?>" />
-					</div>
-					<?php endforeach; ?>
-				</div>
-				<div class="clearfix"></div>
+			<div class="galleryLeftBtn">
+				
 			</div>
+			<div class="galleryRightBtn">
+				
+			</div>
+			<div class="galleryBox">
+				<div class="gallery">
+					
+					<div class="galleryMenu">
+						<?php foreach ($restaurant->getGallery() as $gallery):
+						?>
+						<div class="galleryItem">
+							<img src="<?php echo Images::UPLOAD_PATH, $gallery->getFilename(); ?>" />
+						</div>
+						<?php endforeach; ?>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			
+			
+			
+			<div class="galleryPreviewBox">
+				<div class="galleryPreviewLeftBtn">
+				
+				</div>
+				<div class="galleryPreviewRightBtn">
+					
+				</div>
+				<div class="galleryPreviewMenuBox">
+					<div class="galleryPreviewMenu">
+						<?php 
+						
+						foreach ($restaurant->getGallery() as $i => $gallery):
+							$class = '';
+							if($i == 0)
+							{
+								$class = 'thisPreview';
+							}
+							?>
+							
+						<div class="galleryPreviewItem <?php echo $class ?>">
+							<img src="<?php echo Images::UPLOAD_PATH, $gallery->getFilename(); ?>" />
+						</div>
+						<?php endforeach; ?>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				
+			</div>
+			
 		</div>
 		<div class="arrowLeft galleryArrowLeft" ></div>
 		<div class="arrowRight galleryArrowRight"></div>
-		<div style="padding-top: 400px;"></div>
+		<div style="padding-top: 500px;"></div>
 		<!-- info -->
 		<div class="resDescBox">
 			<div class="resInfoBox">

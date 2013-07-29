@@ -1,4 +1,24 @@
+/**
+ * 	override gallery 
+ */
 
+.galleryBox {
+	overflow:hidden;
+}
+
+.galleryItem {
+	width: 850px;
+	float:left;
+}
+
+.galleryPreviewMenuBox {
+	width: 665px;
+}
+
+
+/**
+ * 	resBox
+ */
 
 .resBox {
 	width:1000px;
@@ -26,6 +46,8 @@
 	overflow: hidden;
 	z-index: 1000;
 	box-shadow: 1px 2px 2px #999;
+	
+	background-color:#fff;
 }
 
 .resImg img {
@@ -59,7 +81,7 @@
 
 .arrowLeft {
 	position : absolute;
-	background: url(../img/res_title-01.png) no-repeat;
+	background: url(../img/layout/res_title-01.png) no-repeat;
 	
 	width: 25px;
 	height: 25px;
@@ -67,7 +89,7 @@
 
 .arrowRight {
 	position : absolute;
-	background: url(../img/res_title-02.png) no-repeat;
+	background: url(../img/layout/res_title-02.png) no-repeat;
 	
 	width: 25px;
 	height: 25px;
@@ -167,7 +189,7 @@
 
 .descArrowRight {
 	right: -25px;
-	top: 862px;
+	top: 962px;
 	
 	z-index: 998;
 }
@@ -362,7 +384,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', end
 .msgArrow {
 	width: 20px;
 	height: 20px;
-	background-image: url(../img/msg_arrow.png);
+	background-image: url(../img/layout/msg_arrow.png);
 	
 	position : absolute;
 	left: 61px;
@@ -444,7 +466,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', end
 	
 	left: auto;
 	right: 61px;
-	background-image: url(../img/msg_arrow-02.png);
+	background-image: url(../img/layout/msg_arrow-02.png);
 }
 
 .replyDiscussMsgBox {
