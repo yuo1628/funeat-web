@@ -95,56 +95,98 @@
 					style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
 				}
 			});
-
-
-			GMaps.geolocate(
+			if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
 			{
-				success : function(position)
+				GMaps.geolocate(
 				{
-					map.setCenter(position.coords.latitude, position.coords.longitude);
-
-					map.addMarker(
+					success : function(position)
 					{
-						lat : position.coords.latitude,
-						lng : position.coords.longitude,
-						draggable : true,
-						animation : google.maps.Animation.DROP,
-						infoWindow :
+						if (localStorage.localLatitude == undefined)
 						{
-							content : $("#localTemplate").text(),
-							pixelOffset : new google.maps.Size(0, 0)
-						},
-						dragend : function()
-						{
-							var pos = this.getPosition();
-							GMaps.geocode(
-							{
-								lat : pos.lat(),
-								lng : pos.lng(),
-								callback : function(results, status)
-								{
-									if (results && results.length > 0)
-									{
-										alert(results[0].formatted_address);
-									}
-								}
-							});
+							localStorage.localLatitude = position.coords.latitude;
 						}
-					});
-				},
-				error : function(error)
+						if (localStorage.localLongitude == undefined)
+						{
+							localStorage.localLongitude = position.coords.longitude;
+						}
+						map.setCenter(position.coords.latitude, position.coords.longitude);
+						map.addMarker(
+						{
+							lat : position.coords.latitude,
+							lng : position.coords.longitude,
+							draggable : true,
+							animation : google.maps.Animation.DROP,
+							infoWindow :
+							{
+								content : $("#localTemplate").text(),
+							},
+							dragend : function()
+							{
+								var pos = this.getPosition();
+								localStorage.localLatitude = pos.lat();
+								localStorage.localLongitude = pos.lng();
+								GMaps.geocode(
+								{
+									lat : pos.lat(),
+									lng : pos.lng(),
+									callback : function(results, status)
+									{
+										if (results && results.length > 0)
+										{
+											alert(results[0].formatted_address);
+										}
+									}
+								});
+							}
+						});
+					},
+					error : function(error)
+					{
+						alert('Geolocation failed: ' + error.message);
+					},
+					not_supported : function()
+					{
+						alert("Your browser does not support geolocation");
+					},
+					always : function()
+					{
+						alert("Done!");
+					}
+				});
+			}
+			else
+			{
+				map.setCenter(localStorage.localLatitude, localStorage.localLongitude);
+				map.addMarker(
 				{
-					alert('Geolocation failed: ' + error.message);
-				},
-				not_supported : function()
-				{
-					alert("Your browser does not support geolocation");
-				},
-				always : function()
-				{
-					//alert("Done!");
-				}
-			});
+					lat : localStorage.localLatitude,
+					lng : localStorage.localLongitude,
+					draggable : true,
+					animation : google.maps.Animation.DROP,
+					infoWindow :
+					{
+						content : $("#localTemplate").text(),
+					},
+					dragend : function()
+					{
+						var pos = this.getPosition();
+						localStorage.localLatitude = pos.lat();
+						localStorage.localLongitude = pos.lng();
+						GMaps.geocode(
+						{
+							lat : pos.lat(),
+							lng : pos.lng(),
+							callback : function(results, status)
+							{
+								if (results && results.length > 0)
+								{
+									alert(results[0].formatted_address);
+								}
+							}
+						});
+					}
+				});
+			}
 		});
 	</script>
 	<script type="text/html" id="localTemplate">

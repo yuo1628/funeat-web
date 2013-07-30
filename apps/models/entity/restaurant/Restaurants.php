@@ -394,9 +394,9 @@ class Restaurants extends Entity
 	{
 		return $this->address;
 	}
-	
+
 	/**
-	 * @return models\entity\restaurant\Comments[]
+	 * @return		\models\entity\restaurant\Comments[]
 	 */
 	public function getComments() {
 		return $this->comments;
@@ -405,7 +405,7 @@ class Restaurants extends Entity
 	/**
 	 * Get dislike collection
 	 *
-	 * @return		Doctrine\ORM\PersistentCollection
+	 * @return		\models\entity\member\Members[]
 	 */
 	public function getDislike()
 	{
@@ -425,7 +425,7 @@ class Restaurants extends Entity
 	/**
 	 * Get gallery
 	 *
-	 * @return		models\entity\image\Images[]
+	 * @return		\models\entity\image\Images[]
 	 */
 	public function getGallery()
 	{
@@ -437,10 +437,15 @@ class Restaurants extends Entity
 		return $this->intro;
 	}
 
+	public function getLatitude()
+	{
+		return $this->latitude;
+	}
+
 	/**
 	 * Get like collection
 	 *
-	 * @return		Doctrine\ORM\PersistentCollection
+	 * @return		\models\entity\member\Members[]
 	 */
 	public function getLike()
 	{
@@ -450,11 +455,16 @@ class Restaurants extends Entity
 	/**
 	 * Get logo
 	 *
-	 * @return		models\entity\image\Images
+	 * @return		\models\entity\image\Images
 	 */
 	public function getLogo()
 	{
 		return $this->logo;
+	}
+
+	public function getLongitude()
+	{
+		return $this->longitude;
 	}
 
 	/**
@@ -531,7 +541,7 @@ class Restaurants extends Entity
 	 * Set features
 	 *
 	 * @param		array $features checkbox array. If this parameter is empty, then nothing to change.
-	 * @param		models\Feature $model Feature model.
+	 * @param		\models\Feature $model Feature model.
 	 */
 	public function setFeatures($features, Feature $model)
 	{
@@ -551,7 +561,7 @@ class Restaurants extends Entity
 	/**
 	 * Set gallery
 	 *
-	 * @param		models\entity\image\Images[] $images
+	 * @param		\models\entity\image\Images[] $images
 	 */
 	public function setGallery($gallery)
 	{
@@ -561,7 +571,7 @@ class Restaurants extends Entity
 	/**
 	 * Set logo
 	 *
-	 * @param		models\entity\image\Images $logo
+	 * @param		\models\entity\image\Images $logo
 	 */
 	public function setLogo(Images $logo)
 	{
@@ -571,7 +581,7 @@ class Restaurants extends Entity
 	/**
 	 * Set menu
 	 *
-	 * @param		models\entity\image\Images[] $menu
+	 * @param		\models\entity\image\Images[] $menu
 	 */
 	public function setMenu($menu)
 	{

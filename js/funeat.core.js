@@ -58,5 +58,29 @@ var Listener = Listener ||
 		{
 			location.href = CONST.REWRITE + CONST.REGISTER_ACTION;
 		}
+	},
+	Map :
+	{
+		/**
+		 * When click route
+		 *
+		 * @param  GMaps  map  Show map
+		 * @param  google.maps.LatLng  start  Start position
+		 * @param  google.maps.LatLng  target  Target position
+		 */
+		onRoute : function(map, start, target)
+		{
+			map.drawRoute(
+			{
+				origin : [start.lat(), start.lng()],
+				destination : [target.lat(), target.lng()],
+				travelMode : 'driving',
+				strokeColor : '#131540',
+				strokeOpacity : 0.6,
+				strokeWeight : 6
+			});
+            map.setCenter(start.lat(), start.lng());
+            map.hideInfoWindows();
+		}
 	}
 };
