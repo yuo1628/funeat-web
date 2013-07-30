@@ -15,6 +15,15 @@ class MY_Controller extends CI_Controller
 	const AUTO_UPDATE = false;
 
 	/**
+	 * Database library selection
+	 *
+	 * Just can use <code>doctrine</code> or <code>database</code>.
+	 *
+	 * @var			boolean
+	 */
+	const DATABASE_LIBRARY = 'doctrine';
+
+	/**
 	 * Output type constants
 	 */
 	const OUTPUT_FORMAT = 'format';
@@ -81,11 +90,15 @@ class MY_Controller extends CI_Controller
 		// Load library
 		$this->load->library('Head');
 
+		// Load database library
+		$this->load->library(self::DATABASE_LIBRARY);
+
+		// Set default value
 		$this->_blocks = new stdClass();
 		$this->_data = array();
 		$this->_layout = $layout;
 
-		if (ENVIRONMENT == 'development' && self::AUTO_UPDATE)
+		if ( (ENVIRONMENT == 'development') && (self::DATABASE_LIBRARY == 'doctrine') && self::AUTO_UPDATE )
 		{
 			$this->updateSchema();
 		}
@@ -96,7 +109,6 @@ class MY_Controller extends CI_Controller
 	 */
 	private function updateSchema()
 	{
-		$this->load->library('doctrine');
 		$entity = array();
 
 		foreach ($this->_entity as $value)
