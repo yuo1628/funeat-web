@@ -105,7 +105,29 @@
 			NT. 30~120
 		</div>
 	</div>
-	<div class="mapBox">
-		<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src=""></iframe>
-	</div>
+	<div id="mapBox" class="mapBox"></div>
+	<script>
+		var lat = 25.08;
+		var lon = 121.45;
+		if (navigator.geolocation)
+		{
+			navigator.geolocation.getCurrentPosition(function(position)
+			{
+				lat = position.coords.latitude;
+				lon = position.coords.longitude;
+				new GMaps(
+				{
+					div : '#mapBox',
+					lat : lat,
+					lng : lon
+				});
+			});
+		}
+		new GMaps(
+		{
+			div : '#mapBox',
+			lat : lat,
+			lng : lon
+		});
+	</script>
 </div>

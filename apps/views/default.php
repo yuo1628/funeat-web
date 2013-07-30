@@ -42,6 +42,8 @@ $head;
 		<script src="js/jquery.color.js" type="text/javascript"></script>
 		<script src="js/funeat.core.js" type="text/javascript"></script>
 		<script src="js/layout.js" type="text/javascript"></script>
+		<script src="http://map.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+		<script src="js/gmaps.js" type="text/javascript"></script>
 		<?php echo ltrim($head->fetch()); ?>
 	</head>
 	<body>
