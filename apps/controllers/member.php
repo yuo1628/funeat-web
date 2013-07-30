@@ -63,7 +63,6 @@ class Member extends MY_Controller
 		parent::__construct('default');
 
 		// Load library
-		$this->load->library('doctrine');
 		$this->load->helper('url');
 		$this->load->library('session');
 		$this->load->library('form_validation');

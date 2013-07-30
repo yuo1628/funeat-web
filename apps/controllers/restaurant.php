@@ -66,7 +66,6 @@ class Restaurant extends MY_Controller
 		parent::__construct('default');
 
 		// Load library
-		$this->load->library('doctrine');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 
@@ -111,12 +110,12 @@ class Restaurant extends MY_Controller
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
 		$restaurant = $this->_loadRestaurant($identity);
-		
+
 		if ($this->member->isLogin($this->session) && !empty($restaurant))
 		{
 			$member = $this->member->getLoginMember($this->session);
 		}
-		
+
 		switch ($format)
 		{
 			default :
