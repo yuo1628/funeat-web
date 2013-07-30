@@ -9,12 +9,12 @@ $title = 'FunEat';
 /**
  * Blocks data
  *
- * @var		stdClass
+ * @var stdClass
  */
 $blocks;
 
 /**
- * @var		Head
+ * @var Head
  */
 $head;
 ?>

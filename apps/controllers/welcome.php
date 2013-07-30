@@ -17,4 +17,15 @@ class Welcome extends MY_Controller
 	{
 		$this->view('welcome/default');
 	}
+
+	public function test() {
+
+		$this->load->library('doctrine');
+
+		$a = new models\entity\image\Images();
+
+		$reflectionClass = new ReflectionClass($a);
+
+		var_dump($reflectionClass->getDocComment());
+	}
 }
