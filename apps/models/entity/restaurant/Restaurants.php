@@ -394,6 +394,13 @@ class Restaurants extends Entity
 	{
 		return $this->address;
 	}
+	
+	/**
+	 * @return models\entity\restaurant\Comments[]
+	 */
+	public function getComments() {
+		return $this->comments;
+	}
 
 	/**
 	 * Get dislike collection

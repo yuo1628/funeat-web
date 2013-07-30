@@ -170,6 +170,11 @@ class Comments extends Entity
 	{
 		return $this->id;
 	}
+	
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
 
 	public function getLike()
 	{
