@@ -10,11 +10,16 @@ $this->load->helper('url');
  * 店家資料
  *
  * @var models\entity\restaurant\Restaurants
- * @var models\entity\member\members
  */
 $restaurant;
-$member;
 
+
+/**
+ * 店家資料
+ *
+ * @var models\entity\member\members
+ */
+$member;
 
 ?>
 <!-- @formatter:off -->
@@ -184,62 +189,92 @@ $member;
 			</div>
 			<?php endforeach; ?>
 		</div>
+		
+		
 		<div class="resDiscussBox">
 			<div class="resDiscussTitle">
 				留言討論
 			</div>
 			
-			
-			<div class="discussMainPostBox">
-				<input class="reply_to_uuid" type="hidden" value="" />
-				<div class="discussReply">
-					<div class="replyTagToLabel">
-						留給：
-					</div>
-					<div class="replyTagMenu">
-						<div class="replyTagItem">
-							所有人
+			<form method="post" action="index.php/restaurant/comment/<?php echo $restaurant->getUuid() ?>">
+				<input type="hidden" value="<?php echo $restaurant->getUuid() ?>" name="identity" />
+				<div class="discussMainPostBox">
+					<input class="reply_to_uuid" type="hidden" value="" />
+					<div class="discussReply">
+						<div class="replyTagToLabel">
+							留給：
 						</div>
+						<div class="replyTagMenu">
+							<div class="replyTagItem">
+								所有人
+							</div>
+						</div>
+						
+						<div class="clearfix"></div>
+					</div>
+					<div class="discussContent">
+						<div class="contentLabel">
+							留言
+						</div>
+						<div class="contentText">
+							<textarea class="mainPostText" name="comment"></textarea>
+						</div>
+						
+						<div class="clearfix"></div>
 					</div>
 					
 					<div class="clearfix"></div>
-				</div>
-				<div class="discussContent">
-					<div class="contentLabel">
-						留言
-					</div>
-					<div class="contentText">
-						<textarea class="mainPostText"></textarea>
-					</div>
 					
+					<input class="mainPostBtn" type="submit" value="留言" />
 					<div class="clearfix"></div>
 				</div>
-				
-				<div class="clearfix"></div>
-			</div>
+			</form>
 			<div class="clearfix"></div>
 					
 			
 			<div class="resDiscussMenu">
+				<?php 
+					/**
+					 * 店家資料
+					 *
+					 * @var  models\entity\restaurant\Comments
+					 */
+					$item;
+					
+				?>
+				<?php 
+					foreach ($restaurant->getComments() as $i => $item): 
+						
+						
+				?>
 				
 				<div class="resDiscussItem">
-					<input class="user_uuid" type="hidden" value="uuid" />
-					<input class="user_name" type="hidden" value="test" />
+					<input class="user_uuid" type="hidden" value="<?php echo $item->getUuid() ?>" />
+					<input class="user_name" type="hidden" value="<?php echo $item->getCreator() ?>" />
 					<div class="resDiscussImg">
 						<img src="" />
 					</div>
 					<div class="msgArrow"></div>
 					<div class="resDiscussMsgBox">
 						<div class="resDiscussMsgName">
-							name
+							<?php echo $item->getCreator() ?>
 						</div>
 						<div class="resDiscussMsgDesc">
-							descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescr12312321 iptiondescriptiondescriptiondescriptiondescription
+							<?php echo $item->getComment() ?>
 						</div>
 						<div class="resDiscussMsgBar">
 							<div class="resDiscussMsgBarItem">
-								<div class="left likeBtn">
+								<?php if($item->getLike()->contains($member)): ?>
+								<div class="left likeBtn postHasLike" onclick="mainPostLike(this);">
+									取消讚
+								</div>
+								<?php else: ?>
+								<div class="left likeBtn " onclick="mainPostLike(this);">
 									讚
+								</div>
+								<?php endif; ?>
+								<div class="left postLikeCount">
+								<?php echo $item->getLike()->count(); ?>
 								</div>
 								<div class="replyBtn">
 									回覆
@@ -252,24 +287,43 @@ $member;
 					<div class="clearfix"></div>
 				</div>
 				
-				<!-- reply -->
 				<div class="replyBox">
+					<?php 
+					/**
+					 * 店家資料
+					 *
+					 * @var  models\entity\restaurant\Comments
+					 */
+					$reply_item;
+					foreach($item->getReplies() as $reply_item): 
+					//$reply_item->
+					?>
 					<div class="resDiscussItem replyDiscussItem">
+						<input class="user_uuid" type="hidden" value="<?php echo $reply_item->getUuid() ?>" />
 						<div class="resDiscussImg replyDiscussImg">
 							<img src="" />
 						</div>
 						<div class="msgArrow replyArrow"></div>
 						<div class="resDiscussMsgBox replyDiscussMsgBox">
 							<div class="resDiscussMsgName">
-								name
+								<?php echo $reply_item->getCreator() ?>
 							</div>
 							<div class="resDiscussMsgDesc">
-								teareafaksljf
+								<?php echo $reply_item->getComment() ?>
 							</div>
 							<div class="resDiscussMsgBar">
 								<div class="resDiscussMsgBarItem">
-									<div class="left likeBtn">
+									<?php if($reply_item->getLike()->contains($member)): ?>
+									<div class="left likeBtn postHasLike" onclick="mainReplyLike(this);">
+										取消讚
+									</div>
+									<?php else: ?>
+									<div class="left likeBtn " onclick="mainReplyLike(this);">
 										讚
+									</div>
+									<?php endif; ?>
+									<div class="left postLikeCount">
+									<?php echo $reply_item->getLike()->count(); ?>
 									</div>
 									<div class="replyBtn">
 										回覆
@@ -281,74 +335,11 @@ $member;
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					
-					<div class="resDiscussItem replyDiscussItem">
-						<div class="resDiscussImg replyDiscussImg">
-							<img src="" />
-						</div>
-						<div class="msgArrow replyArrow"></div>
-						<div class="discussPostBox">
-							<input class="reply_to_uuid" type="hidden" value="" />
-							<div class="discussReply">
-								<div class="replyTagToLabel">
-									留給：
-								</div>
-								<div class="replyTagMenu">
-									<div class="replyTagItem">
-										所有人
-									</div>
-								</div>
-								
-								<div class="clearReplyTag">
-									x
-								</div>
-								<div class="clearfix"></div>
-							</div>
-							<div class="discussContent">
-								<div class="contentLabel">
-									留言
-								</div>
-								<div class="contentText">
-									<textarea></textarea>
-								</div>
-								
-								<div class="clearfix"></div>
-							</div>
-							
-							<div class="clearfix"></div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
+					<?php endforeach; ?>
 				</div>
+				<?php endforeach; ?>
 				
 				
-				<div class="resDiscussItem">
-					<div class="resDiscussImg">
-						<img src="" />
-					</div>
-					<div class="msgArrow"></div>
-					<div class="resDiscussMsgBox">
-						<div class="resDiscussMsgName">
-							name
-						</div>
-						<div class="resDiscussMsgDesc">
-							description
-						</div>
-						<div class="resDiscussMsgBar">
-							<div class="resDiscussMsgBarItem">
-								<div class="left likeBtn">
-									讚
-								</div>
-								<div class="replyBtn">
-									回覆
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
 			</div>
 		</div>
 		<div style="height: 20px;"></div>
