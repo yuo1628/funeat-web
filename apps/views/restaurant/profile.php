@@ -325,9 +325,6 @@ $member;
 									<div class="left postLikeCount">
 									<?php echo $reply_item->getLike()->count(); ?>
 									</div>
-									<div class="replyBtn">
-										回覆
-									</div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
