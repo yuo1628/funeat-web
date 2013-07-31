@@ -9,6 +9,7 @@ use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
 use models\entity\image\Images as Images;
+use Maps;
 
 /**
  * Restaurants ORM Class
@@ -178,14 +179,14 @@ class Restaurants extends Entity
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(type="float", nullable=true)
+	 * @ORM\Column(type="float")
 	 */
 	protected $latitude;
 
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(type="float", nullable=true)
+	 * @ORM\Column(type="float")
 	 */
 	protected $longitude;
 
@@ -345,6 +346,13 @@ class Restaurants extends Entity
 	protected $comments;
 
 	/**
+	 * Distance
+	 *
+	 * @var float
+	 */
+	protected $distance;
+
+	/**
 	 * Constructor, initial data
 	 */
 	public function __construct()
@@ -372,6 +380,7 @@ class Restaurants extends Entity
 	{
 		$CI = get_instance();
 		$CI->load->library('uuid');
+		$CI->load->library('Maps');
 
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
@@ -396,13 +405,31 @@ class Restaurants extends Entity
 	}
 
 	/**
+	 * @return		\models\entity\restaurant\Comments[]
+	 */
+	public function getComments()
+	{
+		return $this->comments;
+	}
+
+	/**
 	 * Get dislike collection
 	 *
-	 * @return		Doctrine\ORM\PersistentCollection
+	 * @return		\models\entity\member\Members[]
 	 */
 	public function getDislike()
 	{
 		return $this->dislike;
+	}
+
+	/**
+	 * Get distance
+	 *
+	 * @return		float
+	 */
+	public function getDistance()
+	{
+		return $this->distance;
 	}
 
 	public function getFax()
@@ -418,7 +445,7 @@ class Restaurants extends Entity
 	/**
 	 * Get gallery
 	 *
-	 * @return		models\entity\image\Images[]
+	 * @return		\models\entity\image\Images[]
 	 */
 	public function getGallery()
 	{
@@ -430,10 +457,15 @@ class Restaurants extends Entity
 		return $this->intro;
 	}
 
+	public function getLatitude()
+	{
+		return $this->latitude;
+	}
+
 	/**
 	 * Get like collection
 	 *
-	 * @return		Doctrine\ORM\PersistentCollection
+	 * @return		\models\entity\member\Members[]
 	 */
 	public function getLike()
 	{
@@ -443,11 +475,16 @@ class Restaurants extends Entity
 	/**
 	 * Get logo
 	 *
-	 * @return		models\entity\image\Images
+	 * @return		\models\entity\image\Images
 	 */
 	public function getLogo()
 	{
 		return $this->logo;
+	}
+
+	public function getLongitude()
+	{
+		return $this->longitude;
 	}
 
 	/**
@@ -501,6 +538,17 @@ class Restaurants extends Entity
 	}
 
 	/**
+	 * Set distance
+	 *
+	 * @param		float $lat
+	 * @param		float $lng
+	 */
+	public function setDistance($lat, $lng)
+	{
+		$this->distance = Maps::getDistance($lat, $lng, $this->getLatitude(), $this->getLongitude());
+	}
+
+	/**
 	 * Set Email
 	 *
 	 * @param		string $email If this parameter is empty, then nothing to change.
@@ -524,7 +572,7 @@ class Restaurants extends Entity
 	 * Set features
 	 *
 	 * @param		array $features checkbox array. If this parameter is empty, then nothing to change.
-	 * @param		models\Feature $model Feature model.
+	 * @param		\models\Feature $model Feature model.
 	 */
 	public function setFeatures($features, Feature $model)
 	{
@@ -544,7 +592,7 @@ class Restaurants extends Entity
 	/**
 	 * Set gallery
 	 *
-	 * @param		models\entity\image\Images[] $images
+	 * @param		\models\entity\image\Images[] $images
 	 */
 	public function setGallery($gallery)
 	{
@@ -552,9 +600,21 @@ class Restaurants extends Entity
 	}
 
 	/**
+	 * Set latitude and longitude
+	 *
+	 * @param		float $lat Latitude of the position.
+	 * @param		float $lng Longitude of the position.
+	 */
+	public function setLatLng($lat, $lng)
+	{
+		$this->latitude = (float)$lat;
+		$this->longitude = (float)$lng;
+	}
+
+	/**
 	 * Set logo
 	 *
-	 * @param		models\entity\image\Images $logo
+	 * @param		\models\entity\image\Images $logo
 	 */
 	public function setLogo(Images $logo)
 	{
@@ -564,7 +624,7 @@ class Restaurants extends Entity
 	/**
 	 * Set menu
 	 *
-	 * @param		models\entity\image\Images[] $menu
+	 * @param		\models\entity\image\Images[] $menu
 	 */
 	public function setMenu($menu)
 	{

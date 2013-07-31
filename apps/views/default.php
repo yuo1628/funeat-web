@@ -1,22 +1,22 @@
 <?php
-// Load library
-$this->load->helper('url');
-$this->load->helper('html');
+	// Load library
+	$this->load->helper('url');
+	$this->load->helper('html');
 
-// Page title
-$title = 'FunEat';
+	// Page title
+	$title = 'FunEat';
 
-/**
- * Blocks data
- *
- * @var		stdClass
- */
-$blocks;
+	/**
+	 * Blocks data
+	 *
+	 * @var stdClass
+	 */
+	$blocks;
 
-/**
- * @var		Head
- */
-$head;
+	/**
+	 * @var Head
+	 */
+	$head;
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -42,6 +42,8 @@ $head;
 		<script src="js/jquery.color.js" type="text/javascript"></script>
 		<script src="js/funeat.core.js" type="text/javascript"></script>
 		<script src="js/layout.js" type="text/javascript"></script>
+		<script src="http://map.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+		<script src="js/gmaps.js" type="text/javascript"></script>
 		<?php echo ltrim($head->fetch()); ?>
 	</head>
 	<body>
@@ -80,6 +82,38 @@ $head;
 						</div>
 						<div class="clearfix"></div>
 					</div>
+				</div>
+				<div class="localInfoBox">
+					目前位置<input id="localAddress" type="text" disabled onchange="Listener.TopBox.onLocalAddressChange(map)" />
+					<input id="localLatitude" type="hidden" />
+					<input id="localLongitude" type="hidden" />
+					<input id="localManual" type="checkbox" onclick="Listener.TopBox.onLocalManualClick()"/>自行輸入位置
+					<script>
+						jQuery(document).ready(function()
+						{
+							jQuery("#localLatitude").val(Funeat.Storage.localLat);
+							jQuery("#localLongitude").val(Funeat.Storage.localLng);
+
+
+							if (Funeat.Storage.localManual == 1) {
+								jQuery("#localAddress").removeAttr("disabled");
+								jQuery("#localManual").prop("checked", true);
+							}
+
+							GMaps.geocode(
+							{
+								lat : Funeat.Storage.localLat,
+								lng : Funeat.Storage.localLng,
+								callback : function(results, status)
+								{
+									if (results && results.length > 0)
+									{
+										jQuery("#localAddress").val(results[0].formatted_address);
+									}
+								}
+							});
+						});
+					</script>
 				</div>
 				<div class="searchAdvBox">
 					<div class="searchAdvItem">
