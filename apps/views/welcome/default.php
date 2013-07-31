@@ -1,7 +1,7 @@
 <div class="leftBox">
 	<div class="leftBanner">
 		<div class="leftCLose">
-			
+
 		</div>
 	</div>
 	<div class="leftMenu">
@@ -82,112 +82,8 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function()
 		{
-			map = new GMaps(
-			{
-				div : '#mapBox',
-				lat : Funeat.Storage.localLat,
-				lng : Funeat.Storage.localLng,
-				mapTypeId : google.maps.MapTypeId.ROADMAP,
-				scaleControl : false,
-				mapTypeControl : false,
-				mapTypeControlOptions :
-				{
-					style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
-				}
-			});
-
-			if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
-			{
-				GMaps.geolocate(
-				{
-					success : function(position)
-					{
-						if (localStorage.localLatitude == undefined)
-						{
-							localStorage.localLatitude = position.coords.latitude;
-						}
-						if (localStorage.localLongitude == undefined)
-						{
-							localStorage.localLongitude = position.coords.longitude;
-						}
-						map.setCenter(position.coords.latitude, position.coords.longitude);
-						map.addMarker(
-						{
-							lat : position.coords.latitude,
-							lng : position.coords.longitude,
-							draggable : true,
-							animation : google.maps.Animation.DROP,
-							infoWindow :
-							{
-								content : $("#localTemplate").text(),
-							},
-							dragend : function()
-							{
-								var pos = this.getPosition();
-								localStorage.localLatitude = pos.lat();
-								localStorage.localLongitude = pos.lng();
-								GMaps.geocode(
-								{
-									lat : pos.lat(),
-									lng : pos.lng(),
-									callback : function(results, status)
-									{
-										if (results && results.length > 0)
-										{
-											alert(results[0].formatted_address);
-										}
-									}
-								});
-							}
-						});
-					},
-					error : function(error)
-					{
-						alert('Geolocation failed: ' + error.message);
-					},
-					not_supported : function()
-					{
-						alert("Your browser does not support geolocation");
-					},
-					always : function()
-					{
-						alert("Done!");
-					}
-				});
-			}
-			else
-			{
-				map.setCenter(localStorage.localLatitude, localStorage.localLongitude);
-				map.addMarker(
-				{
-					lat : localStorage.localLatitude,
-					lng : localStorage.localLongitude,
-					draggable : true,
-					animation : google.maps.Animation.DROP,
-					infoWindow :
-					{
-						content : $("#localTemplate").text(),
-					},
-					dragend : function()
-					{
-						var pos = this.getPosition();
-						localStorage.localLatitude = pos.lat();
-						localStorage.localLongitude = pos.lng();
-						GMaps.geocode(
-						{
-							lat : pos.lat(),
-							lng : pos.lng(),
-							callback : function(results, status)
-							{
-								if (results && results.length > 0)
-								{
-									//alert(results[0].formatted_address);
-								}
-							}
-						});
-					}
-				});
-			}
+			map = new Funeat.Map('#mapBox');
+			Funeat.MapStatic.geolocate(map);
 		});
 	</script>
 	<script type="text/html" id="localTemplate">

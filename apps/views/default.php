@@ -58,9 +58,9 @@
 					<input class="searchBtn" value="" type="button" />
 					<input class="randomBtn" value="" type="button" />
 					<div class="positionBtn">
-						
+
 					</div>
-					
+
 					<div class="localInfoBox">
 						目前位置<br>
 						<input id="localAddress" type="text" disabled onchange="Listener.TopBox.onLocalAddressChange(map)" />
@@ -74,13 +74,13 @@
 							{
 								jQuery("#localLatitude").val(Funeat.Storage.localLat);
 								jQuery("#localLongitude").val(Funeat.Storage.localLng);
-		
-		
+
+
 								if (Funeat.Storage.localManual == 1) {
 									jQuery("#localAddress").removeAttr("disabled");
 									jQuery("#localManual").prop("checked", true);
 								}
-		
+
 								GMaps.geocode(
 								{
 									lat : Funeat.Storage.localLat,
@@ -122,7 +122,7 @@
 						<div class="clearfix"></div>
 					</div>
 				</div>
-				
+
 				<div class="searchAdvBox">
 					<div class="searchAdvItem">
 						<div class="filterItem">
@@ -144,10 +144,10 @@
 						<div class="clearfix"></div>
 					</div>
 				</div>
-				
-				
+
+
 			</div>
-			
+
 			<?php echo $this->view($blocks->body) ?>
 			<div class="footer">
 				2013 Powered by DreamOn.
