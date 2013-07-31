@@ -37,9 +37,20 @@ var Funeat = Funeat ||
 		 * @var google.maps.Marker
 		 */
 		var _localMarker;
+
+		/**
+		 * @var google.maps.Marker[]
+		 */
+		var _remoteMarker = new Array();
+
+		/**
+		 * @var google.maps.Circle
+		 */
 		var _circle;
 
 		var _showLocalMarker = true;
+
+		var _map;
 
 		localStorage.localManual = localStorage.localManual == undefined ? 0 : localStorage.localManual;
 		localStorage.localLatitude = localStorage.localLatitude == undefined ? 25.08 : localStorage.localLatitude;
@@ -64,6 +75,8 @@ var Funeat = Funeat ||
 				style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
 			}
 		});
+
+		_map = this.mainMap;
 
 		_circle = this.mainMap.drawCircle(
 		{
@@ -92,8 +105,6 @@ var Funeat = Funeat ||
 			dragend : function()
 			{
 				var latlng = this.getPosition();
-				_updateLocal(latlng);
-				_circle.setCenter(latlng);
 
 				GMaps.geocode(
 				{
@@ -103,6 +114,10 @@ var Funeat = Funeat ||
 					{
 						if (results && results.length > 0)
 						{
+							for (var i in _remoteMarker)
+							{
+								_remoteMarker[i].setMap(null);
+							}
 							jQuery("#localAddress").val(results[0].formatted_address);
 							jQuery("#localLatitude").val(latlng.lat());
 							jQuery("#localLongitude").val(latlng.lng());
@@ -110,14 +125,9 @@ var Funeat = Funeat ||
 					}
 				});
 
-				var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude + "?distance=" + localStorage.range;
+				_localMarker.setDraggable(false);
+				_updateLocal(latlng);
 
-				jQuery.get(queryUrl,
-				{
-				}, function(data)
-				{
-					alert(data);
-				});
 			}
 		});
 
@@ -135,15 +145,53 @@ var Funeat = Funeat ||
 		{
 			return _localMarker;
 		}
+		/**
+		 * Update markers
+		 */
+		function _updateRemote(json)
+		{
+			for (var i in json)
+			{
+				_remoteMarker[i] = _map.addMarker(
+				{
+					lat : json[i].latitude,
+					lng : json[i].longitude,
+					animation : google.maps.Animation.BOUNCE,
+					infoWindow :
+					{
+						content : jQuery("#localTemplate").text(),
+					}
+				});
+			}
+			_localMarker.setDraggable(true);
+
+		}
+
+		function _getMap()
+		{
+			return this.mainMap;
+		}
+
 		function _updateLocal(latlng)
 		{
 			localStorage.localLatitude = latlng.lat();
 			localStorage.localLongitude = latlng.lng();
 
-			this.localLat = localStorage.localLatitude;
-			this.localLng = localStorage.localLongitude;
+			_circle.setCenter(latlng);
+
+			//this.localLat = localStorage.localLatitude;
+			//this.localLng = localStorage.localLongitude;
 
 			_localMarker.setPosition(latlng);
+
+			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude + "?distance=" + localStorage.range;
+
+			jQuery.get(queryUrl,
+			{
+			}, function(data)
+			{
+				_updateRemote(data);
+			});
 		}
 
 	},
