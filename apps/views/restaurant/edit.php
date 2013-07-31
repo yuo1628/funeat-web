@@ -60,7 +60,55 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 					*地址
 				</div>
 				<div class="resEditInput">
-					<input type="text" name="address" value="<?php echo $address; ?>" required />
+					<input id="address" type="text" name="address" value="<?php echo $address; ?>" required />
+					<input type="hidden" name="latitude" />
+					<input type="hidden" name="longitude" />
+					<script>
+						jQuery('#address').change(function(e)
+						{
+							GMaps.geocode(
+							{
+								address : $('#address').val().trim(),
+								callback : function(results, status)
+								{
+									if (status == 'OK')
+									{
+										var latlng = results[0].geometry.location;
+										map.removeMarkers()
+										map.setCenter(latlng.lat(), latlng.lng());
+										map.addMarker(
+										{
+											lat : latlng.lat(),
+											lng : latlng.lng(),
+											draggable : true,
+											dragend : function()
+											{
+												var pos = this.getPosition();
+												localStorage.localLatitude = pos.lat();
+												localStorage.localLongitude = pos.lng();
+												GMaps.geocode(
+												{
+													lat : pos.lat(),
+													lng : pos.lng(),
+													callback : function(results, status)
+													{
+														if (results && results.length > 0)
+														{
+															jQuery("input[name=address]").val(results[0].formatted_address);
+															jQuery("input[name=latitude]").val(pos.lat());
+															jQuery("input[name=longitude]").val(pos.lng());
+														}
+													}
+												});
+											}
+										});
+										jQuery("input[name=latitude]").val(latlng.lat());
+										jQuery("input[name=longitude]").val(latlng.lng());
+									}
+								}
+							});
+						});
+					</script>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -71,7 +119,35 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 			<div class="resEditMap">
 				<div class="resMapTopShadow"></div>
 				<div class="resMapBottomShadow"></div>
-				<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=zh-TW&amp;geocode=&amp;q=%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%8C%97%E5%B1%AF%E5%8D%80+%E5%A4%A7%E9%80%A3%E8%B7%AF%E4%B8%89%E6%AE%B5%E5%8D%81%E8%99%9F&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=55.849851,135.263672&amp;ie=UTF8&amp;hq=%E5%A4%A7%E9%80%A3%E8%B7%AF%E4%B8%89%E6%AE%B5%E5%8D%81%E8%99%9F&amp;hnear=%E5%8F%B0%E7%81%A3%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%8C%97%E5%B1%AF%E5%8D%80&amp;ll=24.178009,120.718443&amp;spn=0.006454,0.067311&amp;t=m&amp;output=embed"></iframe>
+				<div id="mapBox" class="mapBox"></div>
+				<script type="text/javascript">
+					$(document).ready(function()
+					{
+						if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
+						{
+							localPosition = new google.maps.LatLng(24.175097051954552, 120.69067758941651);
+						}
+						else
+						{
+							localPosition = new google.maps.LatLng(localStorage.localLatitude, localStorage.localLongitude);
+						}
+
+						map = new GMaps(
+						{
+							div : '#mapBox',
+							lat : localPosition.lat(),
+							lng : localPosition.lng(),
+							mapTypeId : google.maps.MapTypeId.ROADMAP,
+							scaleControl : false,
+							mapTypeControl : false,
+							mapTypeControlOptions :
+							{
+								style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
+							}
+						});
+
+					});
+			</script>
 			</div>
 		</div>
 		<div class="resEditItem">

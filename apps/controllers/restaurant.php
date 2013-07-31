@@ -111,6 +111,8 @@ class Restaurant extends MY_Controller
 	{
 		$restaurant = $this->_loadRestaurant($identity);
 
+		$member = null;
+
 		if ($this->member->isLogin($this->session) && !empty($restaurant))
 		{
 			$member = $this->member->getLoginMember($this->session);
@@ -222,6 +224,8 @@ class Restaurant extends MY_Controller
 			// Set form validation rules
 			$this->form_validation->set_rules('name', 'Name', 'required');
 			$this->form_validation->set_rules('address', 'Address', 'required');
+			$this->form_validation->set_rules('latitude', 'Latitude', 'required');
+			$this->form_validation->set_rules('longitude', 'Longitude', 'required');
 
 			if ($this->form_validation->run() !== false)
 			{
@@ -250,6 +254,8 @@ class Restaurant extends MY_Controller
 
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
+			$restaurant->setAddress($this->input->post('address'));
+			$restaurant->setLatLng($this->input->post('latitude'), $this->input->post('longitude'));
 			$restaurant->setAddress($this->input->post('address'));
 			$restaurant->setTel($this->input->post('tel'));
 			$restaurant->setFax($this->input->post('fax'));
