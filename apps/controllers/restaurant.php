@@ -103,6 +103,58 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Query for list
+	 *
+	 * @param		float	lat			Latitude of local position.
+	 * @param		float	lng			Longitude of local position.
+	 *
+	 * @param		float	distance	Distance of meter.
+	 *
+	 * @return		JSON	data of list
+	 */
+	public function query($lat, $lng)
+	{
+		// Set header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		$this->load->library('Maps');
+
+		/**
+		 * @var Maps
+		 */
+		$maps = $this->maps;
+
+		$distance = (float)$this->input->get('distance');
+
+		$items = $this->restaurant->getItems();
+
+		$output = array();
+
+		foreach ($items as $i => $item)
+		{
+			/**
+			 * @var	models\entity\restaurant\Restaurants
+			 */
+			$item;
+
+			if ($distance)
+			{
+				$item->setDistance($lat, $lng);
+				if ($item->getDistance() > $distance)
+				{
+					unset($items[$i]);
+					continue;
+				}
+			}
+
+			$output[] = $item->toArray(true);
+		}
+
+		echo json_encode($output);
+	}
+
+	/**
 	 * Restaurant profile page
 	 *
 	 * @param		identity Can use ID, UUID or username.
