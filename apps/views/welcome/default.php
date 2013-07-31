@@ -1,7 +1,7 @@
 <div class="leftBox">
 	<div class="leftBanner">
 		<div class="leftCLose">
-			X
+			
 		</div>
 	</div>
 	<div class="leftMenu">
