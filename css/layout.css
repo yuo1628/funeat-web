@@ -106,7 +106,7 @@ a {
 .searchAdvBox {
 	position: absolute;
 	padding: 10px;
-	top: 80px;
+	top: 111px;
 	background-color: #333;
 	left: 320px;
 	min-width: 300px;
@@ -138,14 +138,17 @@ a {
 
 	position: absolute;
 	left: -320px;
-	top: 80px;
+	top: 0px;
 	background-color: #000;
 	box-shadow: 2px 2px 2px #999;
 	z-index: 1;
 	width: 320px;
 	height: 100%;
 	opacity: 0.8;
+	margin: 0 0 110px 0;
 }
+
+
 
 /**
  * 	like
