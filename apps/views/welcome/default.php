@@ -80,13 +80,13 @@
 <div class="contentBox">
 	<div id="mapBox" class="mapBox"></div>
 	<script type="text/javascript">
-		$(document).ready(function()
+		jQuery(document).ready(function()
 		{
 			map = new GMaps(
 			{
 				div : '#mapBox',
-				lat : 25.08,
-				lng : 121.45,
+				lat : Funeat.Storage.localLat,
+				lng : Funeat.Storage.localLng,
 				mapTypeId : google.maps.MapTypeId.ROADMAP,
 				scaleControl : false,
 				mapTypeControl : false,
@@ -95,6 +95,7 @@
 					style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
 				}
 			});
+
 			if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
 			{
 				GMaps.geolocate(
@@ -180,7 +181,7 @@
 							{
 								if (results && results.length > 0)
 								{
-									alert(results[0].formatted_address);
+									//alert(results[0].formatted_address);
 								}
 							}
 						});

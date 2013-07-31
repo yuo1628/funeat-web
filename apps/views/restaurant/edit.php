@@ -6,6 +6,9 @@ use models\entity\Entity as Entity;
 // Load library
 $this->load->helper('url');
 
+// Form action
+$target = ($restaurant->getId() === null) ? 'restaurant/save' : 'restaurant/save/' . $restaurant->uuid;
+
 /**
  * 店家服務特色標籤陣列
  *
@@ -19,9 +22,6 @@ $features;
  * @var models\entity\restaurant\Restaurants
  */
 $restaurant;
-
-// Form action
-$target = ($restaurant->getId() === null) ? 'restaurant/save' : 'restaurant/save/' . $restaurant->uuid;
 
 // Preset data
 $name = Entity::preset(set_value('name'), $restaurant->getName());
@@ -123,20 +123,11 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 				<script type="text/javascript">
 					$(document).ready(function()
 					{
-						if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
-						{
-							localPosition = new google.maps.LatLng(24.175097051954552, 120.69067758941651);
-						}
-						else
-						{
-							localPosition = new google.maps.LatLng(localStorage.localLatitude, localStorage.localLongitude);
-						}
-
 						map = new GMaps(
 						{
 							div : '#mapBox',
-							lat : localPosition.lat(),
-							lng : localPosition.lng(),
+							lat : Funeat.Storage.localLat,
+							lng : Funeat.Storage.localLng,
 							mapTypeId : google.maps.MapTypeId.ROADMAP,
 							scaleControl : false,
 							mapTypeControl : false,
