@@ -66,7 +66,6 @@ class Restaurant extends MY_Controller
 		parent::__construct('default');
 
 		// Load library
-		$this->load->library('doctrine');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 
@@ -104,6 +103,58 @@ class Restaurant extends MY_Controller
 	}
 
 	/**
+	 * Query for list
+	 *
+	 * @param		float	lat			Latitude of local position.
+	 * @param		float	lng			Longitude of local position.
+	 *
+	 * @param		float	distance	Distance of meter.
+	 *
+	 * @return		JSON	data of list
+	 */
+	public function query($lat, $lng)
+	{
+		// Set header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		$this->load->library('Maps');
+
+		/**
+		 * @var Maps
+		 */
+		$maps = $this->maps;
+
+		$distance = (float)$this->input->get('distance');
+
+		$items = $this->restaurant->getItems();
+
+		$output = array();
+
+		foreach ($items as $i => $item)
+		{
+			/**
+			 * @var	models\entity\restaurant\Restaurants
+			 */
+			$item;
+
+			if ($distance)
+			{
+				$item->setDistance($lat, $lng);
+				if ($item->getDistance() > $distance)
+				{
+					unset($items[$i]);
+					continue;
+				}
+			}
+
+			$output[] = $item->toArray(true);
+		}
+
+		echo json_encode($output);
+	}
+
+	/**
 	 * Restaurant profile page
 	 *
 	 * @param		identity Can use ID, UUID or username.
@@ -111,12 +162,14 @@ class Restaurant extends MY_Controller
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
 		$restaurant = $this->_loadRestaurant($identity);
-		
+
+		$member = null;
+
 		if ($this->member->isLogin($this->session) && !empty($restaurant))
 		{
 			$member = $this->member->getLoginMember($this->session);
 		}
-		
+
 		switch ($format)
 		{
 			default :
@@ -223,6 +276,8 @@ class Restaurant extends MY_Controller
 			// Set form validation rules
 			$this->form_validation->set_rules('name', 'Name', 'required');
 			$this->form_validation->set_rules('address', 'Address', 'required');
+			$this->form_validation->set_rules('latitude', 'Latitude', 'required');
+			$this->form_validation->set_rules('longitude', 'Longitude', 'required');
 
 			if ($this->form_validation->run() !== false)
 			{
@@ -251,6 +306,8 @@ class Restaurant extends MY_Controller
 
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
+			$restaurant->setAddress($this->input->post('address'));
+			$restaurant->setLatLng($this->input->post('latitude'), $this->input->post('longitude'));
 			$restaurant->setAddress($this->input->post('address'));
 			$restaurant->setTel($this->input->post('tel'));
 			$restaurant->setFax($this->input->post('fax'));

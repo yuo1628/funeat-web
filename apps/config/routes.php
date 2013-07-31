@@ -43,6 +43,7 @@ $route['404_override'] = '';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'member/comment/$1';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/reply'] = 'member/reply/$1';
+$route['restaurant/query/(:any)'] = 'restaurant/query/$1';
 $route['restaurant/add'] = 'restaurant/add';
 $route['restaurant/save'] = 'restaurant/save';
 $route['restaurant/save/(:any)'] = 'restaurant/save/$1';

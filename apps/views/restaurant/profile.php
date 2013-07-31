@@ -13,14 +13,12 @@ $this->load->helper('url');
  */
 $restaurant;
 
-
 /**
- * 店家資料
+ * 登入使用者資料
  *
  * @var models\entity\member\members
  */
 $member;
-
 ?>
 <!-- @formatter:off -->
 <input id="restaurant_uuid" type="hidden" value="<?php echo $restaurant->getUuid() ?>" />
@@ -45,14 +43,14 @@ $member;
 		<!-- gallery -->
 		<div class="resGalleryBox">
 			<div class="galleryLeftBtn">
-				
+
 			</div>
 			<div class="galleryRightBtn">
-				
+
 			</div>
 			<div class="galleryBox">
 				<div class="gallery">
-					
+
 					<div class="galleryMenu">
 						<?php foreach ($restaurant->getGallery() as $gallery):
 						?>
@@ -64,41 +62,37 @@ $member;
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			
-			
-			
 			<div class="galleryPreviewBox">
 				<div class="galleryPreviewLeftBtn">
-				
+
 				</div>
 				<div class="galleryPreviewRightBtn">
-					
+
 				</div>
 				<div class="galleryPreviewMenuBox">
 					<div class="galleryPreviewMenu">
-						<?php 
-						
-						foreach ($restaurant->getGallery() as $i => $gallery):
-							$class = '';
-							if($i == 0)
-							{
-								$class = 'thisPreview';
-							}
-							?>
-							
+						<?php
+							foreach ($restaurant->getGallery() as $i => $gallery):
+								$class = '';
+								if ($i == 0)
+								{
+									$class = 'thisPreview';
+								}
+						?>
+
 						<div class="galleryPreviewItem <?php echo $class ?>">
 							<img src="<?php echo Images::UPLOAD_PATH, $gallery->getFilename(); ?>" />
 						</div>
 						<?php endforeach; ?>
 					</div>
-					
+
 					<div class="clearfix"></div>
 				</div>
-				
+
 			</div>
-			
+
 		</div>
-		<div class="arrowLeft galleryArrowLeft" ></div>
+		<div class="arrowLeft galleryArrowLeft"></div>
 		<div class="arrowRight galleryArrowRight"></div>
 		<div style="padding-top: 500px;"></div>
 		<!-- info -->
@@ -137,15 +131,14 @@ $member;
 					<br>
 					<br>
 					<div class="resInfoItem">
-						<?php 
-							
+						<?php
 							$like_class = 'resLikeBtn';
 							$path = 'like.png';
-							if($restaurant->getLike()->contains($member)){
+							if ($restaurant->getLike()->contains($member))
+							{
 								$like_class = 'hasLike';
 								$path = 'has_like.png';
 							}
-							
 						?>
 						<div class="resLikeBtnBox" >
 							<div class="<?php echo $like_class ?>">
@@ -169,7 +162,101 @@ $member;
 		<div class="resMapBox">
 			<div class="resMapTopShadow"></div>
 			<div class="resMapBottomShadow"></div>
-			<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=zh-TW&amp;geocode=&amp;q=%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%8C%97%E5%B1%AF%E5%8D%80+%E5%A4%A7%E9%80%A3%E8%B7%AF%E4%B8%89%E6%AE%B5%E5%8D%81%E8%99%9F&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=55.849851,135.263672&amp;ie=UTF8&amp;hq=%E5%A4%A7%E9%80%A3%E8%B7%AF%E4%B8%89%E6%AE%B5%E5%8D%81%E8%99%9F&amp;hnear=%E5%8F%B0%E7%81%A3%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%8C%97%E5%B1%AF%E5%8D%80&amp;ll=24.178009,120.718443&amp;spn=0.006454,0.067311&amp;t=m&amp;output=embed"></iframe>
+			<div id="mapBox" class="mapBox"></div>
+			<script type="text/javascript">
+				$(document).ready(function()
+				{
+					if (localStorage.localLatitude == undefined || localStorage.localLongitude == undefined)
+					{
+						localPosition = new google.maps.LatLng(24.175097051954552, 120.69067758941651);
+					}
+					else
+					{
+						localPosition = new google.maps.LatLng(localStorage.localLatitude, localStorage.localLongitude);
+					}
+					markerPosition = new google.maps.LatLng(<?php echo $restaurant->getLatitude(); ?>, <?php echo $restaurant->getLongitude(); ?>);
+					map = new GMaps(
+					{
+						div : '#mapBox',
+						lat : markerPosition.lat(),
+						lng : markerPosition.lng(),
+						mapTypeId : google.maps.MapTypeId.ROADMAP,
+						scaleControl : false,
+						mapTypeControl : false,
+						mapTypeControlOptions :
+						{
+							style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
+						}
+					});
+
+					map.addMarker(
+					{
+						lat : markerPosition.lat(),
+						lng : markerPosition.lng(),
+						animation : google.maps.Animation.BOUNCE,
+						infoWindow :
+						{
+							content : $("#markerTemplate").text()
+						}
+					});
+
+					GMaps.geolocate(
+					{
+						success : function(position)
+						{
+							localPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+							map.addMarker(
+							{
+								lat : localPosition.lat(),
+								lng : localPosition.lng(),
+								draggable : true,
+								animation : google.maps.Animation.DROP,
+								infoWindow :
+								{
+									content : $("#localTemplate").text(),
+									pixelOffset : new google.maps.Size(0, 0)
+								},
+								dragend : function()
+								{
+									var pos = this.getPosition();
+									GMaps.geocode(
+									{
+										lat : pos.lat(),
+										lng : pos.lng(),
+										callback : function(results, status)
+										{
+											if (results && results.length > 0)
+											{
+												alert(results[0].formatted_address);
+											}
+										}
+									});
+								}
+							});
+						},
+						error : function(error)
+						{
+							alert('Geolocation failed: ' + error.message);
+						},
+						not_supported : function()
+						{
+							alert("Your browser does not support geolocation");
+						},
+						always : function()
+						{
+							//alert("Done!");
+						}
+					});
+
+
+				});
+			</script>
+			<script type="text/html" id="localTemplate">
+
+			</script>
+			<script type="text/html" id="markerTemplate">
+				<a href="javascript:void(0)" onclick="Listener.Map.onRoute(map, localPosition, markerPosition);">路線</a>
+			</script>
 		</div>
 		<div class="otherStoreBox">
 			<div class="otherStoreBtn">
@@ -182,20 +269,19 @@ $member;
 			<div class="resFoodMenuTitle">
 				Menu
 			</div>
-			<?php foreach ($restaurant->getMenu() as $menu):
-			?>
-			<div class="resFoodMenuImg">
-				<img src="<?php echo Images::UPLOAD_PATH, $menu->getFilename(); ?>" />
-			</div>
+			<?php foreach ($restaurant->getMenu() as $menu): ?>
+				<div class="resFoodMenuImg">
+					<img src="<?php echo Images::UPLOAD_PATH, $menu->getFilename(); ?>" />
+				</div>
 			<?php endforeach; ?>
 		</div>
-		
-		
+
+
 		<div class="resDiscussBox">
 			<div class="resDiscussTitle">
 				留言討論
 			</div>
-			
+
 			<form method="post" action="index.php/restaurant/comment/<?php echo $restaurant->getUuid() ?>">
 				<input type="hidden" value="<?php echo $restaurant->getUuid() ?>" name="identity" />
 				<div class="discussMainPostBox">
@@ -209,7 +295,7 @@ $member;
 								所有人
 							</div>
 						</div>
-						
+
 						<div class="clearfix"></div>
 					</div>
 					<div class="discussContent">
@@ -219,35 +305,30 @@ $member;
 						<div class="contentText">
 							<textarea class="mainPostText" name="comment"></textarea>
 						</div>
-						
+
 						<div class="clearfix"></div>
 					</div>
-					
+
 					<div class="clearfix"></div>
-					
+
 					<input class="mainPostBtn" type="submit" value="留言" />
 					<div class="clearfix"></div>
 				</div>
 			</form>
 			<div class="clearfix"></div>
-					
-			
+
+
 			<div class="resDiscussMenu">
-				<?php 
+				<?php
+					foreach ($restaurant->getComments() as $i => $item):
 					/**
-					 * 店家資料
+					 * 店家評論
 					 *
-					 * @var  models\entity\restaurant\Comments
+					 * @var models\entity\restaurant\Comments
 					 */
 					$item;
-					
 				?>
-				<?php 
-					foreach ($restaurant->getComments() as $i => $item): 
-						
-						
-				?>
-				
+
 				<div class="resDiscussItem">
 					<input class="user_uuid" type="hidden" value="<?php echo $item->getUuid() ?>" />
 					<input class="user_name" type="hidden" value="<?php echo $item->getCreator() ?>" />
@@ -286,17 +367,17 @@ $member;
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				
+
 				<div class="replyBox">
-					<?php 
-					/**
-					 * 店家資料
-					 *
-					 * @var  models\entity\restaurant\Comments
-					 */
-					$reply_item;
-					foreach($item->getReplies() as $reply_item): 
-					//$reply_item->
+					<?php
+						$reply_item;
+						foreach($item->getReplies() as $reply_item):
+						/**
+						 * 評論回覆
+						 *
+						 * @var  models\entity\restaurant\Comments
+						 */
+						$reply_item;
 					?>
 					<div class="resDiscussItem replyDiscussItem">
 						<input class="user_uuid" type="hidden" value="<?php echo $reply_item->getUuid() ?>" />
@@ -335,8 +416,6 @@ $member;
 					<?php endforeach; ?>
 				</div>
 				<?php endforeach; ?>
-				
-				
 			</div>
 		</div>
 		<div style="height: 20px;"></div>
