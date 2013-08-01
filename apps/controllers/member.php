@@ -53,16 +53,12 @@ class Member extends MY_Controller
 	 */
 	public function register()
 	{
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
 
 		// Redirect page when user is login
 		$redirect_page = '/member';
 
 		// If isLogin ,then redirect
-		if ($memberModel->isLogin($this->session))
+		if (MemberModel::isLogin($this->session))
 		{
 			redirect($redirect_page, 'location', 301);
 		}
@@ -76,6 +72,12 @@ class Member extends MY_Controller
 			$this->form_validation->set_rules('confirmPassword', 'Confirm Password', 'required');
 			$this->form_validation->set_rules('privacy', 'Privacy', 'required');
 
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
+
+			// TODO: optimized
 			$email = $this->input->post('email');
 			$duplicate = $memberModel->getItem($email, 'email');
 
@@ -123,7 +125,7 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($memberSelect))
+		if (MemberModel::isLogin($this->session) && !empty($memberSelect))
 		{
 			/**
 			 * @var models\entity\member\Members
@@ -171,7 +173,7 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($member))
+		if (MemberModel::isLogin($this->session) && !empty($member))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
@@ -223,11 +225,6 @@ class Member extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var models\member\Comment
 		 */
 		$commentModel = $this->getModel('member\\Comment');
@@ -239,13 +236,19 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($reply))
+		if (MemberModel::isLogin($this->session) && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
 
 			if ($this->form_validation->run() == true)
 			{
+
+				/**
+				 * @var models\Member
+				 */
+				$memberModel = $this->getModel('Member');
+
 				/**
 				 * @var models\entity\member\Comments
 				 */

@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\Member as MemberModel;
 use models\entity\restaurant\Comments as Comments;
 use models\entity\image\Images as Images;
 
@@ -152,15 +153,15 @@ class Restaurant extends MY_Controller
 	{
 		$item = $this->restaurantModel->getItemByIdentity($identity);
 
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
 		$member = null;
 
-		if ($memberModel->isLogin($this->session) && !empty($item))
+		if (MemberModel::isLogin($this->session) && !empty($item))
 		{
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
+
 			$member = $memberModel->getLoginMember($this->session);
 		}
 
@@ -208,12 +209,7 @@ class Restaurant extends MY_Controller
 	 */
 	public function add()
 	{
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		if ($memberModel->isLogin($this->session))
+		if (MemberModel::isLogin($this->session))
 		{
 			$this->load->helper('form');
 
@@ -246,12 +242,7 @@ class Restaurant extends MY_Controller
 	 */
 	public function edit($identity)
 	{
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		if ($memberModel->isLogin($this->session))
+		if (MemberModel::isLogin($this->session))
 		{
 			$this->load->helper('form');
 
@@ -295,11 +286,6 @@ class Restaurant extends MY_Controller
 	public function save($identity = null)
 	{
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var		models\entity\restaurant\Restaurants
 		 */
 		$restaurant = null;
@@ -328,9 +314,14 @@ class Restaurant extends MY_Controller
 		}
 
 		// It not vaild when restaurant is null
-		if ($memberModel->isLogin($this->session) && !empty($restaurant))
+		if (MemberModel::isLogin($this->session) && !empty($restaurant))
 		{
 			// Do data saving
+
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
 
 			/**
 			 * Load creator
@@ -439,19 +430,20 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
 		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($restaurant))
+		if (MemberModel::isLogin($this->session) && !empty($restaurant))
 		{
+
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
+
 			$member = $memberModel->getLoginMember($this->session);
 
 			if (!$restaurant->like->contains($member))
@@ -480,19 +472,19 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
 		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($restaurant))
+		if (MemberModel::isLogin($this->session) && !empty($restaurant))
 		{
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
+
 			$member = $memberModel->getLoginMember($this->session);
 
 			if (!$restaurant->dislike->contains($member))
@@ -667,14 +659,9 @@ class Restaurant extends MY_Controller
 		 */
 		$item = $this->restaurantModel->getItemByIdentity($identity);
 
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($item))
+		if (MemberModel::isLogin($this->session) && !empty($item))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
@@ -690,6 +677,11 @@ class Restaurant extends MY_Controller
 				 * @var models\entity\restaurant\Comments
 				 */
 				$comment = $commentModel->getInstance();
+
+				/**
+				 * @var models\Member
+				 */
+				$memberModel = $this->getModel('Member');
 
 				/**
 				 * @var models\entity\member\Members
@@ -731,18 +723,13 @@ class Restaurant extends MY_Controller
 		$commentModel = $this->getModel('restaurant\\Comment');
 
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var models\entity\restaurant\Comments
 		 */
 		$reply = $commentModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($reply))
+		if (MemberModel::isLogin($this->session) && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
@@ -753,6 +740,11 @@ class Restaurant extends MY_Controller
 				 * @var models\entity\restaurant\Comments
 				 */
 				$comment = $commentModel->getInstance();
+
+				/**
+				 * @var models\Member
+				 */
+				$memberModel = $this->getModel('Member');
 
 				/**
 				 * @var models\entity\member\Members
@@ -792,19 +784,19 @@ class Restaurant extends MY_Controller
 		$commentModel = $this->getModel('restaurant\\Comment');
 
 		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
-
-		/**
 		 * @var models\entity\restaurant\Comments
 		 */
 		$comment = $commentModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($memberModel->isLogin($this->session) && !empty($comment))
+		if (MemberModel::isLogin($this->session) && !empty($comment))
 		{
+			/**
+			 * @var models\Member
+			 */
+			$memberModel = $this->getModel('Member');
+
 			/**
 			 * @var models\entity\member\Members
 			 */

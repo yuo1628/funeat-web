@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\Member as MemberModel;
+
 /**
  * Login function
  *
@@ -24,7 +26,6 @@ class Login extends MY_Controller
 		// Load library
 		$this->load->helper('url');
 		$this->load->library('session');
-
 	}
 
 	/**
@@ -32,13 +33,9 @@ class Login extends MY_Controller
 	 */
 	public function index()
 	{
-		/**
-		 * @var models\Member
-		 */
-		$memberModel = $this->getModel('Member');
 
 		// If isLogin ,then redirect
-		if ($memberModel->isLogin($this->session))
+		if (MemberModel::isLogin($this->session))
 		{
 			redirect($this->redirect_page, 'location', 301);
 		}
@@ -60,6 +57,11 @@ class Login extends MY_Controller
 				$identity = $this->input->post('identity');
 				$password = $this->input->post('password');
 
+				/**
+				 * @var models\Member
+				 */
+				$memberModel = $this->getModel('Member');
+
 				$member = $memberModel->verify($identity, $password);
 
 				if (empty($member))
@@ -72,7 +74,7 @@ class Login extends MY_Controller
 				{
 					// TODO when login OK
 
-					$memberModel->login($this->session, $member);
+					MemberModel::login($this->session, $member);
 					echo 'Login OK!';
 				}
 			}
