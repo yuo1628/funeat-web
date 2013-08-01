@@ -3,6 +3,7 @@
 namespace models\restaurant;
 
 use models\model\ORMModel as Model;
+use models\entity\restaurant\Comments as MainEntity;
 
 /**
  * Comment model
@@ -19,6 +20,36 @@ class Comment extends Model
 	public function __construct($entity = "models\\entity\\restaurant\\Comments")
 	{
 		parent::__construct($entity);
+	}
+
+	/**
+	 * Load comment from identity
+	 *
+	 * @param		$identity	Identity Can use ID, UUID or username.
+	 * @param		$useId		Query ID column.
+	 *
+	 * @return		models\entity\restaurant\Comments
+	 */
+	public function getItemByIdentity($identity, $useId = false)
+	{
+		$identity = trim($identity);
+
+		$CI = get_instance();
+		$CI->load->library('uuid');
+
+		$item = null;
+
+		if ($CI->uuid->is_valid($identity))
+		{
+			$item = $this->getItem($identity, MainEntity::COLUMN_UUID);
+		}
+		elseif ((int)$identity > 0 && $useId)
+		{
+			// integer
+			$item = $this->getItem((int)$identity);
+		}
+
+		return $item;
 	}
 
 }
