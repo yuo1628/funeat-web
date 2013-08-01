@@ -53,7 +53,6 @@ class Member extends MY_Controller
 	 */
 	public function register()
 	{
-
 		// Redirect page when user is login
 		$redirect_page = '/member';
 
@@ -72,32 +71,40 @@ class Member extends MY_Controller
 			$this->form_validation->set_rules('confirmPassword', 'Confirm Password', 'required');
 			$this->form_validation->set_rules('privacy', 'Privacy', 'required');
 
-			/**
-			 * @var models\Member
-			 */
-			$memberModel = $this->getModel('Member');
-
-			// TODO: optimized
-			$email = $this->input->post('email');
-			$duplicate = $memberModel->getItem($email, 'email');
-
-			if ($this->form_validation->run() == false || $duplicate)
+			if ($this->form_validation->run() == false)
 			{
 				$this->load->helper('form');
 				$this->view("member/register");
 			}
 			else
 			{
-				$password = $this->input->post('password');
+				/**
+				 * @var models\Member
+				 */
+				$memberModel = $this->getModel('Member');
 
-				$member = $memberModel->getInstance();
+				$email = $this->input->post('email');
+				$duplicate = $memberModel->getItem($email, 'email');
 
-				$member->email = $email;
-				$member->password = $password;
+				if ($duplicate)
+				{
+					// The Email has been used.
+					$this->load->helper('form');
+					$this->view("member/register");
+				}
+				else
+				{
+					$password = $this->input->post('password');
 
-				$memberModel->save($member);
+					$member = $memberModel->getInstance();
 
-				// TODO: after save data?
+					$member->email = $email;
+					$member->password = $password;
+
+					$memberModel->save($member);
+
+					// TODO: after save data?
+				}
 			}
 		}
 	}
@@ -154,6 +161,8 @@ class Member extends MY_Controller
 	 * Comment the member action
 	 *
 	 * @param		identity Can use ID, UUID or username.
+	 *
+	 * @param		comment
 	 */
 	public function comment($identity)
 	{
