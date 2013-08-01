@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or die('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 use models\ModelFactory;
 
@@ -172,13 +172,14 @@ class MY_Controller extends CI_Controller
 	/**
 	 * Get model.
 	 *
-	 * @param		string $model Model's namespace and model's name.
+	 * @param		string	$model		Model's namespace and model's name.
+	 * @param		string	$namespace	Namespace prefix.
 	 *
 	 * @return		models\Model
 	 */
-	public function getModel($model)
+	public function getModel($model, $namespace = 'models')
 	{
-		return ModelFactory::getInstance($model);
+		return ModelFactory::getInstance($namespace . '\\' . $model);
 	}
 
 	/**

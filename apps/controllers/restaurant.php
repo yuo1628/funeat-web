@@ -1,10 +1,12 @@
-<?php defined('BASEPATH') or die('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 use models\entity\restaurant\Comments as Comments;
 use models\entity\image\Images as Images;
 
 /**
  * Restaurant
+ *
+ * @author		Miles <jangconan@gmail.com>
  */
 class Restaurant extends MY_Controller
 {
@@ -70,7 +72,7 @@ class Restaurant extends MY_Controller
 		$this->load->library('session');
 
 		// Load models
-		$this->restaurantModel = $this->getModel('models\\Restaurant');
+		$this->restaurantModel = $this->getModel('Restaurant');
 	}
 
 	/**
@@ -153,7 +155,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		$member = null;
 
@@ -209,7 +211,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		if ($memberModel->isLogin($this->session))
 		{
@@ -218,7 +220,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = $this->getModel('models\\Feature');
+			$featureModel = $this->getModel('Feature');
 
 			$this->setData('features', $featureModel->getItems());
 			$this->setData('restaurant', $this->restaurantModel->getInstance());
@@ -247,7 +249,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		if ($memberModel->isLogin($this->session))
 		{
@@ -256,7 +258,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = $this->getModel('models\\Feature');
+			$featureModel = $this->getModel('Feature');
 
 			$this->setData('features', $featureModel->getItems());
 			$this->setData('restaurant', $this->restaurantModel->getItemByIdentity($identity));
@@ -295,7 +297,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var		models\entity\restaurant\Restaurants
@@ -354,7 +356,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = $this->getModel('models\\Feature');
+			$featureModel = $this->getModel('Feature');
 
 			$restaurant->setFeatures($this->input->post('features'), $featureModel);
 
@@ -403,7 +405,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\Member
 				 */
-				$featureModel = $this->getModel('models\\Feature');
+				$featureModel = $this->getModel('Feature');
 
 				$this->load->helper('form');
 
@@ -415,7 +417,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\Member
 				 */
-				$featureModel = $this->getModel('models\\Feature');
+				$featureModel = $this->getModel('Feature');
 
 				$this->load->helper('form');
 
@@ -439,7 +441,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\restaurant\Restaurants
@@ -480,7 +482,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\restaurant\Restaurants
@@ -521,7 +523,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$featureModel = $this->getModel('models\\Feature');
+		$featureModel = $this->getModel('Feature');
 
 		// Output default value
 		$output = null;
@@ -668,7 +670,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		$success = false;
 
@@ -682,7 +684,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\restaurant\Comment
 				 */
-				$commentModel = $this->getModel('models\\restaurant\\Comment');
+				$commentModel = $this->getModel('restaurant\\Comment');
 
 				/**
 				 * @var models\entity\restaurant\Comments
@@ -726,12 +728,12 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\restaurant\Comment
 		 */
-		$commentModel = $this->getModel('models\\restaurant\\Comment');
+		$commentModel = $this->getModel('restaurant\\Comment');
 
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\restaurant\Comments
@@ -787,12 +789,12 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\restaurant\Comment
 		 */
-		$commentModel = $this->getModel('models\\restaurant\\Comment');
+		$commentModel = $this->getModel('restaurant\\Comment');
 
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\restaurant\Comments

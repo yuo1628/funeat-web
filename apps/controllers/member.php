@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or die('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 use models\Member as MemberModel;
 use models\member\Comment as CommentModel;
@@ -56,7 +56,7 @@ class Member extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		// Redirect page when user is login
 		$redirect_page = '/member';
@@ -114,7 +114,7 @@ class Member extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\member\Members
@@ -162,7 +162,7 @@ class Member extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\entity\member\Members
@@ -181,7 +181,7 @@ class Member extends MY_Controller
 				/**
 				 * @var models\member\Comment
 				 */
-				$commentModel = $this->getModel('models\\member\\Comment');
+				$commentModel = $this->getModel('member\\Comment');
 
 				/**
 				 * @var models\entity\member\Comments
@@ -225,12 +225,12 @@ class Member extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		/**
 		 * @var models\member\Comment
 		 */
-		$commentModel = $this->getModel('models\\member\\Comment');
+		$commentModel = $this->getModel('member\\Comment');
 
 		/**
 		 * @var models\entity\member\Comments

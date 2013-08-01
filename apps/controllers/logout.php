@@ -1,5 +1,10 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * Logout function
+ *
+ * @author		Miles <jangconan@gmail.com>
+ */
 class Logout extends MY_Controller
 {
     /**

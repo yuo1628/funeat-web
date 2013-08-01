@@ -1,5 +1,10 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * Login function
+ *
+ * @author		Miles <jangconan@gmail.com>
+ */
 class Login extends MY_Controller
 {
 	/**
@@ -30,7 +35,7 @@ class Login extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = $this->getModel('models\\Member');
+		$memberModel = $this->getModel('Member');
 
 		// If isLogin ,then redirect
 		if ($memberModel->isLogin($this->session))
