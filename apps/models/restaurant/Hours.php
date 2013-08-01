@@ -56,6 +56,9 @@ class Hours
 	 */
 	const HOURS_EXCEPTION_MONTH_DAY = 'month_day';
 
+    
+    const DAY_IN_SECONDS = 86400;
+    
 	/**
 	 * Data will translate to JSON string
 	 */
@@ -68,7 +71,7 @@ class Hours
 	 */
 	public function __construct($json = null)
 	{
-		$data = json_decode($json);
+		$data = json_decode($json, True);
 
 		if ($data)
 		{
@@ -91,6 +94,20 @@ class Hours
 		}
 	}
 
+    /**
+     * make timestamp of a day
+     *
+     * @access public
+     * @param int $hour
+     * @param int $minute
+     * @return int
+     */
+    public static function mkdaytime($hour, $minute)
+    {
+        $time = new \DateTime("1970-1-1 $hour:$minute:0", new \DateTimeZone('GMT'));
+        return $time->getTimestamp();
+    }
+    
 	/**
 	 * Get raw data
 	 *
@@ -112,7 +129,7 @@ class Hours
 
 		if ($day >= 0 && $day <= 6)
 		{
-			return $this->data[$day];
+			return $this->data[self::HOURS_DAYS][$day];
 		}
 		else
 		{
@@ -123,15 +140,72 @@ class Hours
 	/**
 	 * Put time into data
 	 *
-	 * @param		start Start time ( use mktime($hour, $minute, 0, 1, 1, 1970) )
-	 * @param		end End time ( use mktime($hour, $minute, 0, 1, 1, 1970) )
-	 * @param		day Set day will put in
-	 * @param		position The position in that day
+	 * @param		start Start time ( use Hours::mkdaytime($hour, $minute) )
+	 * @param		end End time ( use Hours::mkdaytime($hour, $minute) )
+     * @param int $day
 	 */
-	public function putDays($start, $end, $day = null, $position = null)
+	public function putDay($start, $end, $day)
 	{
-
+        $error = '';
+        if (!($end > $start) or $day > 6 or $day < 0) {
+            $error = 'Invalid arguments';
+        } else {
+            foreach ($this->data[self::HOURS_DAYS][$day] as $interval) {
+                if (self::inInterval($start, $interval)) {
+                    $error = 'time overlaps';
+                    break;
+                } else if (self::inInterval($end, $interval)) {
+                    $error = 'time overlaps';
+                    break;
+                } else if (self::inInterval($interval[0], array($start, $end))) {
+                    $error = 'time overlaps';
+                    break;
+                }
+            }
+        }
+        if ($error) {
+            throw new \InvalidArgumentException($error);
+        }
+        
+        $this->data[self::HOURS_DAYS][$day][] = array($start, $end);
+        sort($this->data[self::HOURS_DAYS][$day]);
 	}
+    
+    /**
+     * is time in the day?
+     *
+     * @access public
+     * @param int $time
+     * @param int $day
+     * @return boolean
+     */
+    public function isTimeInDay($time, $day)
+    {
+        foreach ($this->data[self::HOURS_DAYS][$day] as $interval) {
+            if (self::inInterval($time, $interval)) {
+                return True;
+            }
+        }
+        return False;
+    }
+    
+    /**
+     * is time in any day?
+     *
+     * @access public
+     * @param int $time
+     * @return array
+     */
+    public function isTimeInDays($time)
+    {
+        $days = array();
+        foreach ($this->data[self::HOURS_DAYS] as $day => $intervals) {
+            if ($this->isTimeInDay($time, $day)) {
+                $days[] = $day;
+            }
+        }
+        return $days;
+    }
 
 	/**
 	 * Put exception into data
@@ -169,4 +243,22 @@ class Hours
 		return json_encode($this->data);
 	}
 
+    /**
+     * is the time in the interval?
+     *
+     * @access private
+     * @param int $time
+     * @param array $interval
+     * @return boolean
+     */
+    private static function inInterval($time, $interval)
+    {
+        $start = $interval[0];
+        $end = $interval[1];
+        if ($start <= $time and $time <= $end) {
+            return True;
+        } else {
+            return False;
+        }
+    }
 }
