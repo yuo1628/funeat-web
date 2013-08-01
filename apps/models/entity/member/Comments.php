@@ -22,6 +22,14 @@ use models\entity\member\Members as Members;
 class Comments extends Entity
 {
 	/**
+	 * The constants for query by columns.
+	 *
+	 * @var string
+	 */
+	const COLUMN_ID = 'id';
+	const COLUMN_UUID = 'uuid';
+
+	/**
 	 * Type constants
 	 */
 	const TYPE_GUEST = 0;
@@ -206,9 +214,9 @@ class Comments extends Entity
 		return $this->replies;
 	}
 
-	public function setComment($v)
+	public function setComment($comment)
 	{
-		$this->comment = $v;
+		$this->comment = trim($comment);
 	}
 
 	/**

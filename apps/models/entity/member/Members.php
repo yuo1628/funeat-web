@@ -19,6 +19,15 @@ use models\entity\Entity;
 class Members extends Entity
 {
 	/**
+	 * The constants for query by columns.
+	 *
+	 * @var string
+	 */
+	const COLUMN_ID = 'id';
+	const COLUMN_UUID = 'uuid';
+	const COLUMN_USERNAME = 'username';
+
+	/**
 	 * @var integer
 	 *
 	 * @ORM\Id
