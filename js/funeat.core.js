@@ -184,10 +184,11 @@ var Funeat = Funeat ||
 
 			_localMarker.setPosition(latlng);
 
-			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude + "?distance=" + localStorage.range;
+			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude;
 
 			jQuery.get(queryUrl,
 			{
+			    range : localStorage.range
 			}, function(data)
 			{
 				_updateRemote(data);

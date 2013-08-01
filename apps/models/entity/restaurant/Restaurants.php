@@ -552,9 +552,16 @@ class Restaurants extends Entity
 	 * @param		float $lat
 	 * @param		float $lng
 	 */
-	public function setDistance($lat, $lng)
+	public function setDistance($lat, $lng = null)
 	{
-		$this->distance = Maps::getDistance($lat, $lng, $this->getLatitude(), $this->getLongitude());
+		if ($lng === null)
+		{
+			$this->distance = $lat;
+		}
+		else
+		{
+			$this->distance = Maps::getDistance($lat, $lng, $this->getLatitude(), $this->getLongitude());
+		}
 	}
 
 	/**
