@@ -56,6 +56,22 @@ class Hours
 	 */
 	const HOURS_EXCEPTION_MONTH_DAY = 'month_day';
 
+    /**
+     * Time Divide Constants
+     */
+    const BREAKFAST = 1;
+    const BRUNCH = 2;
+    const LUNCH = 3;
+    const TEA = 4;
+    const DINNER = 5;
+    const MIDNIGHT_SNACK = 6;
+    
+    private static $timeDivideTofeatureMapping = array(self::BREAKFAST => NULL,
+                                                       self::BRUNCH => NULL,
+                                                       self::LUNCH => NULL,
+                                                       self::TEA => NULL,
+                                                       self::DINNER => NULL,
+                                                       self::MIDNIGHT_SNACK => NULL);
     
     const DAY_IN_SECONDS = 86400;
     
@@ -94,6 +110,19 @@ class Hours
 		}
 	}
 
+    /**
+     * Set time divide constant to feature mapping
+     *
+     * @access public
+     * @param int $timeDivide
+     * @param Feature $feature
+     */
+    public static function setTimeDivideToFeatureMapping($timeDivide, $feature)
+    {
+        // need validation?
+        self::$timeDivideTofeatureMapping[$timeDivide] = $feature;
+    }
+    
     /**
      * make timestamp of a day
      *
@@ -207,16 +236,26 @@ class Hours
         return $days;
     }
 
-	/**
+	public function putDayException($day, $month = null, $position = null)
+	{
+		$this->putException(self::HOURS_EXCEPTION_MONTH_DAY, $day, $month, $position);
+	}
+    
+    public function putWeekException($day, $week, $month = null, $position = null)
+    {
+        $this->putException(self::HOURS_EXCEPTION_MONTH_WEEK, array('week' => $week, 'day' => $day), $month, $position);
+    }
+
+    /**
 	 * Put exception into data
 	 *
 	 * @param		type
 	 * @param		value
 	 * @param		month
 	 */
-	public function putException($type, $value, $month = null, $position = null)
-	{
-		$put = array(
+    private function putException($type, $value, $month, $position)
+    {
+        $put = array(
 			self::HOURS_EXCEPTION_TYPE => $type,
 			self::HOURS_EXCEPTION_VALUE => $value,
 			self::HOURS_EXCEPTION_MONTH => $month
@@ -231,8 +270,8 @@ class Hours
 			$position = (int)$position;
 			$this->data[self::HOURS_EXCEPTION][$position] = $put;
 		}
-	}
-
+    }
+    
 	/**
 	 * Return JSON String of data
 	 *
