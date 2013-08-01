@@ -60,8 +60,11 @@
 				<div class="randomMenuBox">
 					
 				</div>
-				<div class="clearfix"></div>
 				
+				<div class="clearfix"></div>
+				<div class="randomCloseBtn">
+					完成
+				</div>
 				
 			</div>
 			
@@ -89,6 +92,7 @@
 						<script>
 							jQuery(document).ready(function()
 							{
+								
 								jQuery("#localLatitude").val(Funeat.Storage.localLat);
 								jQuery("#localLongitude").val(Funeat.Storage.localLng);
 		
@@ -110,6 +114,7 @@
 										}
 									}
 								});
+								
 							});
 						</script>
 					</div>

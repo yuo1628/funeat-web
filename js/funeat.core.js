@@ -25,6 +25,7 @@ var CONST = CONST ||
 
 var Funeat = Funeat ||
 {
+	
     Storage : {
         localManual : localStorage.localManual == undefined ? 0 : localStorage.localManual,
         localLat : localStorage.localLatitude == undefined ? 25.08 : localStorage.localLatitude,
@@ -66,6 +67,7 @@ var Listener = Listener ||
         /**
          * On local manual clicked
          */
+        
 		onLocalManualClick : function()
 		{
 			if (jQuery("#localManual").prop("checked"))
@@ -85,6 +87,7 @@ var Listener = Listener ||
          *
          * @param Gmaps
          */
+        
 		onLocalAddressChange : function(map)
 		{
 			GMaps.geocode(
@@ -139,6 +142,7 @@ var Listener = Listener ||
 		 * @param  google.maps.LatLng  start  Start position
 		 * @param  google.maps.LatLng  target  Target position
 		 */
+		
 		onRoute : function(map, start, target)
 		{
 			map.drawRoute(

@@ -2,6 +2,8 @@
  * @author Owner
  */
 
+var timeout = [];
+
 $(function() {
 	
 	var t_list = [
@@ -40,7 +42,7 @@ $(function() {
 					name : 'name4'
 				
 				}]
-		}/*,
+		},
 		{
 			tag : '晚',
 			name : [{
@@ -57,15 +59,42 @@ $(function() {
 					name : 'name4'
 				
 				}]
-		}*/
+		}
 	];
 	
 	
+	var ran;
+	//var ranRun;
 	
-	var ran = new random();
-	ran.list = t_list;
 	$(".randomBtn").click(function(){
+		ran = new random();
+		ran.list = t_list;
 		ran.run();
+		
+		$(".randomBox").css({
+			'left' : ($(document).width() * 0.5) - ($(".randomBox").width() * 0.5),
+			'top' : 0 - $(".randomBox").height()
+		});
+		
+		$(".randomBox").show();
+		
+		$(".randomBox").animate({
+			'top' : ($(document).height() * 0.5) - ($(".randomBox").height() * 0.5)
+		})
+	})
+	
+	$(".randomCloseBtn").click(function() {				
+		$(".randomBox").animate({
+			'top' : 0 - $(".randomBox").height()
+		},500,function() {
+			//$(this).hide();
+			$(".randomMenuBox").find("div").remove();		
+			for(var i = 0; i < timeout.length ;i++)
+			{
+				window.clearTimeout(timeout[i]);
+			}	
+		})
+		
 	})
 	
 	
@@ -73,15 +102,8 @@ $(function() {
 
 
 /**
- * 開關事件，target為隱藏的對象，button為事件觸發者
  * 
- * button => jquery $()
- * target => jqeury $()
- * style => class string
  * 
- * @param {Object} button => jquery $()
- * @param {Object} target => jqeury $()
- * @param {String} style => class string
  */
 function random() {
 	var boo = true;
@@ -158,14 +180,8 @@ function random() {
 		
 		$(".randomMenuBox").append(html);
 		
-		/*
-		$(".randomCheckBtn").click(function() {
-			r.timeStop($(this).attr("index"));
-			$(this).unbind("click");
-		})
-		*/
+		
 	};
-	
 	
 	
 	$(".randomStartBtn").click(function() {
@@ -174,26 +190,23 @@ function random() {
 		
 		$(".randomMenuBox").find(".randomMenu").each(function() {
 			
-			//if($(this).index()==0)
-			//{
-				var r = new randRun(2,10000,4,".randomItemScrollBox[index=" + $(this).index() + "]");
-				r.start();
-				
-				$(".randomCheckBtn[index=" + $(this).index() + "]").click(function() {
-					r.stop();
-					//$(this).unbind("click");
-				})
-			//}
+			var ranRun = new randRun(2,10000,4,".randomItemScrollBox[index=" + $(this).index() + "]");
+			ranRun.start();
+			
+			$(".randomCheckBtn[index=" + $(this).index() + "]").click(function() {
+				ranRun.stop();
+				//$(this).unbind("click");
+			})
+			
 			
 		})
 	})
-	
-		
+			
 }
 
 
 
-function randRun(delay, count, topMove, target ) {
+function randRun(delay, count, topMove, target, index ) {
 	var obj = this;
 	obj.target = target;
 	obj.currentTarget;
@@ -210,6 +223,7 @@ function randRun(delay, count, topMove, target ) {
 		
 		function startTime() {
 			var t1 = setTimeout(startRun,obj.delay);
+			timeout.push(t1);
 		}
 		
 		function startRun() {
@@ -238,6 +252,7 @@ function randRun(delay, count, topMove, target ) {
 				obj.i = 0;
 			}
 		}
+		
 	}
 	
 	obj.stop = function() {
@@ -290,7 +305,6 @@ function randRun(delay, count, topMove, target ) {
 			}
 		}
 	}
-	
 	
 	/*
 	obj.timeRun = function() {
