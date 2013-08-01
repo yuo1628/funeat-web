@@ -186,9 +186,11 @@ var Funeat = Funeat ||
 
 			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude;
 
-			jQuery.get(queryUrl,
+			jQuery.post(queryUrl,
 			{
-			    range : localStorage.range
+                //limit : 10,
+                //offset : 0,
+				range : localStorage.range
 			}, function(data)
 			{
 				_updateRemote(data);
@@ -196,7 +198,6 @@ var Funeat = Funeat ||
 		}
 
 	},
-
 	MapStatic :
 	{
 		/**

@@ -122,4 +122,41 @@ class Restaurant extends Model
 		return $items;
 	}
 
+	/**
+	 * Get restaurant randomly
+	 *
+	 * @param		integer		$num		Limit, [1, infinity)
+	 *
+	 * @return		array
+	 */
+	public function getItemsByRandomly($num = 1, $condition = array())
+	{
+		$total = $this->getCount($condition);
+		$num = ($total <= $num) ? $total : $num;
+
+		$rand = array();
+
+		if ($num == 1)
+		{
+			$rand[] = array_rand(range(1, $total));
+		}
+		else
+		{
+			$rand = array_rand(range(1, $total), $num);
+		}
+		foreach ($rand as &$v)
+		{
+			$v++;
+		}
+		shuffle($rand);
+
+		$query = $this->_em->createQueryBuilder();
+
+		$query->select('r');
+		$query->from('models\\entity\\restaurant\\Restaurants', 'r');
+		$query->where('r.id IN (' . implode(',', $rand) . ')');
+
+		return $query->getQuery()->getResult();
+	}
+
 }

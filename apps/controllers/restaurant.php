@@ -109,14 +109,42 @@ class Restaurant extends MY_Controller
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
 
-		$range = $this->input->get('range');
-		$range = $range === false ? RestaurantModel::NEAREST_DEFAULT_RANGE : (float) $range;
-		$offset = $this->input->get('offset');
-		$offset = $offset === false ? 0 : (int) $offset;
-		$limit = $this->input->get('limit');
-		$limit = $limit === false ? 10 : (int) $limit;
+		$range = $this->input->post('range');
+		$range = $range === false ? RestaurantModel::NEAREST_DEFAULT_RANGE : (float)$range;
+		$offset = $this->input->post('offset');
+		$offset = $offset === false ? 0 : (int)$offset;
+		$limit = $this->input->post('limit');
+		$limit = $limit === false ? 10 : (int)$limit;
 
 		$items = $this->restaurantModel->getItemsByNearest($lat, $lng, $offset, $limit, $range);
+
+		foreach ($items as $i => $item)
+		{
+			/**
+			 * @var	models\entity\restaurant\Restaurants
+			 */
+			$item;
+
+			$items[$i] = $item->toArray(true);
+		}
+
+		echo json_encode($items);
+	}
+
+	/**
+	 * Randomly select
+	 *
+	 * @param		float	$num		Number.
+	 *
+	 * @return		JSON	data of list
+	 */
+	public function random($num = 1)
+	{
+		// Set header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		$items = $this->restaurantModel->getItemsByRandomly($num);
 
 		foreach ($items as $i => $item)
 		{
