@@ -52,6 +52,26 @@ class ORMModel extends Model
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getCount($condition = array())
+	{
+		/**
+		 * @var Doctrine\ORM\QueryBuilder
+		 */
+		$query = $this->_em->createQueryBuilder();
+
+ 		$query->select('COUNT(t)');
+		$query->from($this->_entity, 't');
+
+		foreach ($condition as $column => $value) {
+			$query->where($column . ' = ' . $value);
+		}
+
+		return $query->getQuery()->getSingleScalarResult();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getInstance()
 	{
 		$entity = $this->_entity;

@@ -12,6 +12,13 @@ namespace models\model;
 interface IModel
 {
 	/**
+	 * Get total count
+	 *
+	 * @return integer
+	 */
+	public function getCount($condition = null);
+
+	/**
 	 * Get the error message
 	 *
 	 * @return void
@@ -39,7 +46,7 @@ interface IModel
 	 *
 	 * @return array
 	 */
-	public function getItems();
+	public function getItems($condition = null);
 
 	/**
 	 * Get the messages
