@@ -676,7 +676,7 @@ class Restaurant extends MY_Controller
 		if ($memberModel->isLogin($this->session) && !empty($item))
 		{
 			// Set rules
-			$this->form_validation->set_rules('comment', 'Comment', 'required');
+			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
 
 			if ($this->form_validation->run() == true)
 			{
@@ -688,7 +688,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
-				$commentInstance = $commentModel->getInstance();
+				$comment = $commentModel->getInstance();
 
 				/**
 				 * @var models\entity\member\Members
@@ -698,13 +698,11 @@ class Restaurant extends MY_Controller
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
 
-				$comment = trim($this->input->post('comment'));
+				$comment->setComment($this->input->post('comment'));
+				$comment->setCreator($member, $type);
+				$comment->setRestaurant($item);
 
-				$commentInstance->setComment($comment);
-				$commentInstance->setCreator($member, $type);
-				$commentInstance->setRestaurant($item);
-
-				$commentModel->save($commentInstance);
+				$commentModel->save($comment);
 
 				$success = true;
 			}
@@ -753,7 +751,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
-				$commentInstance = $commentModel->getInstance();
+				$comment = $commentModel->getInstance();
 
 				/**
 				 * @var models\entity\member\Members
@@ -763,13 +761,11 @@ class Restaurant extends MY_Controller
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
 
-				$comment = trim($this->input->post('comment'));
+				$comment->setComment($this->input->post('comment'));
+				$comment->setCreator($member, $type);
+				$comment->setReply($reply);
 
-				$commentInstance->setComment($comment);
-				$commentInstance->setCreator($member, $type);
-				$commentInstance->setReply($reply);
-
-				$commentModel->save($commentInstance);
+				$commentModel->save($comment);
 
 				$success = true;
 			}

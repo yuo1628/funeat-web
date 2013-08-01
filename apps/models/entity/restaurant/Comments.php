@@ -219,9 +219,9 @@ class Comments extends Entity
 		return $this->replies;
 	}
 
-	public function setComment($v)
+	public function setComment($comment)
 	{
-		$this->comment = $v;
+		$this->comment = trim($comment);
 	}
 
 	/**
