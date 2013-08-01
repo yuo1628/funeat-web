@@ -1,7 +1,7 @@
 <div class="leftBox">
 	<div class="leftBanner">
 		<div class="leftCLose">
-			X
+
 		</div>
 	</div>
 	<div class="leftMenu">
@@ -78,34 +78,16 @@
 	</div>
 </div>
 <div class="contentBox">
-	<div class="localBox">
-		<div class="localImg">
-			<img src="http://news.xinhuanet.com/jiaju/2011-10/13/122138270_111n.jpg"  />
-		</div>
-		<div class="localTitle">
-			長泓資訊有限公司
-		</div>
-		<div class="localDescBox">
-			<div class="localDescMenu">
-				<div class="localDescItem">
-					台中市北屯區大連路三段10號7F-2
-				</div>
-				<div class="localDescItem">
-					營業時間 : 0900 - 1800
-				</div>
-			</div>
-		</div>
-		<div class="localDescBar">
-			<div class="localDescBarItem">
-				詳細資訊
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="localPrice">
-			NT. 30~120
-		</div>
-	</div>
-	<div class="mapBox">
-		<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src=""></iframe>
-	</div>
+	<div id="mapBox" class="mapBox"></div>
+	<script type="text/javascript">
+		jQuery(document).ready(function()
+		{
+			map = new Funeat.Map('#mapBox');
+			Funeat.MapStatic.geolocate(map);
+		});
+	</script>
+	<script type="text/html" id="localTemplate">
+		<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c19.19.244.244/s160x160/1010285_661668367180129_2143900233_n.jpg" />
+	</script>
+	<script type="text/html" id="markersTemplate"></script>
 </div>

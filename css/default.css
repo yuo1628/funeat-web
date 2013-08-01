@@ -26,7 +26,7 @@
 
 .searchBox {
 	position: absolute;
-	width: 480px;
+	width: 580px;
 	left: 300px;
 	top: 24px;
 }
@@ -54,7 +54,7 @@
 	width: 50px;
 	height: 30px;
 	position: absolute;
-	right: 50px;
+	right: 150px;
 	top: 0;
 }
 
@@ -70,7 +70,7 @@
 	width: 50px;
 	height: 30px;
 	position: absolute;
-	right: 0;
+	right: 100px;
 	top: 0;
 }
 
@@ -88,7 +88,77 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	cursor: pointer;
 }
+
+.positionBtn {
+	border: 0;
+	background-color: transparent;
+	padding: 0px;
+	font-size: 13px;
+	color: #666;
+	background-image: url(../img/icon/address.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	right: 30px;
+	top: 0;
+	
+	cursor: pointer;
+}
+
+/**
+ * 	has
+ */
+
+.hasClick {
+	box-shadow: 0px 2px 2px #999;
+} 
+
+.advHasClick  {
+	background-image: url(../img/icon/address.png);
+}
+
+
+/**
+ * 	local info box
+ */
+
+.localInfoBox {
+	position: absolute;
+	top: 88px;
+	right: 0;
+	min-width: 200px;
+	background-color:#333;
+	opacity: 0.9;
+	color:#fff;
+	box-shadow: 0px 2px 2px #333;
+	padding: 10px;
+	display: none;
+	z-index: 1001;
+}
+
+#localAddress {
+	padding: 5px;
+	margin: 5px 0;
+	background-color: transparent;
+	border: 1px solid #DE8738;
+	color: #fff;
+	width: 250px;
+	
+	
+}
+
+#localAddress[disabled] {
+	color: #aaa;
+}
+
+
+/**
+ * 	quick
+ */
 
 .quickBox {
 	position: absolute;
@@ -137,9 +207,8 @@
 	background-color: #f2a830;
 	font-size: 15px;
 	color: #fff;
-	padding: 6px;
 	position: absolute;
-	right: -27px;
+	right: -30px;
 	margin-top: -93px;
 	top: 50%;
 	box-shadow: 1px 2px 1px #666;
@@ -148,9 +217,20 @@
 .leftCLose {
 	font-family: Arial;
 	font-size: 11px;
-	padding: 2px 4px;
+	padding: 0;
+	width: 30px;
+	height: 40px;
 	color: #fff;
+	background-image: url(../img/layout/gallery_btn-02.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
 }
+
+.leftBoxHasClose {
+	background-image: url(../img/layout/gallery_btn-01.png);
+}
+
 
 .leftItem {
 	float: left;
