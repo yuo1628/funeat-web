@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
+use models\ModelFactory;
+
 /**
  * Add layout function.
  *
@@ -165,6 +167,18 @@ class MY_Controller extends CI_Controller
 	public function getLayout()
 	{
 		return $this->_layout;
+	}
+
+	/**
+	 * Get model.
+	 *
+	 * @param		string $model Model's namespace and model's name.
+	 *
+	 * @return		models\Model
+	 */
+	public function getModel($model)
+	{
+		return ModelFactory::getInstance($model);
 	}
 
 	/**

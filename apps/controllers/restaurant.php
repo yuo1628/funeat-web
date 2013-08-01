@@ -1,6 +1,5 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
-use models\ModelFactory;
 use models\entity\restaurant\Comments as Comments;
 use models\entity\image\Images as Images;
 
@@ -71,7 +70,7 @@ class Restaurant extends MY_Controller
 		$this->load->library('session');
 
 		// Load models
-		$this->restaurantModel = ModelFactory::getInstance('models\\Restaurant');
+		$this->restaurantModel = $this->getModel('models\\Restaurant');
 	}
 
 	/**
@@ -154,7 +153,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		$member = null;
 
@@ -210,7 +209,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		if ($memberModel->isLogin($this->session))
 		{
@@ -219,7 +218,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = ModelFactory::getInstance('models\\Feature');
+			$featureModel = $this->getModel('models\\Feature');
 
 			$this->setData('features', $featureModel->getItems());
 			$this->setData('restaurant', $this->restaurantModel->getInstance());
@@ -248,7 +247,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		if ($memberModel->isLogin($this->session))
 		{
@@ -257,7 +256,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = ModelFactory::getInstance('models\\Feature');
+			$featureModel = $this->getModel('models\\Feature');
 
 			$this->setData('features', $featureModel->getItems());
 			$this->setData('restaurant', $this->restaurantModel->getItemByIdentity($identity));
@@ -296,7 +295,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		/**
 		 * @var		models\entity\restaurant\Restaurants
@@ -355,7 +354,7 @@ class Restaurant extends MY_Controller
 			/**
 			 * @var models\Member
 			 */
-			$featureModel = ModelFactory::getInstance('models\\Feature');
+			$featureModel = $this->getModel('models\\Feature');
 
 			$restaurant->setFeatures($this->input->post('features'), $featureModel);
 
@@ -404,7 +403,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\Member
 				 */
-				$featureModel = ModelFactory::getInstance('models\\Feature');
+				$featureModel = $this->getModel('models\\Feature');
 
 				$this->load->helper('form');
 
@@ -416,7 +415,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\Member
 				 */
-				$featureModel = ModelFactory::getInstance('models\\Feature');
+				$featureModel = $this->getModel('models\\Feature');
 
 				$this->load->helper('form');
 
@@ -440,7 +439,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		/**
 		 * @var models\entity\restaurant\Restaurants
@@ -481,7 +480,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		/**
 		 * @var models\entity\restaurant\Restaurants
@@ -522,7 +521,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$featureModel = ModelFactory::getInstance('models\\Feature');
+		$featureModel = $this->getModel('models\\Feature');
 
 		// Output default value
 		$output = null;
@@ -669,7 +668,7 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		$success = false;
 
@@ -683,7 +682,7 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\restaurant\Comment
 				 */
-				$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+				$commentModel = $this->getModel('models\\restaurant\\Comment');
 
 				/**
 				 * @var models\entity\restaurant\Comments
@@ -727,12 +726,12 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\restaurant\Comment
 		 */
-		$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+		$commentModel = $this->getModel('models\\restaurant\\Comment');
 
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		/**
 		 * @var models\entity\restaurant\Comments
@@ -788,12 +787,12 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\restaurant\Comment
 		 */
-		$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+		$commentModel = $this->getModel('models\\restaurant\\Comment');
 
 		/**
 		 * @var models\Member
 		 */
-		$memberModel = ModelFactory::getInstance('models\\Member');
+		$memberModel = $this->getModel('models\\Member');
 
 		/**
 		 * @var models\entity\restaurant\Comments
