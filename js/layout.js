@@ -39,7 +39,7 @@ $(function() {
 		adv_boo = !adv_boo;
 	});*/
 	
-	var posToggle = new toggleEvent(".positionBtn", ".localInfoBox", "hasClick");
+	var posToggle = new toggleEvent(".positionBtn", ".localInfoBox", "hasClick posHasClick");
 	posToggle.run();
 	var advToggle = new toggleEvent(".slideBtn", ".searchAdvBox", "hasClick advHasClick");
 	advToggle.run();
