@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or die('No direct script access allowed');
 
+use models\ModelFactory;
 use models\entity\restaurant\Comments as Comments;
 use models\entity\image\Images as Images;
 
@@ -41,22 +42,22 @@ class Restaurant extends MY_Controller
 	/**
 	 * @var models\Restaurant
 	 */
-	protected $restaurant;
+	protected $restaurantModel;
 
 	/**
 	 * @var models\Feature
 	 */
-	protected $feature;
+	//protected $feature;
 
 	/**
 	 * @var models\Member
 	 */
-	protected $member;
+	//protected $member;
 
 	/**
 	 * @var models\Comment
 	 */
-	protected $comment;
+	//protected $comment;
 
 	/**
 	 * Constructor
@@ -70,36 +71,23 @@ class Restaurant extends MY_Controller
 		$this->load->library('session');
 
 		// Load models
-		$this->feature = new models\Feature();
-		$this->restaurant = new models\Restaurant();
-		$this->member = new models\Member();
-		$this->comment = new models\restaurant\Comment();
+		$this->restaurantModel = ModelFactory::getInstance('models\\Restaurant');
 	}
 
 	/**
 	 * Index page
+	 *
+	 * @return		HTML
 	 */
-	public function index($format = 'html')
+	public function index()
 	{
-		switch ($format)
-		{
-			default :
-			case self::OUTPUT_FORMAT_HTML :
-				// Add style sheet
-				$this->head->addStyleSheet('css/gallery.css');
-				$this->head->addStyleSheet('css/restaurant_list.css');
+		// Add style sheet
+		$this->head->addStyleSheet('css/gallery.css');
+		$this->head->addStyleSheet('css/restaurant_list.css');
 
-				$this->setData('restaurants', $this->restaurant->getItems());
+		$this->setData('restaurants', $this->restaurantModel->getItems());
 
-				$this->view('restaurant/list');
-				break;
-			case self::OUTPUT_FORMAT_JSON :
-				// TODO: output JSON
-				break;
-			case self::OUTPUT_FORMAT_RSS :
-				// TODO: output RSS
-				break;
-		}
+		$this->view('restaurant/list');
 	}
 
 	/**
@@ -127,7 +115,7 @@ class Restaurant extends MY_Controller
 
 		$distance = (float)$this->input->get('distance');
 
-		$items = $this->restaurant->getItems();
+		$items = $this->restaurantModel->getItems();
 
 		$output = array();
 
@@ -161,20 +149,25 @@ class Restaurant extends MY_Controller
 	 */
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
-		$restaurant = $this->_loadRestaurant($identity);
+		$item = $this->restaurantModel->getItemByIdentity($identity);
+
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
 
 		$member = null;
 
-		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		if ($memberModel->isLogin($this->session) && !empty($item))
 		{
-			$member = $this->member->getLoginMember($this->session);
+			$member = $memberModel->getLoginMember($this->session);
 		}
 
 		switch ($format)
 		{
 			default :
 			case self::OUTPUT_FORMAT_HTML :
-				$this->setData('restaurant', $restaurant);
+				$this->setData('restaurant', $item);
 				$this->setData('member', $member);
 
 				// Add style sheet
@@ -193,13 +186,13 @@ class Restaurant extends MY_Controller
 				header('Cache-Control: no-cache');
 				header('Content-type: application/json');
 
-				if ($restaurant === null)
+				if ($item === null)
 				{
 					echo json_encode(null);
 				}
 				else
 				{
-					echo json_encode($restaurant->toArray(true));
+					echo json_encode($item->toArray(true));
 				}
 				break;
 
@@ -214,12 +207,22 @@ class Restaurant extends MY_Controller
 	 */
 	public function add()
 	{
-		if ($this->member->isLogin($this->session))
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		if ($memberModel->isLogin($this->session))
 		{
 			$this->load->helper('form');
 
-			$this->setData('features', $this->feature->getItems());
-			$this->setData('restaurant', $this->restaurant->getInstance());
+			/**
+			 * @var models\Member
+			 */
+			$featureModel = ModelFactory::getInstance('models\\Feature');
+
+			$this->setData('features', $featureModel->getItems());
+			$this->setData('restaurant', $this->restaurantModel->getInstance());
 
 			// Add style sheet
 			$this->head->addStyleSheet('css/gallery.css');
@@ -237,14 +240,40 @@ class Restaurant extends MY_Controller
 
 	/**
 	 * Edit action
+	 *
+	 * @param		identity Can use ID, UUID or username.
 	 */
 	public function edit($identity)
 	{
-		$this->load->helper('form');
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
 
-		$this->setData('features', $this->feature->getItems());
-		$this->setData('restaurant', $this->_loadRestaurant($identity));
-		$this->view('restaurant/edit');
+		if ($memberModel->isLogin($this->session))
+		{
+			$this->load->helper('form');
+
+			/**
+			 * @var models\Member
+			 */
+			$featureModel = ModelFactory::getInstance('models\\Feature');
+
+			$this->setData('features', $featureModel->getItems());
+			$this->setData('restaurant', $this->restaurantModel->getItemByIdentity($identity));
+
+			// Add style sheet
+			$this->head->addStyleSheet('css/gallery.css');
+			$this->head->addStyleSheet('css/restaurant_edit.css');
+
+			$this->view('restaurant/edit');
+		}
+		else
+		{
+			$this->load->helper('url');
+
+			redirect('/login', 'location', 301);
+		}
 	}
 
 	/**
@@ -265,6 +294,11 @@ class Restaurant extends MY_Controller
 	public function save($identity = null)
 	{
 		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		/**
 		 * @var		models\entity\restaurant\Restaurants
 		 */
 		$restaurant = null;
@@ -281,7 +315,7 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() !== false)
 			{
-				$restaurant = $this->restaurant->getInstance();
+				$restaurant = $this->restaurantModel->getInstance();
 			}
 		}
 		else
@@ -289,11 +323,11 @@ class Restaurant extends MY_Controller
 			// Load restaurant data when identity is not null.
 			$identity = trim($identity);
 
-			$restaurant = $this->_loadRestaurant($identity);
+			$restaurant = $this->restaurantModel->getItemByIdentity($identity);
 		}
 
 		// It not vaild when restaurant is null
-		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		if ($memberModel->isLogin($this->session) && !empty($restaurant))
 		{
 			// Do data saving
 
@@ -302,7 +336,7 @@ class Restaurant extends MY_Controller
 			 *
 			 * @var models/entity/member/Members
 			 */
-			$creator = $this->member->getLoginMember($this->session);
+			$creator = $memberModel->getLoginMember($this->session);
 
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
@@ -317,7 +351,13 @@ class Restaurant extends MY_Controller
 			$restaurant->setPriceLow($this->input->post('priceLow'));
 
 			// Assign Many-To-Many relation data
-			$restaurant->setFeatures($this->input->post('features'), $this->feature);
+
+			/**
+			 * @var models\Member
+			 */
+			$featureModel = ModelFactory::getInstance('models\\Feature');
+
+			$restaurant->setFeatures($this->input->post('features'), $featureModel);
 
 			// Assign upload image data
 			$this->load->library('upload');
@@ -344,7 +384,7 @@ class Restaurant extends MY_Controller
 			//$restaurant->hours = $hours;
 
 			// Saving data
-			$this->restaurant->save($restaurant);
+			$this->restaurantModel->save($restaurant);
 
 			// After save data
 			$this->load->helper('url');
@@ -353,7 +393,7 @@ class Restaurant extends MY_Controller
 		}
 		else
 		{
-			if (!$this->member->isLogin($this->session))
+			if (!$memberModel->isLogin($this->session))
 			{
 				$this->load->helper('url');
 
@@ -361,16 +401,26 @@ class Restaurant extends MY_Controller
 			}
 			else if ($identity === null)
 			{
+				/**
+				 * @var models\Member
+				 */
+				$featureModel = ModelFactory::getInstance('models\\Feature');
+
 				$this->load->helper('form');
 
-				$this->setData('features', $this->feature->getItems());
+				$this->setData('features', $featureModel->getItems());
 				$this->view('restaurant/add');
 			}
 			else
 			{
+				/**
+				 * @var models\Member
+				 */
+				$featureModel = ModelFactory::getInstance('models\\Feature');
+
 				$this->load->helper('form');
 
-				$this->setData('features', $this->feature->getItems());
+				$this->setData('features', $featureModel->getItems());
 				$this->view('restaurant/edit');
 			}
 		}
@@ -388,15 +438,20 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$restaurant = $this->_loadRestaurant($identity);
+		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		if ($memberModel->isLogin($this->session) && !empty($restaurant))
 		{
-			$member = $this->member->getLoginMember($this->session);
+			$member = $memberModel->getLoginMember($this->session);
 
 			if (!$restaurant->like->contains($member))
 			{
@@ -405,7 +460,7 @@ class Restaurant extends MY_Controller
 					$restaurant->dislike->removeElement($member);
 				}
 				$restaurant->like->add($member);
-				$this->restaurant->save($restaurant);
+				$this->restaurantModel->save($restaurant);
 				$success = true;
 			}
 		}
@@ -424,15 +479,20 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$restaurant = $this->_loadRestaurant($identity);
+		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		if ($memberModel->isLogin($this->session) && !empty($restaurant))
 		{
-			$member = $this->member->getLoginMember($this->session);
+			$member = $memberModel->getLoginMember($this->session);
 
 			if (!$restaurant->dislike->contains($member))
 			{
@@ -441,7 +501,7 @@ class Restaurant extends MY_Controller
 					$restaurant->like->removeElement($member);
 				}
 				$restaurant->dislike->add($member);
-				$this->restaurant->save($restaurant);
+				$this->restaurantModel->save($restaurant);
 				$success = true;
 			}
 		}
@@ -459,6 +519,11 @@ class Restaurant extends MY_Controller
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
 
+		/**
+		 * @var models\Member
+		 */
+		$featureModel = ModelFactory::getInstance('models\\Feature');
+
 		// Output default value
 		$output = null;
 
@@ -466,7 +531,7 @@ class Restaurant extends MY_Controller
 		{
 			default :
 			case self::FEATURE_ACTION_LIST :
-				$list = $this->feature->getItems();
+				$list = $featureModel->getItems();
 				$output = array();
 				foreach ($list as $v)
 				{
@@ -498,22 +563,22 @@ class Restaurant extends MY_Controller
 				if ($this->form_validation->run() == true)
 				{
 					$title = trim($this->input->post('title'));
-					$duplicate = $this->feature->getItem($title, 'title');
+					$duplicate = $featureModel->getItem($title, 'title');
 
 					if (empty($duplicate))
 					{
 						$parent = (int)$this->input->post('parent');
 
-						$data = $this->feature->getInstance();
+						$data = $featureModel->getInstance();
 						$data->setTitle(trim($this->input->post('title')));
 
 						if ($parent !== 0)
 						{
-							$parentItem = $this->feature->getItem($parent);
+							$parentItem = $featureModel->getItem($parent);
 							$data->setParent($parentItem);
 						}
 
-						$this->feature->save($data);
+						$featureModel->save($data);
 
 						$output = $data->toArray();
 						// unset($output['parent']['__isInitialized__']);
@@ -536,7 +601,7 @@ class Restaurant extends MY_Controller
 				if ($this->form_validation->run() == true)
 				{
 					$id = (int)$this->input->post('id');
-					$item = $this->feature->getItem($id);
+					$item = $featureModel->getItem($id);
 
 					if (!empty($item))
 					{
@@ -546,11 +611,11 @@ class Restaurant extends MY_Controller
 
 						if ($parent !== 0)
 						{
-							$parentItem = $this->feature->getItem($parent);
+							$parentItem = $featureModel->getItem($parent);
 							$item->setParent($parentItem);
 						}
 
-						$this->feature->save($item);
+						$featureModel->save($item);
 
 						$output = $item->toArray(true);
 						// unset($output['parent']['__isInitialized__']);
@@ -572,9 +637,9 @@ class Restaurant extends MY_Controller
 				if ($this->form_validation->run() == true)
 				{
 					$id = (int)$this->input->post('id');
-					$item = $this->feature->getItem($id);
+					$item = $featureModel->getItem($id);
 
-					$this->feature->remove($item);
+					$featureModel->remove($item);
 
 					$output = $item ? true : false;
 				}
@@ -599,11 +664,16 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$restaurant = $this->_loadRestaurant($identity);
+		$item = $this->restaurantModel->getItemByIdentity($identity);
+
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
 
 		$success = false;
 
-		if ($this->member->isLogin($this->session) && !empty($restaurant))
+		if ($memberModel->isLogin($this->session) && !empty($item))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
@@ -611,14 +681,19 @@ class Restaurant extends MY_Controller
 			if ($this->form_validation->run() == true)
 			{
 				/**
+				 * @var models\restaurant\Comment
+				 */
+				$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+
+				/**
 				 * @var models\entity\restaurant\Comments
 				 */
-				$commentInstance = $this->comment->getInstance();
+				$commentInstance = $commentModel->getInstance();
 
 				/**
 				 * @var models\entity\member\Members
 				 */
-				$member = $this->member->getLoginMember($this->session);
+				$member = $memberModel->getLoginMember($this->session);
 
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
@@ -627,13 +702,14 @@ class Restaurant extends MY_Controller
 
 				$commentInstance->setComment($comment);
 				$commentInstance->setCreator($member, $type);
-				$commentInstance->setRestaurant($restaurant);
+				$commentInstance->setRestaurant($item);
 
-				$this->comment->save($commentInstance);
+				$commentModel->save($commentInstance);
 
 				$success = true;
 			}
 		}
+
 		echo json_encode($success);
 	}
 
@@ -651,13 +727,23 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\restaurant\Comment
+		 */
+		$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		/**
 		 * @var models\entity\restaurant\Comments
 		 */
-		$reply = $this->_loadComment($identity);
+		$reply = $commentModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($this->member->isLogin($this->session) && !empty($reply))
+		if ($memberModel->isLogin($this->session) && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
@@ -667,12 +753,12 @@ class Restaurant extends MY_Controller
 				/**
 				 * @var models\entity\restaurant\Comments
 				 */
-				$commentInstance = $this->comment->getInstance();
+				$commentInstance = $commentModel->getInstance();
 
 				/**
 				 * @var models\entity\member\Members
 				 */
-				$member = $this->member->getLoginMember($this->session);
+				$member = $memberModel->getLoginMember($this->session);
 
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
@@ -683,11 +769,12 @@ class Restaurant extends MY_Controller
 				$commentInstance->setCreator($member, $type);
 				$commentInstance->setReply($reply);
 
-				$this->comment->save($commentInstance);
+				$commentModel->save($commentInstance);
 
 				$success = true;
 			}
 		}
+
 		echo json_encode($success);
 	}
 
@@ -703,18 +790,28 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\restaurant\Comment
+		 */
+		$commentModel = ModelFactory::getInstance('models\\restaurant\\Comment');
+
+		/**
+		 * @var models\Member
+		 */
+		$memberModel = ModelFactory::getInstance('models\\Member');
+
+		/**
 		 * @var models\entity\restaurant\Comments
 		 */
-		$comment = $this->_loadComment($identity);
+		$comment = $commentModel->getItemByIdentity($identity);
 
 		$success = false;
 
-		if ($this->member->isLogin($this->session) && !empty($comment))
+		if ($memberModel->isLogin($this->session) && !empty($comment))
 		{
 			/**
 			 * @var models\entity\member\Members
 			 */
-			$member = $this->member->getLoginMember($this->session);
+			$member = $memberModel->getLoginMember($this->session);
 			$like = $comment->getLike();
 
 			if ($like->contains($member))
@@ -726,68 +823,12 @@ class Restaurant extends MY_Controller
 				$like->add($member);
 			}
 
-			$this->comment->save($comment);
+			$commentModel->save($comment);
 
 			$success = true;
 		}
+
 		echo json_encode($success);
-	}
-
-	/**
-	 * Load restaurant from identity
-	 *
-	 * @param		identity identity Can use ID, UUID or username.
-	 */
-	private function _loadRestaurant($identity)
-	{
-		$identity = trim($identity);
-
-		$this->load->library('uuid');
-		$restaurant = null;
-
-		if ($this->uuid->is_valid($identity))
-		{
-			$restaurant = $this->restaurant->getItem($identity, 'uuid');
-		}
-		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
-		{
-			// integer
-			$restaurant = $this->restaurant->getItem((int)$identity);
-		}
-		elseif (preg_match('/^\w+$/', $identity))
-		{
-			// match [0-9a-zA-Z_]+
-			$restaurant = $this->restaurant->getItem($identity, 'username');
-		}
-
-		return $restaurant;
-	}
-
-	/**
-	 * Load comment from identity
-	 *
-	 * @param		identity Identity Can use ID, UUID.
-	 *
-	 * @return		models\entity\restaurant\Comments
-	 */
-	private function _loadComment($identity)
-	{
-		$identity = trim($identity);
-
-		$this->load->library('uuid');
-		$comment = null;
-
-		if ($this->uuid->is_valid($identity))
-		{
-			$comment = $this->comment->getItem($identity, 'uuid');
-		}
-		elseif ((int)$identity > 0 && self::IDENTITY_SELECT_ID)
-		{
-			// integer
-			$comment = $this->comment->getItem((int)$identity);
-		}
-
-		return $comment;
 	}
 
 }
