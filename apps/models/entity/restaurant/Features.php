@@ -254,10 +254,14 @@ class Features extends Entity
 	 */
 	public function setIcon($filename)
 	{
+		$CI = get_instance();
+		$CI->load->helper('file');
+
 		if ($file = fopen($filename, 'r'))
 		{
 			$this->icon = base64_encode(fread($file, filesize($filename)));
 			fclose($file);
+			delete_files($filename);
 		}
 	}
 
