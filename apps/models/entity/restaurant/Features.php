@@ -22,6 +22,23 @@ use models\entity\Entity;
 class Features extends Entity
 {
 	/**
+	 * Icon type
+	 *
+	 * @var integer
+	 */
+	const UPLOAD_PATH = './tmp/';
+
+	/**
+	 * Upload path
+	 *
+	 * @var string
+	 */
+	public static $UPLOAD_CONFIG = array(
+		'upload_path' => self::UPLOAD_PATH,
+		'allowed_types' => 'gif|jpg|png'
+	);
+
+	/**
 	 * @var integer
 	 *
 	 * @ORM\Id
@@ -86,6 +103,13 @@ class Features extends Entity
 	protected $title;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text")
+	 */
+	protected $icon;
+
+	/**
 	 * @var DateTime
 	 *
 	 * @ORM\Column(type="datetime")
@@ -142,7 +166,7 @@ class Features extends Entity
 		{
 			if ($k == 'parent')
 			{
-				if ($recursion && ( $v instanceof Features ) )
+				if ($recursion && ($v instanceof Features))
 				{
 					$return[$k] = $v->toArray();
 				}
@@ -188,11 +212,21 @@ class Features extends Entity
 		return $this->creater;
 	}
 
+	public function getIcon()
+	{
+		return $this->icon;
+	}
+
 	public function getId()
 	{
 		return $this->id;
 	}
 
+	/**
+	 * Get parent
+	 *
+	 * @return		Features
+	 */
 	public function getParent()
 	{
 		return $this->parent;
@@ -213,14 +247,28 @@ class Features extends Entity
 		$this->creater = $v;
 	}
 
-	public function setParent(Features $v = null)
+	/**
+	 * Set icon
+	 *
+	 * @param		string		$filename		Filename
+	 */
+	public function setIcon($filename)
 	{
-		$this->parent = $v;
+		if ($file = fopen($filename, 'r'))
+		{
+			$this->icon = base64_encode(fread($file, filesize($filename)));
+			fclose($file);
+		}
 	}
 
-	public function setRestaurants($v)
+	/**
+	 * Set parent
+	 *
+	 * @param		Features	$feature		Features instance.
+	 */
+	public function setParent(Features $feature = null)
 	{
-		$this->restaurants = $v;
+		$this->parent = $feature;
 	}
 
 	public function setTitle($v)
