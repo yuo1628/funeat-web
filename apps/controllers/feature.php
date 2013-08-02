@@ -38,6 +38,7 @@ class Feature extends MY_Controller
 	{
 		// Add style sheet
 		$this->setData('features', $this->featureModel->getItems());
+		$this->head->addStyleSheet('css/feature_list.css');
 
 		$this->view('feature/list');
 	}

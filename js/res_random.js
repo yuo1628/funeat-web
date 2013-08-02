@@ -83,7 +83,6 @@ function random() {
 	{
 		var title = '';
 		
-		alert(this.list[0].name);
 		
 		for(i in this.list) {
 			
