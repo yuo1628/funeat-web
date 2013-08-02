@@ -4,63 +4,26 @@
 
 var timeout = [];
 
+
 $(function() {
 	
+	var funeat = new Funeat.Map('#mapBox');
 	var t_list = [
 		{
-			tag : '早',
-			name : [{
-				
-					name : 'name1'
-				},
-				{
-					name : 'name2'
-				},
-				{
-					name : 'name3'
-				},
-				{
-					name : 'name4'
-				
-				}]
-				
-			
-		},
-		{
-			tag : '中',
-			name : [{
-				
-					name : 'name1'
-				},
-				{
-					name : 'name2'
-				},
-				{
-					name : 'name3'
-				},
-				{
-					name : 'name4'
-				
-				}]
-		},
-		{
-			tag : '晚',
-			name : [{
-				
-					name : 'name1'
-				},
-				{
-					name : 'name2'
-				},
-				{
-					name : 'name3'
-				},
-				{
-					name : 'name4'
-				
-				}]
+			tag : '早',			
 		}
 	];
+	//alert(funeat.getRemoteData(30,0));
+	funeat.addOnUpdateRemote(function (){
+		//alert(JSON.stringify(funeat.getRemoteData(30,0)));
+		
+		t_list[0].name = funeat.getRemoteData(30,0);
+		//alert(json);
+	});
+	
+	
+	
+	
 	
 	
 	var ran;
@@ -120,7 +83,11 @@ function random() {
 	{
 		var title = '';
 		
+		alert(this.list[0].name);
+		
 		for(i in this.list) {
+			
+			
 			var title = '';
 			var len = this.list[i].name.length;
 			title += '<div class="randomItem">' +

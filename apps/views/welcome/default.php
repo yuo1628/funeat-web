@@ -80,10 +80,12 @@
 <div class="contentBox">
 	<div id="mapBox" class="mapBox"></div>
 	<script type="text/javascript">
+	
 		jQuery(document).ready(function()
 		{
+			/*
 			map = new Funeat.Map('#mapBox');
-			Funeat.MapStatic.geolocate(map);
+			Funeat.MapStatic.geolocate(map);*/
 		});
 	</script>
 	<script type="text/html" id="localTemplate">

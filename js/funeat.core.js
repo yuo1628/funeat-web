@@ -68,6 +68,11 @@ var Funeat = Funeat ||
 		 * @var Array
 		 */
 		var _remoteData = new Array();
+		
+		/**
+		 * @var Array 
+		 */
+		var _updateRemoteCallback = new Array();
 
 		var _showLocalMarker = true;
 
@@ -144,6 +149,8 @@ var Funeat = Funeat ||
 							jQuery("#localAddress").val(results[0].formatted_address);
 							jQuery("#localLatitude").val(latlng.lat());
 							jQuery("#localLongitude").val(latlng.lng());
+							
+							
 						}
 					}
 				});
@@ -156,6 +163,11 @@ var Funeat = Funeat ||
 		this.onUpdateLocate = function(latlng)
 		{
 			_updateLocal(latlng);
+		}
+		
+		this.addOnUpdateRemote = function(callback)
+		{
+			_updateRemoteCallback.push(callback);
 		}
 
 		this.getLocalMarker = function()
@@ -174,7 +186,7 @@ var Funeat = Funeat ||
 			limit = limit > offset ? limit : _remoteData.length;
 			offset = offset == undefined ? 0 : parseInt(offset);
 
-			return _remoteData.slice(offset, limit);
+			return _remoteData.slice(offset, limit + offset);
 		}
 		/**
 		 * Get remote data randomly.
@@ -190,7 +202,7 @@ var Funeat = Funeat ||
 
 			//var origin = ;
 
-			return Funeat.MapStatic.shuffle(_remoteData.slice(offset, limit));
+			return Funeat.MapStatic.shuffle(_remoteData.slice(offset, limit + offset));
 		}
 		/**
 		 * Set query limit
@@ -263,7 +275,12 @@ var Funeat = Funeat ||
 			}, function(data)
 			{
 				_updateRemote(data);
+				
+				for (var i in _updateRemoteCallback) {
+					_updateRemoteCallback[i]();
+				}
 			})
+			
 		}
 
 	},

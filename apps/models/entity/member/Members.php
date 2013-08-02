@@ -333,6 +333,12 @@ class Members extends Entity
 		return $this->membergroups;
 	}
 
+
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
+	
 	public function __get($key)
 	{
 		return $this->$key;
