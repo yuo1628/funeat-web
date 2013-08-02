@@ -38,16 +38,36 @@
 		<title><?php echo $title; ?></title>
 		<link href="css/layout.css" rel="stylesheet" />
 		<link href="css/default.css" rel="stylesheet" />
+		<link href="css/random.css" rel="stylesheet" />
 		<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
 		<script src="js/jquery.color.js" type="text/javascript"></script>
 		<script src="js/funeat.core.js" type="text/javascript"></script>
 		<script src="js/layout.js" type="text/javascript"></script>
+		<script src="js/res_random.js" type="text/javascript"></script>
 		<script src="http://map.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 		<script src="js/gmaps.js" type="text/javascript"></script>
 		<?php echo ltrim($head->fetch()); ?>
 	</head>
 	<body>
 		<div class="container">
+			<div class="randomBox">
+				<div class="randomStartBtn">
+					開始
+				</div>
+				<div class="randomBoxTitle">
+					隨機選擇餐廳
+				</div>
+				<div class="randomMenuBox">
+					
+				</div>
+				
+				<div class="clearfix"></div>
+				<div class="randomCloseBtn">
+					完成
+				</div>
+				
+			</div>
+			
 			<div class="topBox">
 				<div class="logo">
 					<img src="img/layout/logo.png" height="60" />
@@ -72,6 +92,7 @@
 						<script>
 							jQuery(document).ready(function()
 							{
+								
 								jQuery("#localLatitude").val(Funeat.Storage.localLat);
 								jQuery("#localLongitude").val(Funeat.Storage.localLng);
 
@@ -93,6 +114,7 @@
 										}
 									}
 								});
+								
 							});
 						</script>
 					</div>

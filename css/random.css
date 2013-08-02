@@ -1,0 +1,154 @@
+
+.randomBox {
+	position: absolute;
+	left: 50%;
+	top: 200px;
+	z-index: 10000;
+	background-color:#fff;
+	border: 10px solid #333;
+	border-radius: 5px;
+	display:none;
+	box-shadow: 0px 10px 10px #666;
+}
+
+.randomStartBtn {
+	position: absolute;
+	right: -60px;
+	top: 10px;
+	width: 50px;
+	height: 50px;
+	background-color:#999;
+	color:#fff;
+	
+}
+
+.randomBoxTitle {
+	padding: 10px 0;
+	text-align: center;
+	width: 100%;
+	border-bottom :10px solid #333;
+}
+
+.randomMenuBox {
+	float:left;
+	text-align:center;
+}
+
+.randomMenu {
+	width: 160px;
+	float:left;
+}
+
+.randomTitle {
+	padding: 10px 0;
+	width: 158px;
+	float:left;
+	
+	border:1px solid #000;
+}
+
+.randomItemList {
+	float:left;
+	position: relative;
+	width: 160px;
+	height: 80px;
+	padding: 30px 0;
+	/*
+	outline: 1px solid #ccc;
+	*/
+	overflow: hidden;
+}
+
+.randTopShadow {
+	background-image: url(../img/layout/random_hidden_shadow-01.png);
+	position:absolute;
+	top: 0;
+	width: 100%;
+	height: 20px;
+}
+
+.randBottomShadow {
+	background-image: url(../img/layout/random_hidden_shadow-02.png);
+	position:absolute;
+	bottom: 0;
+	width: 100%;
+	height: 20px;
+}
+
+.randomItemScrollBox {
+	position: absolute;
+	top: -50px;
+}
+
+.randomItem {
+	width: 156px;
+	height: 78px;
+	
+	font-size: 30px;
+	line-height: 78px;
+	/*
+	outline: 1px solid #f00;
+	*/
+	
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	
+	border-left: 2px solid #777;
+	border-right: 2px solid #777;
+}
+
+.randomResult {
+	padding: 10px 0;
+	float:left;
+	width: 158px;
+	border: 1px solid #000;
+}
+
+.randomCheckBox {
+	border-top: 10px solid #333;
+	float:left;
+	width: 160px;
+}
+
+.randomCheckBtn {
+	margin: 20px;
+	border: 10px solid #5a9ee9;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	text-align:center;
+	font-size: 30px;
+	border-radius: 200px;
+	box-shadow: 0px 4px 1px #444;
+}
+
+.randomCloseBtn {
+	background: rgb(169,3,41); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,3,41,1)), color-stop(44%,rgba(143,2,34,1)), color-stop(100%,rgba(109,0,25,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
+
+	padding: 10px;
+	margin: 10px;
+	box-shadow: 0px 2px 2px #444;
+	color:#fff;
+	text-align: center;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.randomCloseBtn:hover {
+	background: rgb(109,0,25); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(109,0,25,1) 0%, rgba(143,2,34,1) 44%, rgba(169,3,41,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,0,25,1)), color-stop(44%,rgba(143,2,34,1)), color-stop(100%,rgba(169,3,41,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(109,0,25,1) 0%,rgba(143,2,34,1) 44%,rgba(169,3,41,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(109,0,25,1) 0%,rgba(143,2,34,1) 44%,rgba(169,3,41,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(109,0,25,1) 0%,rgba(143,2,34,1) 44%,rgba(169,3,41,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(109,0,25,1) 0%,rgba(143,2,34,1) 44%,rgba(169,3,41,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d0019', endColorstr='#a90329',GradientType=0 ); /* IE6-9 */
+
+}
