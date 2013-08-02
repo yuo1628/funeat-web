@@ -4,6 +4,8 @@ namespace models\entity\image;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
+
+use models\FuneatFactory;
 use models\entity\Entity as Entity;
 use models\entity\member\Members as Members;
 
@@ -113,7 +115,7 @@ class Images extends Entity
 	/**
 	 * @ORM\PrePersist
 	 */
-	public function doRegisterOnPrePersist()
+	public function doPrePersist()
 	{
 		$CI = get_instance();
 		$CI->load->library('uuid');
@@ -121,6 +123,7 @@ class Images extends Entity
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
+		$this->creator = FuneatFactory::getMember();
 	}
 
 	public function getCreateAt()
