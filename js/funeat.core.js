@@ -20,19 +20,35 @@ var CONST = CONST ||
 	 */
 	RESTAURANT_QUERY_ACTION : "restaurant/query/",
 	RESTAURANT_ADD_ACTION : "restaurant/add",
-	RESTAURANT_EDIT_ACTION : "restaurant/edit"
+	RESTAURANT_EDIT_ACTION : "restaurant/edit",
+
+	/**
+	 * Global constant.
+	 */
+	DEFAULT_MANUAL : 0,
+	DEFAULT_LOCAL_LATITUDE : 25.08,
+	DEFAULT_LOCAL_LONGITUDE : 121.45,
+	DEFAULT_RANGE : 500,
+
+	/**
+	 * Restaurant query constants
+	 */
+	RESTAURANT_QUERY_DEFAULT_OFFSET : 0,
+	RESTAURANT_QUERY_DEFAULT_LIMIT : 30
 };
 
 var Funeat = Funeat ||
 {
 	Storage :
 	{
-		localManual : localStorage.localManual == undefined ? 0 : localStorage.localManual,
-		localLat : localStorage.localLatitude == undefined ? 25.08 : localStorage.localLatitude,
-		localLng : localStorage.localLongitude == undefined ? 121.45 : localStorage.localLongitude
+		localManual : localStorage.localManual == undefined ? CONST.DEFAULT_MANUAL : localStorage.localManual,
+		localLat : localStorage.localLatitude == undefined ? CONST.DEFAULT_LOCAL_LATITUDE : localStorage.localLatitude,
+		localLng : localStorage.localLongitude == undefined ? CONST.DEFAULT_LOCAL_LONGITUDE : localStorage.localLongitude
 	},
 	Map : function(target)
 	{
+		var _this = this;
+
 		/**
 		 * @var google.maps.Marker
 		 */
@@ -48,14 +64,22 @@ var Funeat = Funeat ||
 		 */
 		var _circle;
 
+		/**
+		 * @var Array
+		 */
+		var _remoteData = new Array();
+
 		var _showLocalMarker = true;
 
 		var _map;
 
+		var _query_offset = CONST.RESTAURANT_QUERY_DEFAULT_OFFSET;
+		var _query_limit = CONST.RESTAURANT_QUERY_DEFAULT_LIMIT;
+
 		localStorage.localManual = localStorage.localManual == undefined ? 0 : localStorage.localManual;
 		localStorage.localLatitude = localStorage.localLatitude == undefined ? 25.08 : localStorage.localLatitude;
 		localStorage.localLongitude = localStorage.localLongitude == undefined ? 121.45 : localStorage.localLongitude;
-		localStorage.range = localStorage.range == undefined ? 500 : localStorage.range;
+		localStorage.range = localStorage.range == undefined ? CONST.DEFAULT_RANGE : localStorage.range;
 
 		this.localManual = localStorage.localManual;
 		this.localLat = localStorage.localLatitude;
@@ -92,6 +116,7 @@ var Funeat = Funeat ||
 			lat : this.localLat,
 			lng : this.localLng,
 			draggable : true,
+			visible : _showLocalMarker,
 			animation : google.maps.Animation.DROP,
 			infoWindow :
 			{
@@ -112,12 +137,10 @@ var Funeat = Funeat ||
 					lng : latlng.lng(),
 					callback : function(results, status)
 					{
+						_clearRemote();
+
 						if (results && results.length > 0)
 						{
-							for (var i in _remoteMarker)
-							{
-								_remoteMarker[i].setMap(null);
-							}
 							jQuery("#localAddress").val(results[0].formatted_address);
 							jQuery("#localLatitude").val(latlng.lat());
 							jQuery("#localLongitude").val(latlng.lng());
@@ -127,7 +150,6 @@ var Funeat = Funeat ||
 
 				_localMarker.setDraggable(false);
 				_updateLocal(latlng);
-
 			}
 		});
 
@@ -140,16 +162,61 @@ var Funeat = Funeat ||
 		{
 			return _localMarker;
 		}
-
-		this.getLocalMarker = function()
+		/**
+		 * Get remote data.
+		 *
+		 * @param       limit       Default value is RemoteData.length.
+		 * @param       offset      Default value is 0.
+		 */
+		this.getRemoteData = function(limit, offset)
 		{
-			return _localMarker;
+			limit = limit == undefined ? _remoteData.length : parseInt(limit);
+			limit = limit > offset ? limit : _remoteData.length;
+			offset = offset == undefined ? 0 : parseInt(offset);
+
+			return _remoteData.slice(offset, limit);
+		}
+		/**
+		 * Get remote data randomly.
+		 *
+		 * @param       limit       Default value is RemoteData.length.
+		 * @param       offset      Default value is 0.
+		 */
+		this.getRemoteDataRandomly = function(limit, offset)
+		{
+			limit = limit == undefined ? _remoteData.length : parseInt(limit);
+			limit = limit > offset ? limit : _remoteData.length;
+			offset = offset == undefined ? 0 : parseInt(offset);
+
+			//var origin = ;
+
+			return Funeat.MapStatic.shuffle(_remoteData.slice(offset, limit));
+		}
+		/**
+		 * Set query limit
+		 *
+		 * @param     offset
+		 * @param     limit
+		 */
+		this.setQueryLimit = function(offset, limit)
+		{
+			if (limit == undefined)
+			{
+				_query_limit = parseInt(offset);
+			}
+			else
+			{
+				_query_offset = parseInt(offset);
+				_query_limit = parseInt(limit);
+			}
 		}
 		/**
 		 * Update markers
 		 */
 		function _updateRemote(json)
 		{
+			_clearRemote();
+			_remoteData = json;
 			for (var i in json)
 			{
 				_remoteMarker[i] = _map.addMarker(
@@ -163,8 +230,16 @@ var Funeat = Funeat ||
 					}
 				});
 			}
-			_localMarker.setDraggable(true);
 
+			_localMarker.setDraggable(true);
+		}
+
+		function _clearRemote()
+		{
+			for (var i in _remoteMarker)
+			{
+				_remoteMarker[i].setMap(null);
+			}
 		}
 
 		function _getMap()
@@ -178,23 +253,17 @@ var Funeat = Funeat ||
 			localStorage.localLongitude = latlng.lng();
 
 			_circle.setCenter(latlng);
-
-			//this.localLat = localStorage.localLatitude;
-			//this.localLng = localStorage.localLongitude;
-
 			_localMarker.setPosition(latlng);
 
-			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude;
-
-			jQuery.post(queryUrl,
+			Funeat.Post.getRestaurantByNearest(
 			{
-                //limit : 10,
-                //offset : 0,
+				limit : _query_limit,
+				offset : _query_offset,
 				range : localStorage.range
 			}, function(data)
 			{
 				_updateRemote(data);
-			});
+			})
 		}
 
 	},
@@ -253,10 +322,41 @@ var Funeat = Funeat ||
 					//alert("Done!");
 				}
 			});
+		},
+		/**
+		 * Shuffle array
+		 *
+		 * @param     Array
+		 */
+		shuffle : function(o)
+		{
+			for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
 		}
 	},
 	Post :
 	{
+		/**
+		 * Get restaurant by nearest
+		 *
+		 * @param      Array       params     The params
+		 * @param      Function    callback   Ajax callback
+		 */
+		getRestaurantByNearest : function(params, callback)
+		{
+			var queryUrl = CONST.REWRITE + CONST.RESTAURANT_QUERY_ACTION + localStorage.localLatitude + "/" + localStorage.localLongitude;
+
+			// Default setting
+			var setting =
+			{
+				offset : 0,
+				limit : 30,
+				range : localStorage.range
+			}
+
+			jQuery.extend(setting, params);
+			jQuery.post(queryUrl, setting, callback);
+		}
 	},
 	Get :
 	{
