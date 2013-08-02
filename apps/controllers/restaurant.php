@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
 use models\Member as MemberModel;
+use models\Restaurant as RestaurantModel;
 use models\entity\restaurant\Comments as Comments;
 use models\entity\image\Images as Images;
 
@@ -108,18 +109,14 @@ class Restaurant extends MY_Controller
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
 
-		$this->load->library('Maps');
+		$range = $this->input->post('range');
+		$range = $range === false ? RestaurantModel::NEAREST_DEFAULT_RANGE : (float)$range;
+		$offset = $this->input->post('offset');
+		$offset = $offset === false ? 0 : (int)$offset;
+		$limit = $this->input->post('limit');
+		$limit = $limit === false ? 10 : (int)$limit;
 
-		/**
-		 * @var Maps
-		 */
-		$maps = $this->maps;
-
-		$distance = (float)$this->input->get('distance');
-
-		$items = $this->restaurantModel->getItems();
-
-		$output = array();
+		$items = $this->restaurantModel->getItemsByNearest($lat, $lng, $offset, $limit, $range);
 
 		foreach ($items as $i => $item)
 		{
@@ -128,20 +125,38 @@ class Restaurant extends MY_Controller
 			 */
 			$item;
 
-			if ($distance)
-			{
-				$item->setDistance($lat, $lng);
-				if ($item->getDistance() > $distance)
-				{
-					unset($items[$i]);
-					continue;
-				}
-			}
-
-			$output[] = $item->toArray(true);
+			$items[$i] = $item->toArray(true);
 		}
 
-		echo json_encode($output);
+		echo json_encode($items);
+	}
+
+	/**
+	 * Randomly select
+	 *
+	 * @param		float	$num		Number.
+	 *
+	 * @return		JSON	data of list
+	 */
+	public function random($num = 1)
+	{
+		// Set header
+		header('Cache-Control: no-cache');
+		header('Content-type: application/json');
+
+		$items = $this->restaurantModel->getItemsByRandomly($num);
+
+		foreach ($items as $i => $item)
+		{
+			/**
+			 * @var	models\entity\restaurant\Restaurants
+			 */
+			$item;
+
+			$items[$i] = $item->toArray(true);
+		}
+
+		echo json_encode($items);
 	}
 
 	/**
