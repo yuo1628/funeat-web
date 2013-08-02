@@ -111,8 +111,10 @@ class Restaurant extends MY_Controller
 
 		$range = $this->input->post('range');
 		$range = $range === false ? RestaurantModel::NEAREST_DEFAULT_RANGE : (float)$range;
+
 		$offset = $this->input->post('offset');
 		$offset = $offset === false ? 0 : (int)$offset;
+
 		$limit = $this->input->post('limit');
 		$limit = $limit === false ? 10 : (int)$limit;
 

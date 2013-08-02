@@ -64,6 +64,11 @@ var Funeat = Funeat ||
 		 */
 		var _circle;
 
+		/**
+		 * @var Array
+		 */
+		var _remoteData = new Array();
+
 		var _showLocalMarker = true;
 
 		var _map;
@@ -111,7 +116,7 @@ var Funeat = Funeat ||
 			lat : this.localLat,
 			lng : this.localLng,
 			draggable : true,
-            visible : _showLocalMarker,
+			visible : _showLocalMarker,
 			animation : google.maps.Animation.DROP,
 			infoWindow :
 			{
@@ -132,12 +137,10 @@ var Funeat = Funeat ||
 					lng : latlng.lng(),
 					callback : function(results, status)
 					{
+						_clearRemote();
+
 						if (results && results.length > 0)
 						{
-							for (var i in _remoteMarker)
-							{
-								_remoteMarker[i].setMap(null);
-							}
 							jQuery("#localAddress").val(results[0].formatted_address);
 							jQuery("#localLatitude").val(latlng.lat());
 							jQuery("#localLongitude").val(latlng.lng());
@@ -158,6 +161,36 @@ var Funeat = Funeat ||
 		this.getLocalMarker = function()
 		{
 			return _localMarker;
+		}
+		/**
+		 * Get remote data.
+		 *
+		 * @param       limit       Default value is RemoteData.length.
+		 * @param       offset      Default value is 0.
+		 */
+		this.getRemoteData = function(limit, offset)
+		{
+			limit = limit == undefined ? _remoteData.length : parseInt(limit);
+			limit = limit > offset ? limit : _remoteData.length;
+			offset = offset == undefined ? 0 : parseInt(offset);
+
+			return _remoteData.slice(offset, limit);
+		}
+		/**
+		 * Get remote data randomly.
+		 *
+		 * @param       limit       Default value is RemoteData.length.
+		 * @param       offset      Default value is 0.
+		 */
+		this.getRemoteDataRandomly = function(limit, offset)
+		{
+			limit = limit == undefined ? _remoteData.length : parseInt(limit);
+			limit = limit > offset ? limit : _remoteData.length;
+			offset = offset == undefined ? 0 : parseInt(offset);
+
+			//var origin = ;
+
+			return Funeat.MapStatic.shuffle(_remoteData.slice(offset, limit));
 		}
 		/**
 		 * Set query limit
@@ -182,6 +215,8 @@ var Funeat = Funeat ||
 		 */
 		function _updateRemote(json)
 		{
+			_clearRemote();
+			_remoteData = json;
 			for (var i in json)
 			{
 				_remoteMarker[i] = _map.addMarker(
@@ -197,6 +232,14 @@ var Funeat = Funeat ||
 			}
 
 			_localMarker.setDraggable(true);
+		}
+
+		function _clearRemote()
+		{
+			for (var i in _remoteMarker)
+			{
+				_remoteMarker[i].setMap(null);
+			}
 		}
 
 		function _getMap()
@@ -279,6 +322,16 @@ var Funeat = Funeat ||
 					//alert("Done!");
 				}
 			});
+		},
+		/**
+		 * Shuffle array
+		 *
+		 * @param     Array
+		 */
+		shuffle : function(o)
+		{
+			for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
 		}
 	},
 	Post :
