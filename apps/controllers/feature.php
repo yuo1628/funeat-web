@@ -54,6 +54,7 @@ class Feature extends MY_Controller
 		if (true)
 		{
 			$this->setData('feature', $this->featureModel->getInstance());
+			$this->head->addStyleSheet('css/feature_list.css');
 			$this->view('feature/edit');
 		}
 		else
@@ -89,7 +90,7 @@ class Feature extends MY_Controller
 	/**
 	 * Save action
 	 */
-	public function save($id)
+	public function save($id = 0)
 	{
 		// TODO: Do auth
 
