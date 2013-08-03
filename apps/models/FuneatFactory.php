@@ -33,7 +33,7 @@ abstract class FuneatFactory
 	 *
 	 * @var		\models\entity\member\Members
 	 */
-	private static $_member;
+	private static $_member = null;
 
 	/**
 	 * Store restaurant instance
@@ -94,10 +94,13 @@ abstract class FuneatFactory
 
 		if (is_null($identity))
 		{
-			self::$_member = $member->getLoginMember(self::getSession());
-			self::$_members[self::$_member->getId()] = self::$_member;
-			self::$_members[self::$_member->getUuid()] = self::$_member;
+			if (self::isLogin())
+			{
+				self::$_member = $member->getLoginMember(self::getSession());
 
+				self::$_members[self::$_member->getId()] = self::$_member;
+				self::$_members[self::$_member->getUuid()] = self::$_member;
+			}
 			return self::$_member;
 		}
 		else
@@ -130,6 +133,19 @@ abstract class FuneatFactory
 
 			return self::$_restaurants[$identity];
 		}
+	}
+
+	/**
+	 * Get restaurant
+	 *
+	 * @param		mixed		$identity
+	 * @param		boolean		$useId
+	 *
+	 * @return		\models\entity\restaurant\Restaurants
+	 */
+	public static function getRestaurantInstance()
+	{
+		return ModelFactory::getInstance('models\\Restaurant')->getInstance();
 	}
 
 }
