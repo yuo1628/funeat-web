@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\FuneatFactory;
 use models\Member as MemberModel;
 
 /**
@@ -35,7 +36,7 @@ class Login extends MY_Controller
 	{
 
 		// If isLogin ,then redirect
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			redirect($this->redirect_page, 'location', 301);
 		}

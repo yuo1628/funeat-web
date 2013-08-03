@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\FuneatFactory;
 use models\Member as MemberModel;
 use models\member\Comment as CommentModel;
 use models\entity\member\Comments as Comments;
@@ -57,7 +58,7 @@ class Member extends MY_Controller
 		$redirect_page = '/member';
 
 		// If isLogin ,then redirect
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			redirect($redirect_page, 'location', 301);
 		}
@@ -132,7 +133,7 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($memberSelect))
+		if (FuneatFactory::isLogin() && !empty($memberSelect))
 		{
 			/**
 			 * @var models\entity\member\Members
@@ -182,7 +183,7 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($member))
+		if (FuneatFactory::isLogin() && !empty($member))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
@@ -245,7 +246,7 @@ class Member extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($reply))
+		if (FuneatFactory::isLogin() && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');

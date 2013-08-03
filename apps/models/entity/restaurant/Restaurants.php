@@ -5,6 +5,8 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
+
+use models\FuneatFactory;
 use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
@@ -394,6 +396,7 @@ class Restaurants extends Entity
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
+		$this->creator = FuneatFactory::getMember();
 	}
 
 	/**
@@ -632,9 +635,9 @@ class Restaurants extends Entity
 	 *
 	 * @param		\models\entity\image\Images $logo
 	 */
-	public function setLogo(Images $logo)
+	public function setLogo($logo)
 	{
-		$this->logo = !empty($logo) ? $logo : null;
+		$this->logo = ($logo instanceof Images) ? $logo : null;
 	}
 
 	/**
