@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\FuneatFactory;
 use models\Member as MemberModel;
 use models\Restaurant as RestaurantModel;
 use models\entity\restaurant\Comments as Comments;
@@ -168,11 +169,11 @@ class Restaurant extends MY_Controller
 	 */
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
-		$item = $this->restaurantModel->getItemByIdentity($identity);
+		$item = FuneatFactory::getRestaurant($identity);
 
 		$member = null;
 
-		if (MemberModel::isLogin($this->session) && !empty($item))
+		if (FuneatFactory::isLogin() && !empty($item))
 		{
 			/**
 			 * @var models\Member
@@ -226,12 +227,12 @@ class Restaurant extends MY_Controller
 	 */
 	public function add()
 	{
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			$this->load->helper('form');
 
 			/**
-			 * @var models\Member
+			 * @var models\Feature
 			 */
 			$featureModel = $this->getModel('Feature');
 
@@ -259,7 +260,7 @@ class Restaurant extends MY_Controller
 	 */
 	public function edit($identity)
 	{
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			$this->load->helper('form');
 
@@ -331,7 +332,7 @@ class Restaurant extends MY_Controller
 		}
 
 		// It not vaild when restaurant is null
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
 			// Do data saving
 
@@ -402,7 +403,7 @@ class Restaurant extends MY_Controller
 		}
 		else
 		{
-			if (!$memberModel->isLogin($this->session))
+			if (!FuneatFactory::isLogin())
 			{
 				$this->load->helper('url');
 
@@ -453,7 +454,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
 
 			/**
@@ -495,7 +496,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
 			/**
 			 * @var models\Member
@@ -678,7 +679,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($item))
+		if (FuneatFactory::isLogin() && !empty($item))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
@@ -746,7 +747,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($reply))
+		if (FuneatFactory::isLogin() && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
@@ -807,7 +808,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($comment))
+		if (FuneatFactory::isLogin() && !empty($comment))
 		{
 			/**
 			 * @var models\Member

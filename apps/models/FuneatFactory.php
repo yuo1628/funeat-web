@@ -3,6 +3,7 @@
 namespace models;
 
 use models\ModelFactory;
+use models\Member as MemberModel;
 
 /**
  * Funeat quick loading factory
@@ -23,16 +24,23 @@ abstract class FuneatFactory
 	/**
 	 * Store member instance
 	 *
-	 * @var		array
+	 * @var		\models\entity\member\Members[]
 	 */
 	private static $_members = array();
 
 	/**
 	 * Store login member instance
 	 *
-	 * @var		array
+	 * @var		\models\entity\member\Members
 	 */
 	private static $_member;
+
+	/**
+	 * Store restaurant instance
+	 *
+	 * @var		array
+	 */
+	private static $_restaurants = array();
 
 	/**
 	 * Get CI instance
@@ -63,12 +71,22 @@ abstract class FuneatFactory
 	}
 
 	/**
-	 * Get model instance
+	 * Check login stat
+	 *
+	 * @return		Session
+	 */
+	public static function isLogin()
+	{
+		return MemberModel::isLogin(self::getSession());
+	}
+
+	/**
+	 * Get member.
 	 *
 	 * @param		mixed		$identity
 	 * @param		boolean		$useId
 	 *
-	 * @return		Member
+	 * @return		\models\entity\member\Members
 	 */
 	public static function getMember($identity = null, $useId = false)
 	{
@@ -87,6 +105,30 @@ abstract class FuneatFactory
 			self::$_members[$identity] = $member->getItemByIdentity($identity, $useId);
 
 			return self::$_members[$identity];
+		}
+	}
+
+	/**
+	 * Get restaurant
+	 *
+	 * @param		mixed		$identity
+	 * @param		boolean		$useId
+	 *
+	 * @return		\models\entity\restaurant\Restaurants
+	 */
+	public static function getRestaurant($identity = null, $useId = false)
+	{
+		$restaurant = ModelFactory::getInstance('models\\Restaurant');
+
+		if (is_null($identity))
+		{
+			return null;
+		}
+		else
+		{
+			self::$_restaurants[$identity] = $restaurant->getItemByIdentity($identity, $useId);
+
+			return self::$_restaurants[$identity];
 		}
 	}
 
