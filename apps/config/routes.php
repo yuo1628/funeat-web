@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
+$route['css/(:any)'] = 'css/index/$1';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/like'] = 'member/like/$1';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/comment'] = 'member/comment/$1';
 $route['member/([0-9a-fA-F]{8}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{4}\-?[0-9a-fA-F]{12})/reply'] = 'member/reply/$1';

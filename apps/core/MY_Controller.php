@@ -21,9 +21,27 @@ class MY_Controller extends CI_Controller
 	 *
 	 * Just can use <code>doctrine</code> or <code>database</code>.
 	 *
-	 * @var			boolean
+	 * @var			string
 	 */
-	const DATABASE_LIBRARY = 'doctrine';
+	const DATABASE_LIBRARY_DOCTRINE = 'doctrine';
+
+	/**
+	 * Database library selection
+	 *
+	 * Just can use <code>doctrine</code> or <code>database</code>.
+	 *
+	 * @var			string
+	 */
+	const DATABASE_LIBRARY_ACTIVITY_RECORD = 'database';
+
+	/**
+	 * Database library selection
+	 *
+	 * Just can use <code>doctrine</code> or <code>database</code>.
+	 *
+	 * @var			string
+	 */
+	const DATABASE_LIBRARY_NONE = 'none';
 
 	/**
 	 * Output type constants
@@ -85,24 +103,33 @@ class MY_Controller extends CI_Controller
 	 *
 	 * @param		string Default layout
 	 */
-	public function __construct($layout)
+	public function __construct($layout, $database = self::DATABASE_LIBRARY_DOCTRINE)
 	{
 		parent::__construct();
 
 		// Load library
 		$this->load->library('Head');
 
-		// Load database library
-		$this->load->library(self::DATABASE_LIBRARY);
-
 		// Set default value
 		$this->_blocks = new stdClass();
 		$this->_data = array();
 		$this->_layout = $layout;
 
-		if ( (ENVIRONMENT == 'development') && (self::DATABASE_LIBRARY == 'doctrine') && self::AUTO_UPDATE )
+		// Load database library
+		switch ($database)
 		{
-			$this->updateSchema();
+			default :
+			case self::DATABASE_LIBRARY_DOCTRINE :
+				$this->load->library('doctrine');
+				if ((ENVIRONMENT == 'development') && self::AUTO_UPDATE)
+				{
+					$this->updateSchema();
+				}
+				break;
+
+			case self::DATABASE_LIBRARY_ACTIVITY_RECORD :
+				break;
+			case self::DATABASE_LIBRARY_NONE :
 		}
 	}
 
