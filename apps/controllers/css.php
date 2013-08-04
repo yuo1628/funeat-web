@@ -42,6 +42,7 @@ class Css extends MY_Controller
 			case 'css' :
 				if (is_file($root . $file . '.css'))
 				{
+					header('Content-type: text/css');
 					include $root . $file . '.css';
 				}
 				break;
@@ -49,6 +50,7 @@ class Css extends MY_Controller
 			case 'dynamic' :
 				if (is_file($root . $file . '.php'))
 				{
+					header('Content-type: text/css');
 					include $root . $file . '.php';
 				}
 				break;
