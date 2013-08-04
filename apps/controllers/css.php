@@ -19,10 +19,13 @@ class Css extends MY_Controller
 	/**
 	 * Default
 	 *
-	 * @param		$path		Don't include the ext.
+	 * @param		$type
 	 */
-	public function index($type = 'dynamic')
+	public function index($type = 'params')
 	{
+		// Set header
+		header('Content-type: text/css');
+
 		$root = $this->input->get('root');
 
 		if (!preg_match('/^css\//', $root) && !preg_match('/^media\/fun\//', $root))
@@ -31,28 +34,21 @@ class Css extends MY_Controller
 		}
 
 		$type = in_array($type, array(
-			'css',
-			'dynamic'
-		)) ? $type : 'dynamic';
+			'default',
+			'params'
+		)) ? $type : 'default';
 
 		$file = $this->input->get('file');
 
 		switch ($type)
 		{
-			case 'css' :
-				if (is_file($root . $file . '.css'))
-				{
-					header('Content-type: text/css');
-					include $root . $file . '.css';
-				}
+			default :
+			case 'default' :
+				echo $this->getInclude($root . $file . '.php');
 				break;
 
-			case 'dynamic' :
-				if (is_file($root . $file . '.php'))
-				{
-					header('Content-type: text/css');
-					include $root . $file . '.php';
-				}
+			case 'css' :
+				echo $this->getInclude($root . $file . '.css');
 				break;
 		}
 	}

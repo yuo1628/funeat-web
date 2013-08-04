@@ -267,4 +267,31 @@ class MY_Controller extends CI_Controller
 		$this->load->view($this->_layout, $this->_data, $return);
 	}
 
+	/**
+	 * Get include content
+	 *
+	 * @param		string		$filename
+	 * @param		array		$data
+	 *
+	 * @return		string		File contents.
+	 */
+	public function getInclude($filename, $data = array())
+	{
+		$result = null;
+		foreach ($data as $key => $value)
+		{
+			if (!preg_match('/^\d/', $key))
+			{
+				$$key = $value;
+			}
+		}
+		if (is_file($filename))
+		{
+			ob_start();
+			include $filename;
+			return ob_get_clean();
+		}
+		return $result;
+	}
+
 }
