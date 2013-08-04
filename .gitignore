@@ -26,3 +26,7 @@ tmp/*
 !tmp/index.html
 upload/*
 !upload/index.html
+
+# Caching files
+
+*.cache
