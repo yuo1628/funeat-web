@@ -27,9 +27,9 @@
 }
 
 .funRouletteRun{
-	-webkit-animation: cssAnimation 5s 100 linear;
-	-moz-animation: cssAnimation 5s 100 linear;
-	-o-animation: cssAnimation 5s 100 linear;
+	-webkit-animation: RouletteAnimation 5s infinite linear;
+	-moz-animation: RouletteAnimation 5s infinite linear;
+	-o-animation: RouletteAnimation 5s infinite linear;
 }
 
 .funStartBtn {
@@ -85,17 +85,17 @@ div.funListContent {
 	border-bottom : <?php echo $itemBorder; ?>px solid #333;
 }
 
-@-webkit-keyframes cssAnimation {
+@-webkit-keyframes RouletteAnimation {
 	from { -webkit-transform: rotate(0deg); }
 	to { -webkit-transform: rotate(360deg); }
 }
 
-@-moz-keyframes cssAnimation {
+@-moz-keyframes RouletteAnimation {
 	from { -moz-transform: rotate(0deg);}
 	to { -moz-transform: rotate(360deg); }
 }
 
-@-o-keyframes cssAnimation {
+@-o-keyframes RouletteAnimation {
 	from { -moz-transform: rotate(0deg);}
 	to { -moz-transform: rotate(360deg); }
 }

@@ -165,26 +165,68 @@ Funeat.Fun.Roulette = (function()
 				{
 					var angle = 0;
 				}
-				var result = (angle < 0) ? angle += 360 : angle;
+				var rotate = (angle < 0) ? angle += 360 : angle;
 
 				jQuery(Funeat.Fun.Roulette.ROULETTE).css(
 				{
-					'transform' : 'rotate(' + result + 'deg)'
+					'transform' : 'rotate(' + rotate + 'deg)'
 				});
 				jQuery(Funeat.Fun.Roulette.ROULETTE).removeClass('funRouletteRun');
 
-				var index = parseInt((360 - result) / (360 / list.length)) + 1;
+				var index = parseInt((360 - rotate) / (360 / list.length)) + 1;
 				if (index == list.length)
 				{
 					index = 0;
 				}
-				jQuery('.funState').html('選到的是' + list[index].name)
+				jQuery('.funState').html('選到的是' + list[index].name);
+
+				var cssUrl = jQuery('base').attr('href') + _cssUrl;
+				var stylesheet;
+				for (var i = 0; i < document.styleSheets.length; i++)
+				{
+					if (document.styleSheets[i].href == cssUrl)
+					{
+						stylesheet = document.styleSheets[i];
+						break
+					}
+				}
+
+				var rules = stylesheet.rules;
+				var i = rules.length;
+				var keyframes;
+				var keyframe;
+
+				while (i--)
+				{
+					keyframes = rules.item(i);
+					if ((keyframes.type === keyframes.KEYFRAMES_RULE || keyframes.type === keyframes.WEBKIT_KEYFRAMES_RULE || keyframes.type === keyframes.MOZ_KEYFRAMES_RULE || keyframes.type === keyframes.O_KEYFRAMES_RULE ) && keyframes.name === "RouletteAnimation")
+					{
+						rules = keyframes.cssRules;
+						i = rules.length;
+						while (i--)
+						{
+							keyframe = rules.item(i);
+							if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE || keyframe.type === keyframe.O_KEYFRAME_RULE	) && keyframe.keyText === "0%")
+							{
+                                keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
+                                keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
+                                keyframe.style.oTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
+							}
+							else if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE || keyframe.type === keyframe.O_KEYFRAME_RULE ) && keyframe.keyText === "100%")
+							{
+                                keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
+                                keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
+                                keyframe.style.oTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
+							}
+						}
+						break;
+					}
+				}
 			}
 			else
 			{
 				_running = true;
 				jQuery(Funeat.Fun.Roulette.ROULETTE).addClass('funRouletteRun');
-
 			}
 		};
 	}
