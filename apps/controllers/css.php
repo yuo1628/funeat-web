@@ -18,10 +18,8 @@ class Css extends MY_Controller
 
 	/**
 	 * Default
-	 *
-	 * @param		$type
 	 */
-	public function index($type = 'params')
+	public function index()
 	{
 		// Set header
 		header('Content-type: text/css');
@@ -33,24 +31,10 @@ class Css extends MY_Controller
 			$root = 'css/';
 		}
 
-		$type = in_array($type, array(
-			'default',
-			'params'
-		)) ? $type : 'default';
-
 		$file = $this->input->get('file');
 
-		switch ($type)
-		{
-			default :
-			case 'default' :
-				echo $this->getInclude($root . $file . '.php');
-				break;
-
-			case 'css' :
-				echo $this->getInclude($root . $file . '.css');
-				break;
-		}
+		$params = $this->input->get();
+		echo $this->getInclude($root . $file . '.css', $params);
 	}
 
 }

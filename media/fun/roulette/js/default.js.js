@@ -94,11 +94,12 @@ Funeat.Fun.Roulette = (function()
 		var _target = Funeat.Fun.TARGET;
 		var _roulette = _static.ROULETTE;
 
+        var _cssUrl = 'index.php/css/?root=media/fun/roulette/css/&file=default&radius=' + _static.RADIUS + '&panelHalf=' + _static.PANEL_HALF;
 		jQuery('<link>').attr(
 		{
 			rel : 'stylesheet',
 			type : 'text/css',
-			href : 'index.php/css/?root=media/fun/roulette/css/&file=default',
+			href : _cssUrl,
 		}).appendTo('head');
 
 		jQuery(_target).html(data);
@@ -108,31 +109,12 @@ Funeat.Fun.Roulette = (function()
         jQuery(_target).mouseup(_static.onDragEnd);
         jQuery(_target).hover(_static.onHoverIn, _static.onHoverOut);
 
-		jQuery(_target).height(_static.PANEL_HALF * 2);
-		jQuery(_target).width(_static.PANEL_HALF * 2);
+        jQuery(_target).addClass('funBoxByRoulette');
 
 		jQuery(_target).css(
 		{
-			'position' : 'relative',
 			'top' : top,
 			'left' : left,
-		});
-
-		jQuery(_roulette).height(_static.RADIUS * 2);
-		jQuery(_roulette).width(_static.RADIUS * 2);
-
-		jQuery(_roulette).css(
-		{
-			'position' : 'relative',
-			'top' : _static.PANEL_HALF - _static.RADIUS - 5,
-			'left' : _static.PANEL_HALF - _static.RADIUS - 5,
-			'border-radius' : _static.PANEL_HALF
-		});
-
-		jQuery('.funRouletteArrow').css(
-		{
-			'top' : _static.PANEL_HALF - 24,
-			'right' : 0,
 		});
 
 		jQuery('.funList').render(
@@ -140,29 +122,11 @@ Funeat.Fun.Roulette = (function()
 			'list' : list
 		}, _static.templateDirective);
 
-		jQuery('div.funListContent').each(function(i)
-		{
-			jQuery(this).width(_static.RADIUS);
-			jQuery(this).css(
-			{
-				'position' : 'relative',
-				'top' : '-' + (jQuery(this).height() / 2) + 'px',
-				'padding-left' : '0px',
-				'margin-left' : 'auto',
-				'text-align' : 'right',
-				'border-bottom' : '2px solid #333'
-			});
-		});
-
 		jQuery('div.funListItem').each(function(i)
 		{
 			var deg = i * (360 / list.length);
-			jQuery(this).width(_static.RADIUS * 2);
 			jQuery(this).css(
 			{
-				'position' : 'absolute',
-				'top' : _static.RADIUS - jQuery(this).height() / 2,
-				'left' : 0,
 				'transform' : 'rotate(' + deg + 'deg)'
 			});
 		});
@@ -181,11 +145,11 @@ Funeat.Fun.Roulette = (function()
 			{
 				step : function(now, fx)
 				{
-					jQuery(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+					jQuery(this).css('transform', 'rotate(' + now + 'deg)');
 				}
 			}, 100000, function()
 			{
-				jQuery(this).css('-webkit-transform', 'rotate(' + 0 + 'deg)');
+				jQuery(this).css('transform', 'rotate(' + 0 + 'deg)');
 			});
 		};
 	}
