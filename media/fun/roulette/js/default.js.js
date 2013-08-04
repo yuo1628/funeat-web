@@ -10,9 +10,8 @@ Funeat.Fun.Roulette = (function()
 {
 	var _static =
 	{
-		RADIUS : 300,
-		RADIUS_LINE : 2,
-		PANEL_HALF : 350,
+		PANEL_HALF : 300,
+		RADIUS : 250,
 
 		ROULETTE : '.funRoulette',
 
@@ -55,13 +54,15 @@ Funeat.Fun.Roulette = (function()
 			top = parseFloat(jQuery(Funeat.Fun.TARGET).css('top'));
 			left = parseFloat(jQuery(Funeat.Fun.TARGET).css('left'));
 		},
-		onHoverIn : function(e){
+		onHoverIn : function(e)
+		{
 
 		},
-		onHoverOut : function(e) {
-            drag = false;
-            top = parseFloat(jQuery(Funeat.Fun.TARGET).css('top'));
-            left = parseFloat(jQuery(Funeat.Fun.TARGET).css('left'));
+		onHoverOut : function(e)
+		{
+			drag = false;
+			top = parseFloat(jQuery(Funeat.Fun.TARGET).css('top'));
+			left = parseFloat(jQuery(Funeat.Fun.TARGET).css('left'));
 		},
 		onDataUpdataListener : function(data)
 		{
@@ -93,8 +94,9 @@ Funeat.Fun.Roulette = (function()
 
 		var _target = Funeat.Fun.TARGET;
 		var _roulette = _static.ROULETTE;
+		var _running = false;
 
-        var _cssUrl = 'index.php/css/?root=media/fun/roulette/css/&file=default&radius=' + _static.RADIUS + '&panelHalf=' + _static.PANEL_HALF;
+		var _cssUrl = 'index.php/css/?root=media/fun/roulette/css/&file=default&radius=' + _static.RADIUS + '&panelHalf=' + _static.PANEL_HALF;
 		jQuery('<link>').attr(
 		{
 			rel : 'stylesheet',
@@ -106,10 +108,10 @@ Funeat.Fun.Roulette = (function()
 
 		jQuery(_target).mousedown(_static.onDragStart);
 		jQuery(_target).mousemove(_static.onDrag);
-        jQuery(_target).mouseup(_static.onDragEnd);
-        jQuery(_target).hover(_static.onHoverIn, _static.onHoverOut);
+		jQuery(_target).mouseup(_static.onDragEnd);
+		jQuery(_target).hover(_static.onHoverIn, _static.onHoverOut);
 
-        jQuery(_target).addClass('funBoxByRoulette');
+		jQuery(_target).addClass('funBoxByRoulette');
 
 		jQuery(_target).css(
 		{
@@ -133,24 +135,57 @@ Funeat.Fun.Roulette = (function()
 
 		jQuery('div.funStartBtn').click(function()
 		{
+			if (_running)
+			{
+				jQuery(this).html('開始');
+			}
+			else
+			{
+				jQuery(this).html('停止');
+
+			}
 			obj.start();
 		});
 
 		this.start = function()
 		{
-			jQuery(Funeat.Fun.Roulette.ROULETTE).animate(
+			if (_running)
 			{
-				'now-rotate' : 720
-			},
-			{
-				step : function(now, fx)
+				_running = false;
+
+				var matrix = jQuery(Funeat.Fun.Roulette.ROULETTE).css('transform');
+				if (matrix !== 'none')
 				{
-					jQuery(this).css('transform', 'rotate(' + now + 'deg)');
+					var values = matrix.split('(')[1].split(')')[0].split(',');
+					var a = values[0];
+					var b = values[1];
+					var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
 				}
-			}, 100000, function()
+				else
+				{
+					var angle = 0;
+				}
+				var result = (angle < 0) ? angle += 360 : angle;
+
+				jQuery(Funeat.Fun.Roulette.ROULETTE).css(
+				{
+					'transform' : 'rotate(' + result + 'deg)'
+				});
+				jQuery(Funeat.Fun.Roulette.ROULETTE).removeClass('funRouletteRun');
+
+				var index = parseInt((360 - result) / (360 / list.length)) + 1;
+				if (index == list.length)
+				{
+					index = 0;
+				}
+				jQuery('.funState').html('選到的是' + list[index].name)
+			}
+			else
 			{
-				jQuery(this).css('transform', 'rotate(' + 0 + 'deg)');
-			});
+				_running = true;
+				jQuery(Funeat.Fun.Roulette.ROULETTE).addClass('funRouletteRun');
+
+			}
 		};
 	}
 
