@@ -40,7 +40,6 @@ class Feature extends MY_Controller
 		// Add style sheet
 		$this->setData('features', $this->featureModel->getItems());
 		$this->head->addStyleSheet('css/feature_list.css');
-		
 
 		$this->view('feature/list');
 	}
@@ -54,7 +53,6 @@ class Feature extends MY_Controller
 
 		if (true)
 		{
-			$this->setData('feature', $this->featureModel->getInstance());
 			$this->head->addStyleSheet('css/feature_add.css');
 			$this->view('feature/edit');
 		}
@@ -62,7 +60,6 @@ class Feature extends MY_Controller
 		{
 			$this->load->helper('url');
 			redirect('feature', 'location', 301);
-
 		}
 	}
 
@@ -79,6 +76,7 @@ class Feature extends MY_Controller
 		if ($feature)
 		{
 			$this->setData('feature', $feature);
+			$this->head->addStyleSheet('css/feature_add.css');
 			$this->view('feature/edit');
 		}
 		else
@@ -91,14 +89,31 @@ class Feature extends MY_Controller
 	/**
 	 * Save action
 	 */
-	public function save($id = 0)
+	public function save($id = null)
 	{
 		// TODO: Do auth
 
-		// Set rules
-		$this->form_validation->set_rules('title', 'Title', 'required');
+		/**
+		 * @var		models\entity\restaurant\Features
+		 */
+		$feature = null;
 
-		if ($this->form_validation->run() == true)
+		if ($id === null)
+		{
+			// Set rules
+			$this->form_validation->set_rules('title', 'Title', 'required');
+
+			if ($this->form_validation->run() == true)
+			{
+				$feature = $this->featureModel->getInstance();
+			}
+		}
+		else
+		{
+			$feature = $this->featureModel->getItem((int)$id);
+		}
+
+		if (!empty($feature))
 		{
 			$title = trim($this->input->post('title'));
 			$duplicate = $this->featureModel->getItem($title, 'title');
@@ -106,11 +121,6 @@ class Feature extends MY_Controller
 			if (empty($duplicate))
 			{
 				$parent = (int)$this->input->post('parent');
-
-				/**
-				 * @var models\entity\restaurant\Features
-				 */
-				$feature = $this->featureModel->getInstance();
 				$feature->setTitle(trim($this->input->post('title')));
 
 				if ($parent !== 0)
@@ -150,16 +160,28 @@ class Feature extends MY_Controller
 				}
 				else
 				{
-					$this->view('feature/edit');
+					if ($id === null)
+					{
+						$this->head->addStyleSheet('css/feature_add.css');
+						$this->view('feature/edit');
+					}
+					else
+					{
+						$this->featureModel->save($feature);
+						$this->load->helper('url');
+						redirect('feature', 'location', 301);
+					}
 				}
 			}
 			else
 			{
+				$this->head->addStyleSheet('css/feature_add.css');
 				$this->view('feature/edit');
 			}
 		}
 		else
 		{
+			$this->head->addStyleSheet('css/feature_add.css');
 			$this->view('feature/edit');
 		}
 	}
