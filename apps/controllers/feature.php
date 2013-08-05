@@ -40,6 +40,7 @@ class Feature extends MY_Controller
 		// Add style sheet
 		$this->setData('features', $this->featureModel->getItems());
 		$this->head->addStyleSheet('css/feature_list.css');
+		
 
 		$this->view('feature/list');
 	}
@@ -54,7 +55,7 @@ class Feature extends MY_Controller
 		if (true)
 		{
 			$this->setData('feature', $this->featureModel->getInstance());
-			$this->head->addStyleSheet('css/feature_list.css');
+			$this->head->addStyleSheet('css/feature_add.css');
 			$this->view('feature/edit');
 		}
 		else

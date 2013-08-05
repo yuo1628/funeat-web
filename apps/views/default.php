@@ -46,6 +46,11 @@
 		<script src="js/res_random.js" type="text/javascript"></script>
 		<script src="http://map.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 		<script src="js/gmaps.js" type="text/javascript"></script>
+		
+		<!--
+		<script src="js/pure.min.js" type="text/javascript"></script>
+		<script src="media/fun/roulette/js/default.js" type="text/javascript"></script>
+		-->
 		<?php echo ltrim($head->fetch()); ?>
 	</head>
 	<body>

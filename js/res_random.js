@@ -13,6 +13,7 @@ $(function() {
 			tag : '早',			
 		}
 	];
+	
 	//alert(funeat.getRemoteData(30,0));
 	funeat.addOnUpdateRemote(function (){
 		//alert(JSON.stringify(funeat.getRemoteData(30,0)));
@@ -20,9 +21,6 @@ $(function() {
 		t_list[0].name = funeat.getRemoteData(30,0);
 		//alert(json);
 	});
-	
-	
-	
 	
 	
 	
@@ -85,6 +83,8 @@ function random() {
 		
 		
 		for(i in this.list) {
+			
+			//alert(this.list[i].name.length);
 			
 			
 			var title = '';
