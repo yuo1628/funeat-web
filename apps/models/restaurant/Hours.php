@@ -158,7 +158,7 @@ class Hours
 	 *
 	 * @return		boolean
 	 */
-	private static function _checkTimeDivide($timeDivide)
+	public static function checkTimeDivide($timeDivide)
 	{
 		// Validation
 		switch ($timeDivide)
@@ -172,20 +172,6 @@ class Hours
 				return true;
 			default:
 				return false;
-		}
-	}
-
-	/**
-	 * Set time divide constant to feature mapping
-	 *
-	 * @access public
-	 * @param int $timeDivide
-	 * @param Feature $feature
-	 */
-	public static function setTimeDivideToFeatureMapping($timeDivide, Features $feature)
-	{
-		if (self::_checkTimeDivide($timeDivide)) {
-			self::$timeDivideTofeatureMapping[$timeDivide] = $feature;
 		}
 	}
 
@@ -204,6 +190,20 @@ class Hours
 			return $time->getTimestamp();
 		} catch (Exception $e) {
 			return -1;
+		}
+	}
+
+	/**
+	 * Set time divide constant to feature mapping
+	 *
+	 * @access public
+	 * @param int $timeDivide
+	 * @param Feature $feature
+	 */
+	public static function setTimeDivideToFeatureMapping($timeDivide, Features $feature)
+	{
+		if (self::checkTimeDivide($timeDivide)) {
+			self::$timeDivideTofeatureMapping[$timeDivide] = $feature;
 		}
 	}
 
