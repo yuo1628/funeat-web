@@ -30,3 +30,6 @@ upload/*
 # Caching files
 
 *.cache
+# Config data
+
+apps/config/config.json
