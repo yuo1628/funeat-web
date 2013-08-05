@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+use models\FuneatFactory;
 use models\Member as MemberModel;
 use models\Restaurant as RestaurantModel;
 use models\entity\restaurant\Comments as Comments;
@@ -48,21 +49,6 @@ class Restaurant extends MY_Controller
 	protected $restaurantModel;
 
 	/**
-	 * @var models\Feature
-	 */
-	//protected $feature;
-
-	/**
-	 * @var models\Member
-	 */
-	//protected $member;
-
-	/**
-	 * @var models\Comment
-	 */
-	//protected $comment;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -84,11 +70,16 @@ class Restaurant extends MY_Controller
 	 */
 	public function index()
 	{
+		/**
+		 * @var models\Restaurant
+		 */
+		$restaurant = $this->getModel('Restaurant');
+
 		// Add style sheet
 		$this->head->addStyleSheet('css/gallery.css');
 		$this->head->addStyleSheet('css/restaurant_list.css');
 
-		$this->setData('restaurants', $this->restaurantModel->getItems());
+		$this->setData('restaurants', $restaurant->getItems());
 
 		$this->view('restaurant/list');
 	}
@@ -109,6 +100,11 @@ class Restaurant extends MY_Controller
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
 
+		/**
+		 * @var models\Restaurant
+		 */
+		$restaurant = $this->getModel('Restaurant');
+
 		$range = $this->input->post('range');
 		$range = $range === false ? RestaurantModel::NEAREST_DEFAULT_RANGE : (float)$range;
 
@@ -118,7 +114,7 @@ class Restaurant extends MY_Controller
 		$limit = $this->input->post('limit');
 		$limit = $limit === false ? 10 : (int)$limit;
 
-		$items = $this->restaurantModel->getItemsByNearest($lat, $lng, $offset, $limit, $range);
+		$items = $restaurant->getItemsByNearest($lat, $lng, $offset, $limit, $range);
 
 		foreach ($items as $i => $item)
 		{
@@ -146,7 +142,12 @@ class Restaurant extends MY_Controller
 		header('Cache-Control: no-cache');
 		header('Content-type: application/json');
 
-		$items = $this->restaurantModel->getItemsByRandomly($num);
+		/**
+		 * @var models\Restaurant
+		 */
+		$restaurant = $this->getModel('Restaurant');
+
+		$items = $restaurant->getItemsByRandomly($num);
 
 		foreach ($items as $i => $item)
 		{
@@ -168,56 +169,54 @@ class Restaurant extends MY_Controller
 	 */
 	public function profile($identity, $format = self::OUTPUT_FORMAT_HTML)
 	{
-		$item = $this->restaurantModel->getItemByIdentity($identity);
+		$item = FuneatFactory::getRestaurant($identity);
 
-		$member = null;
-
-		if (MemberModel::isLogin($this->session) && !empty($item))
+		if (empty($item))
 		{
-			/**
-			 * @var models\Member
-			 */
-			$memberModel = $this->getModel('Member');
+			$this->load->helper('url');
 
-			$member = $memberModel->getLoginMember($this->session);
+			redirect('restaurant', 'location', 301);
 		}
-
-		switch ($format)
+		else
 		{
-			default :
-			case self::OUTPUT_FORMAT_HTML :
-				$this->setData('restaurant', $item);
-				$this->setData('member', $member);
+			switch ($format)
+			{
+				default :
+				case self::OUTPUT_FORMAT_HTML :
+					// Set output data
+					$this->setData('restaurant', $item);
+					$this->setData('member', FuneatFactory::getMember());
 
-				// Add style sheet
-				$this->head->addStyleSheet('css/gallery.css');
-				$this->head->addStyleSheet('css/restaurant.css');
-				$this->head->addStyleSheet('http://fonts.googleapis.com/css?family=ABeeZee');
-				$this->head->addScript('js/gallery.js');
-				$this->head->addScript('js/restaurant_like.js');
-				$this->head->addScript('js/restaurant_reply.js');
+					// Add stylesheets & scripts
+					$this->head->addStyleSheet('css/gallery.css');
+					$this->head->addStyleSheet('css/restaurant.css');
+					$this->head->addStyleSheet('http://fonts.googleapis.com/css?family=ABeeZee');
+					$this->head->addScript('js/gallery.js');
+					$this->head->addScript('js/restaurant_like.js');
+					$this->head->addScript('js/restaurant_reply.js');
 
-				$this->view('restaurant/profile');
-				break;
+					$this->view('restaurant/profile');
+					break;
 
-			case self::OUTPUT_FORMAT_JSON :
-				// Set html header
-				header('Cache-Control: no-cache');
-				header('Content-type: application/json');
+				case self::OUTPUT_FORMAT_JSON :
+					// Set html header
+					header('Cache-Control: no-cache');
+					header('Content-type: application/json');
 
-				if ($item === null)
-				{
-					echo json_encode(null);
-				}
-				else
-				{
-					echo json_encode($item->toArray(true));
-				}
-				break;
+					if ($item === null)
+					{
+						echo json_encode(null);
+					}
+					else
+					{
+						echo json_encode($item->toArray(true));
+					}
+					break;
 
-			case self::OUTPUT_FORMAT_RSS :
-				// TODO: output RSS
-				break;
+				case self::OUTPUT_FORMAT_RSS :
+					// TODO: output RSS
+					break;
+			}
 		}
 	}
 
@@ -226,19 +225,19 @@ class Restaurant extends MY_Controller
 	 */
 	public function add()
 	{
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			$this->load->helper('form');
 
 			/**
-			 * @var models\Member
+			 * @var models\Feature
 			 */
 			$featureModel = $this->getModel('Feature');
 
 			$this->setData('features', $featureModel->getItems());
-			$this->setData('restaurant', $this->restaurantModel->getInstance());
+			$this->setData('restaurant', FuneatFactory::getRestaurantInstance());
 
-			// Add style sheet
+			// Add stylesheets & scripts
 			$this->head->addStyleSheet('css/gallery.css');
 			$this->head->addStyleSheet('css/restaurant_edit.css');
 
@@ -259,19 +258,19 @@ class Restaurant extends MY_Controller
 	 */
 	public function edit($identity)
 	{
-		if (MemberModel::isLogin($this->session))
+		if (FuneatFactory::isLogin())
 		{
 			$this->load->helper('form');
 
 			/**
-			 * @var models\Member
+			 * @var models\Feature
 			 */
 			$featureModel = $this->getModel('Feature');
 
 			$this->setData('features', $featureModel->getItems());
-			$this->setData('restaurant', $this->restaurantModel->getItemByIdentity($identity));
+			$this->setData('restaurant', FuneatFactory::getRestaurant($identity));
 
-			// Add style sheet
+			// Add stylesheets & scripts
 			$this->head->addStyleSheet('css/gallery.css');
 			$this->head->addStyleSheet('css/restaurant_edit.css');
 
@@ -319,7 +318,7 @@ class Restaurant extends MY_Controller
 
 			if ($this->form_validation->run() !== false)
 			{
-				$restaurant = $this->restaurantModel->getInstance();
+				$restaurant = FuneatFactory::getRestaurantInstance();
 			}
 		}
 		else
@@ -327,25 +326,23 @@ class Restaurant extends MY_Controller
 			// Load restaurant data when identity is not null.
 			$identity = trim($identity);
 
-			$restaurant = $this->restaurantModel->getItemByIdentity($identity);
+			$restaurant = FuneatFactory::getRestaurant($identity);
 		}
 
 		// It not vaild when restaurant is null
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
-			// Do data saving
-
 			/**
-			 * @var models\Member
+			 * @var models\Restaurant
 			 */
-			$memberModel = $this->getModel('Member');
+			$restaurantModel = $this->getModel('Restaurant');
 
 			/**
 			 * Load creator
 			 *
 			 * @var models/entity/member/Members
 			 */
-			$creator = $memberModel->getLoginMember($this->session);
+			$creator = FuneatFactory::getMember();
 
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
@@ -362,7 +359,7 @@ class Restaurant extends MY_Controller
 			// Assign Many-To-Many relation data
 
 			/**
-			 * @var models\Member
+			 * @var models\Feature
 			 */
 			$featureModel = $this->getModel('Feature');
 
@@ -393,7 +390,7 @@ class Restaurant extends MY_Controller
 			//$restaurant->hours = $hours;
 
 			// Saving data
-			$this->restaurantModel->save($restaurant);
+			$restaurantModel->save($restaurant);
 
 			// After save data
 			$this->load->helper('url');
@@ -402,7 +399,7 @@ class Restaurant extends MY_Controller
 		}
 		else
 		{
-			if (!$memberModel->isLogin($this->session))
+			if (!FuneatFactory::isLogin())
 			{
 				$this->load->helper('url');
 
@@ -411,7 +408,7 @@ class Restaurant extends MY_Controller
 			else if ($identity === null)
 			{
 				/**
-				 * @var models\Member
+				 * @var models\Feature
 				 */
 				$featureModel = $this->getModel('Feature');
 
@@ -423,7 +420,7 @@ class Restaurant extends MY_Controller
 			else
 			{
 				/**
-				 * @var models\Member
+				 * @var models\Feature
 				 */
 				$featureModel = $this->getModel('Feature');
 
@@ -447,21 +444,20 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\Restaurant
+		 */
+		$restaurantModel = $this->getModel('Restaurant');
+
+		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
+		$restaurant = FuneatFactory::getRestaurant($identity);
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
-
-			/**
-			 * @var models\Member
-			 */
-			$memberModel = $this->getModel('Member');
-
-			$member = $memberModel->getLoginMember($this->session);
+			$member = FuneatFactory::getMember();
 
 			if (!$restaurant->like->contains($member))
 			{
@@ -470,10 +466,11 @@ class Restaurant extends MY_Controller
 					$restaurant->dislike->removeElement($member);
 				}
 				$restaurant->like->add($member);
-				$this->restaurantModel->save($restaurant);
+				$restaurantModel->save($restaurant);
 				$success = true;
 			}
 		}
+
 		echo json_encode($success);
 	}
 
@@ -489,20 +486,21 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
+		 * @var models\Restaurant
+		 */
+		$restaurantModel = $this->getModel('Restaurant');
+
+		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$restaurant = $this->restaurantModel->getItemByIdentity($identity);
+		$restaurant = FuneatFactory::getRestaurant($identity);
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($restaurant))
+		if (FuneatFactory::isLogin() && !empty($restaurant))
 		{
-			/**
-			 * @var models\Member
-			 */
-			$memberModel = $this->getModel('Member');
-
-			$member = $memberModel->getLoginMember($this->session);
+			$member = FuneatFactory::getMember();
+			;
 
 			if (!$restaurant->dislike->contains($member))
 			{
@@ -511,7 +509,7 @@ class Restaurant extends MY_Controller
 					$restaurant->like->removeElement($member);
 				}
 				$restaurant->dislike->add($member);
-				$this->restaurantModel->save($restaurant);
+				$restaurantModel->save($restaurant);
 				$success = true;
 			}
 		}
@@ -530,7 +528,7 @@ class Restaurant extends MY_Controller
 		header('Content-type: application/json');
 
 		/**
-		 * @var models\Member
+		 * @var models\Feature
 		 */
 		$featureModel = $this->getModel('Feature');
 
@@ -674,11 +672,11 @@ class Restaurant extends MY_Controller
 		/**
 		 * @var models\entity\restaurant\Restaurants
 		 */
-		$item = $this->restaurantModel->getItemByIdentity($identity);
+		$item = FuneatFactory::getRestaurant($identity);
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($item))
+		if (FuneatFactory::isLogin() && !empty($item))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'trim|required');
@@ -695,21 +693,11 @@ class Restaurant extends MY_Controller
 				 */
 				$comment = $commentModel->getInstance();
 
-				/**
-				 * @var models\Member
-				 */
-				$memberModel = $this->getModel('Member');
-
-				/**
-				 * @var models\entity\member\Members
-				 */
-				$member = $memberModel->getLoginMember($this->session);
-
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator($member, $type);
+				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setRestaurant($item);
 
 				$commentModel->save($comment);
@@ -746,7 +734,7 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($reply))
+		if (FuneatFactory::isLogin() && !empty($reply))
 		{
 			// Set rules
 			$this->form_validation->set_rules('comment', 'Comment', 'required');
@@ -758,21 +746,11 @@ class Restaurant extends MY_Controller
 				 */
 				$comment = $commentModel->getInstance();
 
-				/**
-				 * @var models\Member
-				 */
-				$memberModel = $this->getModel('Member');
-
-				/**
-				 * @var models\entity\member\Members
-				 */
-				$member = $memberModel->getLoginMember($this->session);
-
 				// TODO How to decide type?
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator($member, $type);
+				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setReply($reply);
 
 				$commentModel->save($comment);
@@ -807,17 +785,13 @@ class Restaurant extends MY_Controller
 
 		$success = false;
 
-		if (MemberModel::isLogin($this->session) && !empty($comment))
+		if (FuneatFactory::isLogin() && !empty($comment))
 		{
-			/**
-			 * @var models\Member
-			 */
-			$memberModel = $this->getModel('Member');
-
 			/**
 			 * @var models\entity\member\Members
 			 */
-			$member = $memberModel->getLoginMember($this->session);
+			$member = FuneatFactory::getMember();
+
 			$like = $comment->getLike();
 
 			if ($like->contains($member))

@@ -4,6 +4,8 @@ namespace models\entity\member;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+
+use models\FuneatFactory;
 use models\entity\Entity;
 use models\entity\member\Members as Members;
 
@@ -165,6 +167,7 @@ class Comments extends Entity
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
+		//$this->creator = FuneatFactory::getMember();
 	}
 
 	/**

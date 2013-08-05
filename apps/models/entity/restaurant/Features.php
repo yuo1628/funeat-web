@@ -5,6 +5,8 @@ namespace models\entity\restaurant;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
+
+use models\FuneatFactory;
 use models\entity\Entity;
 
 /**
@@ -153,6 +155,7 @@ class Features extends Entity
 
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
+		// $this->creator = FuneatFactory::getMember();
 		$this->creater = 0;
 	}
 
