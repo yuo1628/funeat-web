@@ -352,30 +352,21 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 				特色
 			</div>
 			<div class="resEditInput">
+				<div class="resServiceBox">
 				<?php foreach ($features as $v):
 				?>
-				<input type="checkbox" name="features[]" value="<?php echo $v->getId(); ?>" />
-				<?php echo $v->getTitle(); ?><
-				br/>
+				<div class="resServiceItem">
+					<input id="<?php echo $v->getId(); ?>" type="checkbox" name="features[]" value="<?php echo $v->getId(); ?>" />
+					<label for="<?php echo $v->getId(); ?>" class="checkboxLabel" title="<?php echo $v->getTitle(); ?>" >
+						<img class="left" src="data:image/jpeg;base64,<?php echo $v->getIcon(); ?>" />
+						<div class="left" style="padding: 5px;"><?php echo $v->getTitle(); ?></div>
+					</label>
+					
+				</div>
+				
 				<?php endforeach; ?>
-				<div class="resServiceItem">
-					<img src="img/icon/wifi.png" title="wifi 無線網路" />
 				</div>
-				<div class="resServiceItem">
-					<img src="img/icon/ac.png" title="冷氣" />
-				</div>
-				<div class="resServiceItem">
-					<img src="img/icon/accessible.png" title="無障礙空間" />
-				</div>
-				<div class="resServiceItem">
-					<img src="img/icon/payment.png" title="信用卡付款" />
-				</div>
-				<div class="resServiceItem">
-					<img src="img/icon/parking.png" title="停車場" />
-				</div>
-				<div class="resServiceItem">
-					<img src="img/icon/delivery.png" title="外送" />
-				</div>
+				
 				<div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>
@@ -444,12 +435,10 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 	<div class="previewBtn">
 		預覽
 	</div>
-	<div class="postBtn">
-		發佈
-	</div>
+	<input class="postBtn" type="submit" value="發佈" />
 	<div class="clearfix"></div>
 	<br>
 	<br>
-	<input type="submit" />
+	
 </div>
 <?php echo form_close(); ?>

@@ -256,7 +256,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96000f', end
  * 	serivce
  */
 
+.resServiceBox {
+	float:right;
+	width: 580px;
+}
+
 .resServiceItem {
 	float:left;
-	margin: 5px;
+	margin: 5px 25px 5px 0;
+}
+
+.resServiceItem input[type=checkbox] {
+	display: none;
+}
+
+.resServiceItem input[type=checkbox] + label.checkboxLabel {
+	height: 19px;
+	padding: 5px 0 5px 24px;
+	height:25px;
+	margin:-1px 4px 0 0;
+	vertical-align:middle;
+	background: url(../img/icon/checkbox-01.png) left center no-repeat;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.resServiceItem input[type=checkbox]:checked + label.checkboxLabel {
+	background: url(../img/icon/checkbox-02.png) left center no-repeat;
 }

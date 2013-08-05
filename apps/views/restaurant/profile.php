@@ -122,7 +122,7 @@ $member;
 						<div class="clearfix"></div>
 					</div>
 					<div class="resInfoItem">
-						<img src="img/icon/res_time.png" />
+						<img src="img/icon/price_icon-01.png" />
 						<div class="resInfoItemDesc">
 							<?php echo "NT. {$restaurant->getPriceLow()} ~ NT. {$restaurant->getPriceHigh()}"; ?>
 						</div>
@@ -153,11 +153,24 @@ $member;
 				</div>
 			</div>
 			<div class="resServiceBox">
-				123
+				<div class="resServiceTitle">
+					提供的服務
+				</div>
+				<?php foreach($restaurant->getFeatures() as $f_item): ?>
+				<div class="resServiceItem left" style="padding: 10px;">
+					<img class="left"  src="data:image/jpeg;base64,<?php echo $f_item->getIcon(); ?>" title="<?php echo $f_item->getTitle(); ?>" />
+					<div class="clearfix"></div>
+				</div>
+					
+				<?php endforeach ?>
+				<div class="arrowRight descArrowRight"></div>
 			</div>
 			<div class="clearfix"></div>
+			
+			
+			
 		</div>
-		<div class="arrowRight descArrowRight"></div>
+		
 		<!-- map -->
 		<div class="resMapBox">
 			<div class="resMapTopShadow"></div>

@@ -15,7 +15,7 @@ $(function() {
 	
 	init();
 	
-	$(".galleryLeftBtn").click(function() {
+	$(".galleryRightBtn").click(function() {
 		
 		if(index >= count - 1)
 		{
@@ -30,7 +30,7 @@ $(function() {
 		preview();
 	});
 	
-	$(".galleryRightBtn").click(function() {
+	$(".galleryLeftBtn").click(function() {
 		
 		if(index == 0)
 		{
