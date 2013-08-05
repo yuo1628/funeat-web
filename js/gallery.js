@@ -11,6 +11,9 @@ var preMenuSize = 7;
 var preIndex = 0;
 var preCount = 0;
 
+var timeDuration = 5000;
+var timeEffectBoo = true;
+
 $(function() {
 	
 	init();
@@ -87,7 +90,21 @@ $(function() {
 		preview();
 	})
 	
+	//startTime
+	startTime();
+	
+	$(".galleryBox").mouseenter(function() {
+		timeEffectBoo = false;
+	})
+	
+	$(".galleryBox").mouseleave(function() {
+		timeEffectBoo = true;
+		
+	})
+	
 })
+
+
 
 function init() {
 	//count
@@ -101,6 +118,33 @@ function init() {
 	$(".galleryPreviewBox").css({
 		'left' : (parseInt($(".resGalleryBox").width()) * 0.5) - (parseInt($(".galleryPreviewBox").width()) * 0.5)
 	});
+}
+
+function startTime() {
+	
+	var t = setTimeout(timeEffect, timeDuration);
+}
+
+function timeEffect() {
+	if(timeEffectBoo)
+	{
+		if(index >= count - 1)
+		{
+			index = 0;
+		}
+		else
+		{
+			index++;
+		}
+		
+		
+		galleryAnimate();
+		preview();
+	
+	
+		
+	}
+	startTime();
 }
 
 function galleryAnimate() {
