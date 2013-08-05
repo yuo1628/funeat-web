@@ -66,6 +66,11 @@ class Hours
     const DINNER = 5;
     const MIDNIGHT_SNACK = 6;
     
+    /**
+     * 時段標籤與Feature的對應
+     *
+     * @access private
+     */
     private static $timeDivideTofeatureMapping = array(self::BREAKFAST => NULL,
                                                        self::BRUNCH => NULL,
                                                        self::LUNCH => NULL,
@@ -158,7 +163,9 @@ class Hours
 
 		if ($day >= 0 && $day <= 6)
 		{
-			return $this->data[self::HOURS_DAYS][$day];
+            $data = $this->data[self::HOURS_DAYS][$day];
+            $data = array_map(function ($dayData) { $dayData['feature'] = self::$timeDivideTofeatureMapping[$dayData['feature']]; return $dayData; }, $data);
+			return $data;
 		}
 		else
 		{
@@ -172,8 +179,9 @@ class Hours
 	 * @param		start Start time ( use Hours::mkdaytime($hour, $minute) )
 	 * @param		end End time ( use Hours::mkdaytime($hour, $minute) )
      * @param int $day
+     * @param int $type use constants defined in this class
 	 */
-	public function putDay($start, $end, $day)
+	public function putDay($start, $end, $day, $type)
 	{
         $error = '';
         if (!($end > $start) or $day > 6 or $day < 0) {
@@ -186,7 +194,7 @@ class Hours
                 } else if (self::inInterval($end, $interval)) {
                     $error = 'time overlaps';
                     break;
-                } else if (self::inInterval($interval[0], array($start, $end))) {
+                } else if (self::inInterval($interval[0], array('start' => $start, 'end' => $end))) {
                     $error = 'time overlaps';
                     break;
                 }
@@ -196,7 +204,7 @@ class Hours
             throw new \InvalidArgumentException($error);
         }
         
-        $this->data[self::HOURS_DAYS][$day][] = array($start, $end);
+        $this->data[self::HOURS_DAYS][$day][] = array('start' => $start, 'end' => $end, 'feature' => $type);
         sort($this->data[self::HOURS_DAYS][$day]);
 	}
     
@@ -222,7 +230,7 @@ class Hours
      * is time in any day?
      *
      * @access public
-     * @param int $time
+     * @param int $time use Hours::mkdaytime
      * @return array
      */
     public function isTimeInDays($time)
@@ -236,40 +244,48 @@ class Hours
         return $days;
     }
 
-	public function putDayException($day, $month = null, $position = null)
+    /**
+     * 指定的時間是否在例外休假時間？
+     *
+     * @access public
+     * @param DateTime $datetime
+     * @return boolean
+     */
+    public function isDateTimeInException($datetime)
+    {
+        // search for exceptions of day of month
+        $month = (int) $datetime->format('n');  // 1 ~ 12
+        $day =(int) $datetime->format('j');  // 1 ~ 31
+        // search for exceptions of day of week.
+        $weekBaseDay = 1 - (int) (new \DateTime($datetime->format('Y-m-01')))->format('w');
+        $week = floor(($day - $weekBaseDay) / 7) + 1;
+        $weekDay = (int) $datetime->format('w');
+        return
+            in_array($this->makeException(self::HOURS_EXCEPTION_MONTH_DAY, $day, null), $this->data[self::HOURS_EXCEPTION]) or
+            in_array($this->makeException(self::HOURS_EXCEPTION_MONTH_WEEK, array('week' => $week, 'day' => $weekDay), null), $this->data[self::HOURS_EXCEPTION]);
+    }
+    
+    /**
+     * 設定每個月份中的例外休假
+     *
+     * @access public
+     * @param int $day
+     */
+	public function putDayException($day, $position=null)
 	{
-		$this->putException(self::HOURS_EXCEPTION_MONTH_DAY, $day, $month, $position);
+		$this->putException(self::HOURS_EXCEPTION_MONTH_DAY, $day, null, $position);
 	}
     
-    public function putWeekException($day, $week, $month = null, $position = null)
-    {
-        $this->putException(self::HOURS_EXCEPTION_MONTH_WEEK, array('week' => $week, 'day' => $day), $month, $position);
-    }
-
     /**
-	 * Put exception into data
-	 *
-	 * @param		type
-	 * @param		value
-	 * @param		month
-	 */
-    private function putException($type, $value, $month, $position)
+     * 設定每個月份的固定星期中的例外休假
+     *
+     * @access public
+     * @param int $day
+     * @param int $week
+     */
+    public function putWeekException($day, $week, $position = null)
     {
-        $put = array(
-			self::HOURS_EXCEPTION_TYPE => $type,
-			self::HOURS_EXCEPTION_VALUE => $value,
-			self::HOURS_EXCEPTION_MONTH => $month
-		);
-
-		if ($position === null)
-		{
-			$this->data[self::HOURS_EXCEPTION][] = $put;
-		}
-		else
-		{
-			$position = (int)$position;
-			$this->data[self::HOURS_EXCEPTION][$position] = $put;
-		}
+        $this->putException(self::HOURS_EXCEPTION_MONTH_WEEK, array('week' => $week, 'day' => $day), null, $position);
     }
     
 	/**
@@ -283,6 +299,46 @@ class Hours
 	}
 
     /**
+	 * Put exception into data
+	 *
+	 * @param		type
+	 * @param		value
+	 * @param		month
+	 */
+    private function putException($type, $value, $month, $position)
+    {
+        $put = $this->makeException($type, $value, $month);
+
+		if ($position === null)
+		{
+			$this->data[self::HOURS_EXCEPTION][] = $put;
+		}
+		else
+		{
+			$position = (int)$position;
+			$this->data[self::HOURS_EXCEPTION][$position] = $put;
+		}
+    }
+    
+    /**
+     * format and return exception data
+     *
+     * @access private
+     * @param int $type
+     * @param int $value
+     * @param int $month
+     * @return array
+     */
+    private function makeException($type, $value, $month)
+    {
+        return array(
+			self::HOURS_EXCEPTION_TYPE => $type,
+			self::HOURS_EXCEPTION_VALUE => $value,
+			self::HOURS_EXCEPTION_MONTH => $month
+		);
+    }
+
+    /**
      * is the time in the interval?
      *
      * @access private
@@ -292,8 +348,8 @@ class Hours
      */
     private static function inInterval($time, $interval)
     {
-        $start = $interval[0];
-        $end = $interval[1];
+        $start = $interval['start'];
+        $end = $interval['end'];
         if ($start <= $time and $time <= $end) {
             return True;
         } else {
