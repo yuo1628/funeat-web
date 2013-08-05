@@ -118,10 +118,11 @@ class Feature extends MY_Controller
 			$title = trim($this->input->post('title'));
 			$duplicate = $this->featureModel->getItem($title, 'title');
 
-			if (empty($duplicate))
+			if ($id || empty($duplicate))
 			{
 				$parent = (int)$this->input->post('parent');
 				$feature->setTitle(trim($this->input->post('title')));
+				$feature->setHoursMapping((int) $this->input->post('hoursMapping'));
 
 				if ($parent !== 0)
 				{
@@ -168,6 +169,7 @@ class Feature extends MY_Controller
 					else
 					{
 						$this->featureModel->save($feature);
+						$feature->onPostUpdate();
 						$this->load->helper('url');
 						redirect('feature', 'location', 301);
 					}

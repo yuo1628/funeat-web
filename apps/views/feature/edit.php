@@ -3,6 +3,7 @@
 // Import class
 use models\entity\Entity as Entity;
 use models\ModelFactory;
+use models\restaurant\Hours;
 
 /**
  * @var models\entity\restaurant\Features
@@ -14,6 +15,7 @@ $target = ($feature->getId() === null) ? 'feature/save' : 'feature/save/' . $fea
 
 $title = Entity::preset(set_value('title'), $feature->getTitle());
 $icon = $feature->getIcon();
+$hoursMapping = (int) $feature->getHoursMapping();
 ?>
 <!-- @formatter:off -->
 <?php echo validation_errors(); ?>
@@ -39,7 +41,6 @@ $icon = $feature->getIcon();
 				</div>
 				<div class="clearfix"></div>
 			</div>
-
 			<div class="featureEditContainer">
 				<div class="featureEditLabel">
 					圖示
@@ -53,7 +54,24 @@ $icon = $feature->getIcon();
 				最佳大小為：30 X 30 像素
 				<br>
 			</div>
-
+			<div class="featureEditContainer">
+				<div class="featureEditLabel">
+					時段關聯
+				</div>
+				<div class="featureEditInput">
+					<input type="radio" name="hoursMapping" value="0" <?php echo $hoursMapping == 0 ? 'checked' : ''; ?> />無
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::BREAKFAST; ?>" <?php echo $hoursMapping == Hours::BREAKFAST ? 'checked' : ''; ?> />早餐
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::BRUNCH; ?>" <?php echo $hoursMapping == Hours::BRUNCH ? 'checked' : ''; ?> />早午餐
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::LUNCH; ?>" <?php echo $hoursMapping == Hours::LUNCH ? 'checked' : ''; ?> />午餐
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::TEA; ?>" <?php echo $hoursMapping == Hours::TEA ? 'checked' : ''; ?> />下午茶
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::DINNER; ?>" <?php echo $hoursMapping == Hours::DINNER ? 'checked' : ''; ?> />晚餐
+					<input type="radio" name="hoursMapping" value="<?php echo Hours::MIDNIGHT_SNACK; ?>" <?php echo $hoursMapping == Hours::MIDNIGHT_SNACK ? 'checked' : ''; ?> />宵夜
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="featureEditHelp">
+				最佳大小為：30 X 30 像素
+			</div>
 			<div class="clearfix"></div>
 		</div>
 
