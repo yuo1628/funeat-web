@@ -4,6 +4,8 @@
  $itemFontSize = 16;
  $itemHeight = 21;
  $itemBorder = 2;
+ $buttonHalf = 50;
+
  // params
  $radius = isset($radius) ? $radius : '300';
  $panelHalf = isset($panelHalf) ? $panelHalf : '350';
@@ -16,6 +18,10 @@
 	width: <?php echo $panelHalf * 2 , 'px'; ?>;
 }
 
+.funBoxOnMove {
+	cursor: move;
+}
+
 .funRoulette {
 	position: relative;
 	height: <?php echo $radius * 2 , 'px'; ?>;
@@ -26,23 +32,26 @@
 	border: 10px solid #5a9ee9;
 }
 
-.funRouletteRun{
+.funRouletteRun {
+	-ms-animation: RouletteAnimation 5s infinite linear;
 	-webkit-animation: RouletteAnimation 5s infinite linear;
 	-moz-animation: RouletteAnimation 5s infinite linear;
-	-o-animation: RouletteAnimation 5s infinite linear;
 }
 
 .funStartBtn {
 	position: absolute;
-	top: 20px;
-	right: 0;
-	min-width: 150px;
-	background-color: #2DD32D;
-	opacity: 0.9;
+	top: <?php echo $panelHalf - $buttonHalf - 78, 'px'; ?>;px;
+	left: <?php echo $panelHalf - $buttonHalf - 75, 'px'; ?>;0;
+	background-color: #fd0;
 	color: #222;
-	box-shadow: 0px 2px 2px #666;
-	padding: 10px;
+	box-shadow: 0px 0px 10px 20px #f22 inset;
+	padding: 100px 70px;
+	border-radius: <?php echo $panelHalf * 2, 'px'; ?>;
+	border: 0px solid #5a9ee9;
+	font-size: 60px;
+	font-family: Arial;
 	z-index: 1001;
+	cursor: pointer;
 }
 
 .funState {
@@ -85,17 +94,17 @@ div.funListContent {
 	border-bottom : <?php echo $itemBorder; ?>px solid #333;
 }
 
+@keyframes RouletteAnimation {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
 @-webkit-keyframes RouletteAnimation {
 	from { -webkit-transform: rotate(0deg); }
 	to { -webkit-transform: rotate(360deg); }
 }
 
 @-moz-keyframes RouletteAnimation {
-	from { -moz-transform: rotate(0deg);}
-	to { -moz-transform: rotate(360deg); }
-}
-
-@-o-keyframes RouletteAnimation {
 	from { -moz-transform: rotate(0deg);}
 	to { -moz-transform: rotate(360deg); }
 }

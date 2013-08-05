@@ -36,6 +36,8 @@ Funeat.Fun.Roulette = (function()
 			drag = true;
 			topDelta = e.pageY - top;
 			leftDelta = e.pageX - left;
+
+			jQuery(Funeat.Fun.TARGET).addClass('funBoxOnMove');
 		},
 		onDrag : function(e)
 		{
@@ -44,7 +46,7 @@ Funeat.Fun.Roulette = (function()
 				jQuery(Funeat.Fun.TARGET).css(
 				{
 					top : e.pageY - topDelta,
-					left : e.pageX - leftDelta,
+					left : e.pageX - leftDelta
 				});
 			}
 		},
@@ -53,6 +55,8 @@ Funeat.Fun.Roulette = (function()
 			drag = false;
 			top = parseFloat(jQuery(Funeat.Fun.TARGET).css('top'));
 			left = parseFloat(jQuery(Funeat.Fun.TARGET).css('left'));
+
+			jQuery(Funeat.Fun.TARGET).removeClass('funBoxOnMove');
 		},
 		onHoverIn : function(e)
 		{
@@ -63,6 +67,7 @@ Funeat.Fun.Roulette = (function()
 			drag = false;
 			top = parseFloat(jQuery(Funeat.Fun.TARGET).css('top'));
 			left = parseFloat(jQuery(Funeat.Fun.TARGET).css('left'));
+			jQuery(Funeat.Fun.TARGET).removeClass('funBoxOnMove');
 		},
 		onDataUpdataListener : function(data)
 		{
@@ -137,11 +142,11 @@ Funeat.Fun.Roulette = (function()
 		{
 			if (_running)
 			{
-				jQuery(this).html('開始');
+				jQuery(this).html('Start');
 			}
 			else
 			{
-				jQuery(this).html('停止');
+				jQuery(this).html('Stop');
 
 			}
 			obj.start();
@@ -199,24 +204,22 @@ Funeat.Fun.Roulette = (function()
 				while (i--)
 				{
 					keyframes = rules.item(i);
-					if ((keyframes.type === keyframes.KEYFRAMES_RULE || keyframes.type === keyframes.WEBKIT_KEYFRAMES_RULE || keyframes.type === keyframes.MOZ_KEYFRAMES_RULE || keyframes.type === keyframes.O_KEYFRAMES_RULE ) && keyframes.name === "RouletteAnimation")
+					if ((keyframes.type === keyframes.KEYFRAMES_RULE || keyframes.type === keyframes.WEBKIT_KEYFRAMES_RULE || keyframes.type === keyframes.MOZ_KEYFRAMES_RULE ) && keyframes.name === "RouletteAnimation")
 					{
 						rules = keyframes.cssRules;
 						i = rules.length;
 						while (i--)
 						{
 							keyframe = rules.item(i);
-							if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE || keyframe.type === keyframe.O_KEYFRAME_RULE	) && keyframe.keyText === "0%")
+							if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE ) && keyframe.keyText === "0%")
 							{
-                                keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
-                                keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
-                                keyframe.style.oTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
+								keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
+								keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + rotate + 'deg)';
 							}
-							else if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE || keyframe.type === keyframe.O_KEYFRAME_RULE ) && keyframe.keyText === "100%")
+							else if ((keyframe.type === keyframe.KEYFRAME_RULE || keyframe.type === keyframe.WEBKIT_KEYFRAME_RULE || keyframe.type === keyframe.MOZ_KEYFRAME_RULE ) && keyframe.keyText === "100%")
 							{
-                                keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
-                                keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
-                                keyframe.style.oTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
+								keyframe.style.webkitTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
+								keyframe.style.mozTransform = keyframe.style.transform = 'rotate(' + (rotate + 360) + 'deg)';
 							}
 						}
 						break;
