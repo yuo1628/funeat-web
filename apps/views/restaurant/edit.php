@@ -2,6 +2,7 @@
 
 // Import class
 use models\entity\Entity as Entity;
+use models\restaurant\Hours;
 
 // Load library
 $this->load->helper('url');
@@ -31,6 +32,7 @@ $tel = Entity::preset(set_value('tel'), $restaurant->getTel());
 $fax = Entity::preset(set_value('fax'), $restaurant->getFax());
 $priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
 $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
+$hour24 = Hours::getDayTime();
 ?>
 <!-- @formatter:off -->
 <?php echo form_open_multipart($target); ?>
@@ -205,23 +207,37 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 		</div>
 		<div class="clearfix"></div>
 	</div>
+	
+	
+	
 	<div class="resEditItem">
 		<div class="resEditContainer">
 			<div class="resEditLabel">
 				營業時間
 			</div>
-			<div class="resEditInput">
+			<?php 
+				$week = array("一", "二", "三", "四", "五", "六", "日");
+				
+				foreach($week as $w => $w_item): 
+			?>
+			<div class="resEditInput resPriodItem">
+				<input type="hidden" class="boo" value="1" />
+				
 				<div class="resEditDateItem">
 					<div class="dateBox">
 						<div class="dateTitle">
-							星期一
+							星期<?php echo $w_item; ?>
 						</div>
 						<div class="dateOtherBar">
 							<div class="dateSetAllBtn">
 								套用至全部設定
 							</div>
+							<div class="addNewPeriodBtn">
+								個別設定時段
+							</div>
 						</div>
 						<div class="dateTime">
+							
 							<div class="dateTimeItem">
 								<div class="dateTimeTag">
 									<label>
@@ -230,92 +246,290 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							
+							<div class="dateTimeItem ">
+								<?php 
+								foreach($features as $i => $item) :
+									if($item->getHoursMapping() > 0) :
+										
+								?>
+								<div class="resServiceItem proidTagItem">
+									<input type="hidden" value="<?php echo $item->getHoursMapping() ?>" />
+									<input class="proidCheckBox" id="<?php echo $w . $item->getId(); ?>" type="checkbox" name="features[]" value="<?php echo $item->getId(); ?>" />
+									<label for="<?php echo $w . $item->getId(); ?>" class="checkboxLabel" title="<?php echo $item->getTitle(); ?>" >
+										<img class="left" src="data:image/jpeg;base64,<?php echo $item->getIcon(); ?>" />
+										<div class="left" style="padding: 5px;"><?php echo $item->getTitle(); ?></div>
+									</label>
+									
+								</div>
+								
+									<?php endif; ?>
+								<?php endforeach; ?>
+								
+								<div class="clearfix"></div>
+							</div>
+							
+							<div class="dateTimeItem" >
+								
 								<div class="dateTimeTag">
 									<label>
 										<input type="checkbox" />
-										全天</label>
+										營業時間</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
+									<div class="left priodInputBox">
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 10 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
+										~
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 20 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
+										<!--
 										<input class="" style="width:100px" type="text" />
 										~
 										<input class="" style="width:100px" type="text" />
+										-->
 									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							<div class="dateTimeItem daliyItem">
+								<input class="daliyValue" type="hidden" value="1" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
 										早餐</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
-										<input class="" style="width:100px" type="text" />
+									<div class="left priodInputBox">
+										
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 05 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 										~
-										<input class="" style="width:100px" type="text" />
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 13 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							<div class="dateTimeItem daliyItem">
+								<input class="daliyValue" type="hidden" value="3" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
 										午餐</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
-										<input class="" style="width:100px" type="text" />
+									<div class="left priodInputBox">
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select">
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 11 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 										~
-										<input class="" style="width:100px" type="text" />
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 14 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							<div class="dateTimeItem daliyItem">
+								<input class="daliyValue" type="hidden" value="4" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
 										下午茶</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
-										<input class="" style="width:100px" type="text" />
+									<div class="left priodInputBox">
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 14 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 										~
-										<input class="" style="width:100px" type="text" />
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 17 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							<div class="dateTimeItem daliyItem">
+								<input type="hidden" value="5" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
 										晚餐</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
-										<input class="" style="width:100px" type="text" />
+									<div class="left priodInputBox">
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 17 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 										~
-										<input class="" style="width:100px" type="text" />
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 22 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="dateTimeItem">
+							<div class="dateTimeItem daliyItem">
+								<input class="daliyValue" type="hidden" value="6" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
 										宵夜</label>
 								</div>
 								<div class="dateTimeStep">
-									<div class="resEditInput">
-										<input class="" style="width:100px" type="text" />
+									<div class="left priodInputBox">
+										<input class="week" type="hidden" value="<?php echo $w; ?>" />
+										<input class="priodStartTime" type="hidden" name="hours[][][]" />
+										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
+										
+										<select class="start_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+											<?php 
+													$s = '';
+													if($i == 22 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 										~
-										<input class="" style="width:100px" type="text" />
+										<select class="end_select" >
+											<?php foreach($hour24 as $i => $item): ?>
+												<?php 
+													$s = '';
+													if($i == 02 * 2)  
+														$s = 'selected';
+												?>
+												
+											<option value="<?php echo $i ?>" <?php echo $s ?> >
+												<?php echo $item ?>
+											</option>
+											<?php endforeach; ?>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -324,6 +538,7 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 					</div>
 				</div>
 			</div>
+			<?php endforeach; ?>
 			<div class="clearfix"></div>
 		</div>
 		<div class="resEditHelp">
@@ -336,9 +551,17 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 				</div>
 				<div class="dateTimeStep">
 					<div class="resEditInput">
+						<select name="hours">
+							
+							<option></option>
+						</select>
+						
+						<!--
 						<input class="" style="width:100px;background-color:transparent" value="0700" type="text" disabled="disabled"/>
+						
 						~
 						<input class="" style="width:100px;background-color:transparent" value="1200" type="text" disabled="disabled"/>
+						-->
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -346,6 +569,9 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 		</div>
 		<div class="clearfix"></div>
 	</div>
+	
+	
+	
 	<div class="resEditItem">
 		<div class="resEditContainer">
 			<div class="resEditLabel">
@@ -354,6 +580,7 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 			<div class="resEditInput">
 				<div class="resServiceBox">
 				<?php foreach ($features as $v):
+					if($v->getHoursMapping() == 0):
 				?>
 				<div class="resServiceItem">
 					<input id="<?php echo $v->getId(); ?>" type="checkbox" name="features[]" value="<?php echo $v->getId(); ?>" />
@@ -363,7 +590,7 @@ $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
 					</label>
 					
 				</div>
-				
+				<?php endif; ?>
 				<?php endforeach; ?>
 				</div>
 				
