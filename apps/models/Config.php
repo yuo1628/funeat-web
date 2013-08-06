@@ -28,6 +28,12 @@ class Config
 	 * @var		string
 	 */
 	const CONFIG_HOURS_FEATURE_MAPPING = 'HoursFeatureMapping';
+
+	/**
+	 * @var		Config
+	 */
+	private static $_instance;
+
 	/**
 	 * @var		Array
 	 */
@@ -36,7 +42,7 @@ class Config
 	/**
 	 * Constructor
 	 */
-	public function __construct()
+	private function __construct()
 	{
 		$f = APPPATH . self::FILENAME;
 		if (is_file($f))
@@ -53,6 +59,20 @@ class Config
 			$this->data->config = new stdClass();
 			$this->save();
 		}
+	}
+
+	/**
+	 * Get instance
+	 *
+	 * @return		models\Config
+	 */
+	public static function getInstance()
+	{
+		if (self::$_instance == null)
+		{
+			self::$_instance = new self();
+		}
+		return self::$_instance;
 	}
 
 	/**
@@ -133,6 +153,30 @@ class Config
 	}
 
 	/**
+	 * Remove element
+	 *
+	 * @param		string
+	 * @param		string
+	 */
+	public function remove($id = null, $ns = 'config')
+	{
+		if (isset($this->data->$ns))
+		{
+			if ($id === null)
+			{
+				unset($this->data->$ns);
+			}
+			else
+			{
+				if (isset($this->data->$ns->$id))
+				{
+					unset($this->data->$ns->$id);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Put mapping between Hours constant and Features
 	 *
 	 * @param		integer
@@ -142,6 +186,17 @@ class Config
 	{
 		if (Hours::checkTimeDivide($hours))
 		{
+			if (Hours::checkTimeDivide($feature->getHoursMapping()))
+			{
+				$old = get_object_vars($this->getHoursFeatureMapping());
+				$index = array_search($feature->getId(), $old);
+
+				if ($index)
+				{
+					$this->remove($index, self::CONFIG_HOURS_FEATURE_MAPPING);
+				}
+			}
+
 			$this->put($hours, $feature->getId(), self::CONFIG_HOURS_FEATURE_MAPPING);
 		}
 	}
@@ -154,7 +209,7 @@ class Config
 	 */
 	public function getHoursFeatureMapping()
 	{
-		$this->get(null, self::CONFIG_HOURS_FEATURE_MAPPING);
+		return $this->get(null, self::CONFIG_HOURS_FEATURE_MAPPING);
 	}
 
 }

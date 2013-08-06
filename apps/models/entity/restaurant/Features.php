@@ -6,8 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use models\Config;
 use models\FuneatFactory;
 use models\entity\Entity;
+use models\restaurant\Hours;
 
 /**
  * Feature ORM Class
@@ -133,6 +135,13 @@ class Features extends Entity
 	protected $creator;
 
 	/**
+	 * Mapping to hours constant
+	 *
+	 * @var integer
+	 */
+	protected $hoursMapping;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -149,7 +158,7 @@ class Features extends Entity
 	/**
 	 * @ORM\PrePersist
 	 */
-	public function doRegisterOnPrePersist()
+	public function onPrePersist()
 	{
 		$CI = get_instance();
 
@@ -157,6 +166,32 @@ class Features extends Entity
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
 		// $this->creator = FuneatFactory::getMember();
 		$this->creater = 0;
+	}
+
+	/**
+	 * @ORM\PostPersist
+	 * @ORM\PostUpdate
+	 */
+	public function onPostUpdate()
+	{
+		if (Hours::checkTimeDivide($this->hoursMapping)){
+			$config = Config::getInstance();
+			$config->putHoursFeatureMapping($this->hoursMapping, $this);
+			$config->save();
+		}
+	}
+
+	/**
+	 * @ORM\PostLoad
+	 */
+	public function onPostLoad()
+	{
+		$config = Config::getInstance();
+		$mapping = get_object_vars($config->getHoursFeatureMapping());
+
+		$index = array_search($this->getId(), $mapping);
+
+		$this->hoursMapping = (int) $index;
 	}
 
 	/**
@@ -215,6 +250,11 @@ class Features extends Entity
 		return $this->creater;
 	}
 
+	public function getHoursMapping()
+	{
+		return $this->hoursMapping;
+	}
+
 	public function getIcon()
 	{
 		return $this->icon;
@@ -248,6 +288,11 @@ class Features extends Entity
 	public function setCreater($v)
 	{
 		$this->creater = $v;
+	}
+
+	public function setHoursMapping($const)
+	{
+		$this->hoursMapping = $const;
 	}
 
 	/**
