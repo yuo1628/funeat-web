@@ -263,6 +263,20 @@ class Members extends Entity
 	protected $memberLike;
 
 	/**
+	 * @var models\entity\member\Comments[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\member\Comments", mappedBy="members")
+	 */
+	protected $memberComments;
+
+	/**
+	 * @var models\entity\restaurant\Comments[]
+	 *
+	 * @ORM\OneToMany(targetEntity="models\entity\restaurant\Comments", mappedBy="members")
+	 */
+	protected $restaurantComments;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -338,7 +352,7 @@ class Members extends Entity
 	{
 		return $this->uuid;
 	}
-	
+
 	public function __get($key)
 	{
 		return $this->$key;

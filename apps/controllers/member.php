@@ -209,7 +209,6 @@ class Member extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator($creator, $type);
 				$comment->setMember($member);
 
 				$commentModel->save($comment);
@@ -273,7 +272,6 @@ class Member extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator($creator, $type);
 				$comment->setReply($reply);
 
 				$commentModel->save($comment);

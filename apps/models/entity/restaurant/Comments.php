@@ -118,9 +118,9 @@ class Comments extends Entity
 	protected $createIP;
 
 	/**
-	 * @var string
+	 * @var models\entity\member\Members
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\ManyToOne(targetEntity="models\entity\member\Members", inversedBy="comments")
 	 */
 	protected $creator;
 
@@ -150,6 +150,13 @@ class Comments extends Entity
 	protected $comment;
 
 	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(type="smallint")
+	 */
+	protected $deleted;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -167,7 +174,7 @@ class Comments extends Entity
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
-		//$this->creator = FuneatFactory::getMember();
+		$this->creator = FuneatFactory::getMember();
 	}
 
 	/**
@@ -205,6 +212,11 @@ class Comments extends Entity
 	public function getCreator()
 	{
 		return $this->creator;
+	}
+
+	public function getDeleted()
+	{
+		return $this->deleted;
 	}
 
 	public function getRestaurant()
@@ -254,6 +266,11 @@ class Comments extends Entity
 				$this->creator = $creator->getId();
 				break;
 		}
+	}
+
+	public function setDeleted($deleted)
+	{
+		$this->deleted = $deleted;
 	}
 
 	public function setRestaurant(Restaurants $v)
