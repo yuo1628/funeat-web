@@ -212,6 +212,8 @@ $hour24 = Hours::getDayTime();
 	
 	<div class="resEditItem">
 		<div class="resEditContainer">
+			<input type="hidden" class="allOrMulti" value="0" />
+			
 			<div class="resEditLabel">
 				營業時間
 			</div>
@@ -219,22 +221,47 @@ $hour24 = Hours::getDayTime();
 				$week = array("一", "二", "三", "四", "五", "六", "日");
 				
 				foreach($week as $w => $w_item): 
+					$style = 'display:none';
+					if($w == 0)
+					{
+						$style = 'display:block';
+					}
 			?>
-			<div class="resEditInput resPriodItem">
+			<div class="resEditInput resPriodItem" style="<?php echo $style ?>">
+				
 				<input type="hidden" class="boo" value="1" />
 				
 				<div class="resEditDateItem">
 					<div class="dateBox">
 						<div class="dateTitle">
-							星期<?php echo $w_item; ?>
+							<?php if($w != 0): ?>
+								星期<?php echo $w_item; ?>
+							<?php else: ?>
+								全天
+							<?php endif; ?>
+							
 						</div>
 						<div class="dateOtherBar">
+							
+							<?php if($w == 0): ?>
 							<div class="dateSetAllBtn">
 								套用至全部設定
 							</div>
 							<div class="addNewPeriodBtn">
 								個別設定時段
 							</div>
+							<div class="detailSetWeekBtn">
+								<input type="hidden" value="0" />
+								<span>詳細設定日期</span>
+							</div>
+							<?php else: ?>
+							<div class="dateSetAllBtn" style="display:none;">
+								套用至全部設定
+							</div>
+							<div class="addNewPeriodBtn" style="display:none;">
+								個別設定時段
+							</div>
+							<?php endif; ?>
 						</div>
 						<div class="dateTime">
 							
@@ -248,12 +275,14 @@ $hour24 = Hours::getDayTime();
 							</div>
 							
 							<div class="dateTimeItem ">
+								
 								<?php 
 								foreach($features as $i => $item) :
 									if($item->getHoursMapping() > 0) :
 										
 								?>
 								<div class="resServiceItem proidTagItem">
+									
 									<input type="hidden" value="<?php echo $item->getHoursMapping() ?>" />
 									<input class="proidCheckBox" id="<?php echo $w . $item->getId(); ?>" type="checkbox" name="features[]" value="<?php echo $item->getId(); ?>" />
 									<label for="<?php echo $w . $item->getId(); ?>" class="checkboxLabel" title="<?php echo $item->getTitle(); ?>" >
@@ -269,20 +298,19 @@ $hour24 = Hours::getDayTime();
 								<div class="clearfix"></div>
 							</div>
 							
-							<div class="dateTimeItem" >
-								
+							<div class="dateTimeItem priodTimeItem" style="display:block">
+								<input class="daliyValue" type="hidden" value="0" />
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
-										營業時間</label>
+										
+										營業時間
+									</label>
 								</div>
 								<div class="dateTimeStep">
 									<div class="left priodInputBox">
 										<input class="week" type="hidden" value="<?php echo $w; ?>" />
-										<input class="priodStartTime" type="hidden" name="hours[][][]" />
-										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select" >
+										<select class="start_select" name="hours[<?php echo $w; ?>][0][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -296,7 +324,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][0][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
@@ -331,7 +359,7 @@ $hour24 = Hours::getDayTime();
 										<input class="priodStartTime" type="hidden" name="hours[][][]" />
 										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select" >
+										<select class="start_select" name="hours[<?php echo $w; ?>][1][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -345,7 +373,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][1][1]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
@@ -374,7 +402,7 @@ $hour24 = Hours::getDayTime();
 										<input class="priodStartTime" type="hidden" name="hours[][][]" />
 										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select">
+										<select class="start_select" name="hours[<?php echo $w; ?>][3][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -388,7 +416,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][3][1]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
@@ -417,7 +445,7 @@ $hour24 = Hours::getDayTime();
 										<input class="priodStartTime" type="hidden" name="hours[][][]" />
 										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select" >
+										<select class="start_select" name="hours[<?php echo $w; ?>][4][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -431,7 +459,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][4][1]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
@@ -449,7 +477,7 @@ $hour24 = Hours::getDayTime();
 								<div class="clearfix"></div>
 							</div>
 							<div class="dateTimeItem daliyItem">
-								<input type="hidden" value="5" />
+								<input class="daliyValue" type="hidden" value="5" />
 								<div class="dateTimeTag">
 									<label>
 										晚餐</label>
@@ -460,7 +488,7 @@ $hour24 = Hours::getDayTime();
 										<input class="priodStartTime" type="hidden" name="hours[][][]" />
 										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select" >
+										<select class="start_select" name="hours[<?php echo $w; ?>][5][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -474,7 +502,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][5][1]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
@@ -503,7 +531,7 @@ $hour24 = Hours::getDayTime();
 										<input class="priodStartTime" type="hidden" name="hours[][][]" />
 										<input class="priodEndtTime" type="hidden" name="hours[][][]" />
 										
-										<select class="start_select" >
+										<select class="start_select" name="hours[<?php echo $w; ?>][6][0]">
 											<?php foreach($hour24 as $i => $item): ?>
 											<?php 
 													$s = '';
@@ -517,7 +545,7 @@ $hour24 = Hours::getDayTime();
 											<?php endforeach; ?>
 										</select>
 										~
-										<select class="end_select" >
+										<select class="end_select" name="hours[<?php echo $w; ?>][6][1]">
 											<?php foreach($hour24 as $i => $item): ?>
 												<?php 
 													$s = '';
