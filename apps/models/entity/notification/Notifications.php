@@ -53,9 +53,9 @@ class Notifications extends Entity
 	protected $createAt;
 
 	/**
-	 * @var integer
+	 * @var models\entity\notification\Type
 	 *
-	 * @ORM\Column(type="integer")
+	 * @ORM\ManyToOne(targetEntity="models\entity\notification\Type", inversedBy="notifications")
 	 */
 	protected $type;
 
