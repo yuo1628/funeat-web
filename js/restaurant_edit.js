@@ -26,6 +26,12 @@ $(function() {
 			
 			$(".resPriodItem").show();
 			
+			//還原公休按鈕
+			$(".vacationChecItem").show();
+			$(".vacationCheckBox").each(function() {
+				this.checked = false;
+			})
+			
 		}
 		else {
 			$(".allOrMulti").val(0);
@@ -39,6 +45,13 @@ $(function() {
 			
 			$(".resPriodItem").hide();
 			$(".resPriodItem:eq(0)").show();
+			
+			setAll($(".dateSetAllBtn").get(0));
+			
+			$(".vacationChecItem").hide();
+			$(".vacationCheckBox").each(function() {
+				this.checked = false;
+			})
 		}
 		
 	})

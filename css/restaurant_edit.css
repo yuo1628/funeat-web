@@ -161,6 +161,9 @@
 	margin: 0 0 18px 0;
 
 	cursor: pointer;
+	
+	width: 110px;
+	text-align: center;
 }
 
 .dateSetAllBtn:hover {
@@ -176,6 +179,8 @@
 	margin: 0 0 18px 0;
 
 	cursor: pointer;
+	width: 110px;
+	text-align: center;
 }
 
 .addNewPeriodBtn:hover {
@@ -191,6 +196,8 @@
 	background-color:#fff;
 
 	cursor: pointer;
+	width: 110px;
+	text-align: center;
 }
 
 
@@ -338,6 +345,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96000f', end
 	display: none;
 }
 
+.vacationChecItem {
+	
+	display: none;
+}
 
+.vacationCheckBox {
+}
 
 

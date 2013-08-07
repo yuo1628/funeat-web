@@ -255,20 +255,20 @@ $hour24 = Hours::getDayTime();
 								<span>詳細設定日期</span>
 							</div>
 							<?php else: ?>
-							<div class="dateSetAllBtn" style="display:none;">
-								套用至全部設定
-							</div>
-							<div class="addNewPeriodBtn" style="display:none;">
+							<div class="addNewPeriodBtn">
 								個別設定時段
 							</div>
+							
 							<?php endif; ?>
+							
+							
 						</div>
 						<div class="dateTime">
 							
-							<div class="dateTimeItem">
+							<div class="dateTimeItem vacationChecItem">
 								<div class="dateTimeTag">
 									<label>
-										<input type="checkbox" />
+										<input type="checkbox" class="vacationCheckBox" value="公休"/>
 										公休</label>
 								</div>
 								<div class="clearfix"></div>
