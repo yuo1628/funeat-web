@@ -250,6 +250,17 @@ class Members extends Entity
 	protected $commentsLike;
 
 	/**
+	 * @var models\entity\notification\Notifications[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\notification\Notifications", mappedBy="readableMembers")
+	 * @ORM\JoinTable(name="Notifications_Member_Readable_Mapping",
+	 * 	joinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="notifications_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $readableNotification;
+
+	/**
 	 * @var models\entity\image\Images[]
 	 *
 	 * @ORM\OneToMany(targetEntity="models\entity\image\Images", mappedBy="members")
@@ -344,6 +355,11 @@ class Members extends Entity
 	public function getMembergroups()
 	{
 		return $this->membergroups;
+	}
+
+	public function getReadableNotification()
+	{
+		return $this->readableNotification;
 	}
 
 	public function getUuid()
