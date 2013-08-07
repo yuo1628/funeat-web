@@ -38,7 +38,7 @@ class Type extends Entity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=255, unique=true)
 	 */
 	protected $action;
 
@@ -68,6 +68,41 @@ class Type extends Entity
 	 */
 	public function __clone()
 	{
+	}
+
+	public function getAction()
+	{
+		return $this->action;
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function getLanguage()
+	{
+		return $this->language;
+	}
+
+	public function getTemplate()
+	{
+		return $this->template;
+	}
+
+	public function setAction($action)
+	{
+		$this->action = Entity::preset($action, $this->action);
+	}
+
+	public function setLanguage($language)
+	{
+		$this->language = Entity::preset($language, $this->language);
+	}
+
+	public function setTemplate($template)
+	{
+		$this->template = Entity::preset($template, $this->template);
 	}
 
 	public function __get($key)
