@@ -4,6 +4,7 @@ namespace models\entity\member;
 
 use Doctrine\ORM\Mapping as ORM;
 use models\entity\Entity;
+use models\entity\image\Images;
 
 /**
  * Members ORM Class
@@ -93,7 +94,7 @@ class Members extends Entity
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string", length=32, nullable=true)
+	 * @ORM\ManyToOne(targetEntity="models\entity\image\Images", inversedBy="member")
 	 */
 	protected $avatar;
 
@@ -296,7 +297,7 @@ class Members extends Entity
 	/**
 	 * @ORM\PrePersist
 	 */
-	public function doRegisterOnPrePersist()
+	public function onPrePersist()
 	{
 		$CI = get_instance();
 		$CI->load->library('uuid');
@@ -304,20 +305,15 @@ class Members extends Entity
 		$this->uuid = $CI->uuid->v4();
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
-	}
 
-	/**
-	 * @ORM\PrePersist
-	 */
-	public function doEncodeOnPrePersist()
-	{
+		// Password encode
 		$this->password = md5($this->password);
 	}
 
 	/**
 	 * @ORM\PreUpdate
 	 */
-	public function doEncodeOnPreUpdate()
+	public function onPreUpdate()
 	{
 		$this->password = md5($this->password);
 	}
@@ -328,18 +324,21 @@ class Members extends Entity
 	}
 
 	/**
+	 * @return models\entity\image\Images
+	 */
+	public function getAvatar()
+	{
+		return $this->avatar;
+	}
+
+	/**
 	 * Get like member collection
 	 *
-	 * @return		models\entity\member\Members[]
+	 * @return models\entity\member\Members[]
 	 */
 	public function getLike()
 	{
 		return $this->like;
-	}
-
-	public function setMembergroups(Membergroups $value)
-	{
-		$this->membergroups = $value;
 	}
 
 	public function getMembergroups()
@@ -347,10 +346,19 @@ class Members extends Entity
 		return $this->membergroups;
 	}
 
-
 	public function getUuid()
 	{
 		return $this->uuid;
+	}
+
+	public function setAvatar(Images $avatar)
+	{
+		$this->avatar = $avatar;
+	}
+
+	public function setMembergroups(Membergroups $value)
+	{
+		$this->membergroups = $value;
 	}
 
 	public function __get($key)
