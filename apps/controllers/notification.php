@@ -32,6 +32,44 @@ class Notification extends MY_Controller
 		if (FuneatFactory::isLogin())
 		{
 			$member = FuneatFactory::getMember();
+
+			$notificationModel = $this->getModel('Notification');
+
+			foreach ($notificationModel->getItems() as $v)
+			{
+				if ($v->public || $v->readableMembers->contains($member))
+				{
+					echo '<a href="' . site_url('notification/post/' . $v->uuid) . '"">' . site_url('notification/post/' . $v->uuid) . '</a>' . '<br/>';
+
+					$read = $v->read;
+					if ($read->contains($member))
+					{
+						echo '已讀' . '<br/>';
+					}
+				}
+			}
+		}
+		else
+		{
+			redirect('login', 'location', 301);
+		}
+	}
+
+	public function post($identity)
+	{
+		// If isLogin ,then redirect
+		if (FuneatFactory::isLogin())
+		{
+			$member = FuneatFactory::getMember();
+
+			$notificationModel = $this->getModel('Notification');
+
+			$item = $notificationModel->getItem($identity, 'uuid');
+
+			$readable = $item->readableMembers;
+
+			$item->read->add($member);
+			$notificationModel->save($item);
 		}
 		else
 		{

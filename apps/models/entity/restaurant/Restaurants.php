@@ -7,6 +7,7 @@ use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 use models\FuneatFactory;
+use models\ModelFactory;
 use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
@@ -357,6 +358,17 @@ class Restaurants extends Entity
 	protected $comments;
 
 	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
+	 * @ORM\JoinTable(name="Restaurant_Member_Subscription",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $subscription;
+
+	/**
 	 * Distance
 	 *
 	 * @var float
@@ -397,6 +409,22 @@ class Restaurants extends Entity
 		$this->createAt = new \DateTime('NOW', new \DateTimeZone('Asia/Taipei'));
 		$this->createIP = $CI->input->server('REMOTE_ADDR');
 		$this->creator = FuneatFactory::getMember();
+	}
+
+	/**
+	 * @ORM\PostPersist
+	 */
+	public function onPostPersist()
+	{
+		$notificationModel = ModelFactory::getInstance('models\Notification');
+		$typeModel = ModelFactory::getInstance('models\notification\Type');
+
+		$notification = $notificationModel->getInstance();
+
+		// TODO use const action to get item
+		$notification->type = $typeModel->getItem(1);
+		$notification->public = 1;
+		$notificationModel->save($notification);
 	}
 
 	/**
