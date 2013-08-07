@@ -12,6 +12,7 @@ use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
 use models\entity\image\Images as Images;
+use models\notification\Action as Action;
 use Maps;
 
 /**
@@ -417,13 +418,14 @@ class Restaurants extends Entity
 	public function onPostPersist()
 	{
 		$notificationModel = ModelFactory::getInstance('models\Notification');
-		$typeModel = ModelFactory::getInstance('models\notification\Type');
 
+		/**
+		 * @var models\entity\notification\Notifications
+		 */
 		$notification = $notificationModel->getInstance();
+		$notification->setType(Action::RESTAURANT_ADD);
+		$notification->setPublic(true);
 
-		// TODO use const action to get item
-		$notification->type = $typeModel->getItem(1);
-		$notification->public = 1;
 		$notificationModel->save($notification);
 	}
 

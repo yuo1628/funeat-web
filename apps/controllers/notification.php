@@ -37,11 +37,11 @@ class Notification extends MY_Controller
 
 			foreach ($notificationModel->getItems() as $v)
 			{
-				if ($v->public || $v->readableMembers->contains($member))
+				if ($v->getPublic() || $v->getReadableMembers()->contains($member))
 				{
-					echo '<a href="' . site_url('notification/post/' . $v->uuid) . '"">' . site_url('notification/post/' . $v->uuid) . '</a>' . '<br/>';
+					echo '<a href="' . site_url('notification/post/' . $v->getUuid()) . '"">' . site_url('notification/post/' . $v->getUuid()) . '</a>' . '<br/>';
 
-					$read = $v->read;
+					$read = $v->getRead();
 					if ($read->contains($member))
 					{
 						echo '已讀' . '<br/>';
@@ -66,9 +66,9 @@ class Notification extends MY_Controller
 
 			$item = $notificationModel->getItem($identity, 'uuid');
 
-			$readable = $item->readableMembers;
+			$readable = $item->getReadableMembers();
 
-			$item->read->add($member);
+			$item->getRead()->add($member);
 			$notificationModel->save($item);
 		}
 		else

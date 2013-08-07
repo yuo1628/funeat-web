@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use models\FuneatFactory;
 use models\entity\Entity;
 use models\entity\member\Members as Members;
+use models\entity\notification\Type as Type;
 
 /**
  * Notifications ORM Class
@@ -60,6 +61,13 @@ class Notifications extends Entity
 	protected $type;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $params;
+
+	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
@@ -104,7 +112,6 @@ class Notifications extends Entity
 	 */
 	public function __construct()
 	{
-		$this->public = 1;
 	}
 
 	/**
@@ -131,14 +138,92 @@ class Notifications extends Entity
 		return $this->id;
 	}
 
-	public function __get($key)
+	public function getCreateAt()
 	{
-		return $this->$key;
+		return $this->createAt;
 	}
 
-	public function __set($key, $value)
+	public function getParams()
 	{
-		$this->$key = $value;
+		return $this->params;
+	}
+
+	public function getPublic()
+	{
+		return $this->public;
+	}
+
+	/**
+	 * @return models\entity\member\Membergroups[]
+	 */
+	public function getReadableMembergroups()
+	{
+		return $this->readableMembergroups;
+	}
+
+	/**
+	 * @return models\entity\member\Members[]
+	 */
+	public function getReadableMembers()
+	{
+		return $this->readableMembers;
+	}
+
+	/**
+	 * @return models\entity\member\Members[]
+	 */
+	public function getRead()
+	{
+		return $this->read;
+	}
+
+	/**
+	 * @return models\entity\notification\Type
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
+
+	public function setParams($params)
+	{
+		$this->params = $params;
+	}
+
+	public function setPublic($public = true)
+	{
+		if ($public)
+		{
+			$this->public = 1;
+		}
+		else
+		{
+			$this->public = 0;
+		}
+	}
+
+	/**
+	 * @param string
+	 */
+	public function setType($const)
+	{
+		if (in_array($const, Type::getAction())) {
+			$typeModel = ModelFactory::getInstance('models\\notification\\Type');
+			$type = $typeModel->getItem($const, 'action');
+
+			if ($type === null) {
+				$type = $typeModel->getInstance();
+				$type->setAction($const);
+				$type->setTemplate($const);
+				$typeModel->save($type);
+			}
+			$this->type = $type;
+		}
 	}
 
 }
