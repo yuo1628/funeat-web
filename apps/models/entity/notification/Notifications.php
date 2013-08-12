@@ -5,6 +5,9 @@ namespace models\entity\notification;
 use Doctrine\ORM\Mapping as ORM;
 
 use models\FuneatFactory;
+use models\ModelFactory;
+use models\notification\Params;
+use models\notification\Action as Action;
 use models\entity\Entity;
 use models\entity\member\Members as Members;
 use models\entity\notification\Type as Type;
@@ -61,13 +64,6 @@ class Notifications extends Entity
 	protected $type;
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	protected $params;
-
-	/**
 	 * @var integer
 	 *
 	 * @ORM\Column(type="smallint")
@@ -108,9 +104,23 @@ class Notifications extends Entity
 	protected $read;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="text")
+	 */
+	protected $message;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
+	{
+	}
+
+	/**
+	 * Cloneable
+	 */
+	public function __clone()
 	{
 	}
 
@@ -127,15 +137,11 @@ class Notifications extends Entity
 	}
 
 	/**
-	 * Cloneable
+	 * @ORM\PostLoad
 	 */
-	public function __clone()
+	public function onPostLoad()
 	{
-	}
-
-	public function getId()
-	{
-		return $this->id;
+		$this->message = $this->type->getTemplate();
 	}
 
 	public function getCreateAt()
@@ -143,9 +149,14 @@ class Notifications extends Entity
 		return $this->createAt;
 	}
 
-	public function getParams()
+	public function getId()
 	{
-		return $this->params;
+		return $this->id;
+	}
+
+	public function getMessage()
+	{
+		return $this->message;
 	}
 
 	public function getPublic()
@@ -190,9 +201,9 @@ class Notifications extends Entity
 		return $this->uuid;
 	}
 
-	public function setParams($params)
+	public function setMessage($action, $params = array())
 	{
-		$this->params = $params;
+		$this->message = Action::buildMessage($action, $params);
 	}
 
 	public function setPublic($public = true)
@@ -212,11 +223,13 @@ class Notifications extends Entity
 	 */
 	public function setType($const)
 	{
-		if (in_array($const, Type::getAction())) {
+		if (in_array($const, Action::getActions()))
+		{
 			$typeModel = ModelFactory::getInstance('models\\notification\\Type');
 			$type = $typeModel->getItem($const, 'action');
 
-			if ($type === null) {
+			if ($type === null)
+			{
 				$type = $typeModel->getInstance();
 				$type->setAction($const);
 				$type->setTemplate($const);

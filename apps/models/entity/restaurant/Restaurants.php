@@ -424,16 +424,28 @@ class Restaurants extends Entity
 		 */
 		$notification = $notificationModel->getInstance();
 		$notification->setType(Action::RESTAURANT_ADD);
+		$notification->setMessage(Action::RESTAURANT_ADD);
 		$notification->setPublic(true);
 
 		$notificationModel->save($notification);
 	}
 
 	/**
-	 * @ORM\PreUpdate
+	 * @ORM\PostUpdate
 	 */
-	public function onPreUpdate()
+	public function onPostUpdate()
 	{
+		$notificationModel = ModelFactory::getInstance('models\Notification');
+
+		/**
+		 * @var models\entity\notification\Notifications
+		 */
+		$notification = $notificationModel->getInstance();
+		$notification->setType(Action::RESTAURANT_EDIT);
+		$notification->setMessage(Action::RESTAURANT_EDIT);
+		$notification->setPublic(true);
+
+		$notificationModel->save($notification);
 	}
 
 	public function getId()

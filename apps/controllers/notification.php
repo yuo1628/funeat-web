@@ -88,7 +88,12 @@ class Notification extends MY_Controller
 		$this->view('notification/type');
 	}
 
-	public function typeSave($identity = null)
+	/**
+	 * Save type
+	 *
+	 * @param id
+	 */
+	public function typeSave($id = null)
 	{
 		/**
 		 * @var		models\entity\notification\Type
@@ -113,9 +118,7 @@ class Notification extends MY_Controller
 		else
 		{
 			// Load data when identity is not null.
-			$identity = trim($identity);
-
-			$type = $typeModel->getItem($identity);
+			$type = $typeModel->getItem((int)$id);
 		}
 
 		// It not vaild when restaurant is null
