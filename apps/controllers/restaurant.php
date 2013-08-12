@@ -701,7 +701,6 @@ class Restaurant extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setRestaurant($item);
 
 				$commentModel->save($comment);
@@ -754,7 +753,6 @@ class Restaurant extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setReply($reply);
 
 				$commentModel->save($comment);
