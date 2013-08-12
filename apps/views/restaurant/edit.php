@@ -588,7 +588,9 @@ $hour24 = Hours::getDayTime();
 			<div class="clearfix"></div>
 		</div>
 		<div class="resEditHelp">
-			請對該店有營業的時間勾選該時段，並且在時段裡輸入該時段營業時間 EX:
+			請對該店有營業的時間勾選該時段，並且在時段裡輸入該時段營業時間
+			
+			<!--
 			<div class="dateTimeItem">
 				<div class="dateTimeTag">
 					<label>
@@ -598,20 +600,14 @@ $hour24 = Hours::getDayTime();
 				<div class="dateTimeStep">
 					<div class="resEditInput">
 						<select name="hours">
-							
 							<option></option>
 						</select>
 						
-						<!--
-						<input class="" style="width:100px;background-color:transparent" value="0700" type="text" disabled="disabled"/>
-						
-						~
-						<input class="" style="width:100px;background-color:transparent" value="1200" type="text" disabled="disabled"/>
-						-->
 					</div>
 				</div>
 				<div class="clearfix"></div>
 			</div>
+			-->
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -652,7 +648,7 @@ $hour24 = Hours::getDayTime();
 	<div class="resEditItem">
 		<div class="resEditContainer">
 			<div class="resEditLabel">
-				店家大頭照
+				店家形象照
 			</div>
 			<div class="resEditInput">
 				<input type="file" name="logo" />

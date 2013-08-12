@@ -184,7 +184,8 @@
 }
 
 .addNewPeriodBtn:hover {
-	background-color:#f7f7f7;
+	background-color:#5a9ee9;
+	color:#fff;
 }
 
 .detailSetWeekBtn {
