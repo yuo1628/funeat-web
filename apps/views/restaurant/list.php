@@ -99,10 +99,12 @@ $rest;
 				<div class="resListBarItemVerLine"></div>
 				<div class="resListBarItem">
 					<img  src="img/icon/more.png" />
+					<a href="<?php echo site_url('restaurant/' . $rest->getUuid()); ?>">
 					<div class="resListBarItemDesc">
 						詳細
 					</div>
 					<div class="clearfix" ></div>
+					</a>
 				</div>
 				<div class="clearfix" ></div>
 			</div>
