@@ -152,6 +152,9 @@ $member;
 					</div>
 				</div>
 			</div>
+			
+			
+			
 			<div class="resServiceBox">
 				<div class="resServiceTitle">
 					提供的服務
@@ -167,6 +170,15 @@ $member;
 			</div>
 			<div class="clearfix"></div>
 			
+			<div class="resInfoIntro">
+				<div class="resInfoIntroTitle">
+					介紹
+				</div>
+				<div class="resInfoIntroDesc">
+					<?php echo $restaurant->getIntro(); ?>
+				</div>
+				
+			</div>
 			
 			
 		</div>

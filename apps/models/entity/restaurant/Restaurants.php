@@ -617,6 +617,16 @@ class Restaurants extends Entity
 	{
 		$this->gallery = !empty($gallery) ? $gallery : null;
 	}
+	
+	/**
+	 * Set Intro
+	 *
+	 * @param		\models\entity\Restaurant $model Restaurant model.
+	 */
+	public function setIntro($intro)
+	{
+		$this->intro = !empty($intro) ? $intro : null;
+	}
 
 	/**
 	 * Set latitude and longitude

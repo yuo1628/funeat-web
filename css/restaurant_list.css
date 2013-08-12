@@ -90,6 +90,10 @@
 .resListDesc {
 	padding: 10px;
 	font-size: 13px;
+	height: 24px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
 }
 
 .resListBar {
@@ -189,6 +193,7 @@ background-color:#fff;
 
 .resListBarItemDesc {
 	float:left;
+	color:#666;
 }
 
 .resListBarItemVerLine {

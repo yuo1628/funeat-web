@@ -293,6 +293,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', end
 	cursor: pointer;
 }
 
+.resInfoIntro {
+	margin: 10px;
+	
+}
+
+.resInfoIntroTitle {
+	padding: 10px;
+	color:#5a9ee9;
+	font-size: 21px;
+}
+
+.resInfoIntroDesc {
+	padding: 10px;
+}
+
 /**
  * 	res map
  */

@@ -236,10 +236,12 @@ class Restaurant extends MY_Controller
 
 			$this->setData('features', $featureModel->getItems());
 			$this->setData('restaurant', FuneatFactory::getRestaurantInstance());
+			
 
 			// Add stylesheets & scripts
 			$this->head->addStyleSheet('css/gallery.css');
 			$this->head->addStyleSheet('css/restaurant_edit.css');
+			$this->head->addScript('js/restaurant_edit.js');
 
 			$this->view('restaurant/edit');
 		}
@@ -273,6 +275,7 @@ class Restaurant extends MY_Controller
 			// Add stylesheets & scripts
 			$this->head->addStyleSheet('css/gallery.css');
 			$this->head->addStyleSheet('css/restaurant_edit.css');
+			$this->head->addScript('js/restaurant_edit.js');
 
 			$this->view('restaurant/edit');
 		}
@@ -347,6 +350,7 @@ class Restaurant extends MY_Controller
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
 			$restaurant->setAddress($this->input->post('address'));
+			$restaurant->setIntro($this->input->post('intro'));
 			$restaurant->setLatLng($this->input->post('latitude'), $this->input->post('longitude'));
 			$restaurant->setAddress($this->input->post('address'));
 			$restaurant->setTel($this->input->post('tel'));
