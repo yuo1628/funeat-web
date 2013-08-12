@@ -29,6 +29,7 @@ $name = Entity::preset(set_value('name'), $restaurant->getName());
 $address = Entity::preset(set_value('address'), $restaurant->getAddress());
 $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 $tel = Entity::preset(set_value('tel'), $restaurant->getTel());
+$intro = Entity::preset(set_value('intro'), $restaurant->getIntro());
 $fax = Entity::preset(set_value('fax'), $restaurant->getFax());
 $priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
 $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
@@ -161,6 +162,40 @@ $hour24 = Hours::getDayTime();
 		<div class="resEditItem">
 			<div class="resEditContainer">
 				<div class="resEditLabel">
+					*價格區間
+				</div>
+				<div class="resEditInput">
+					<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
+					~
+					<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
+					元
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="resEditHelp">
+				請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="resEditItem">
+			<div class="resEditContainer">
+				<div class="resEditLabel">
+					介紹
+				</div>
+				<div class="resEditInput">
+					<textarea class="intro" name="intro"><?php echo $intro ?></textarea>
+					
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="resEditHelp">
+				請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="resEditItem">
+			<div class="resEditContainer">
+				<div class="resEditLabel">
 					傳真
 				</div>
 				<div class="resEditInput">
@@ -189,24 +224,7 @@ $hour24 = Hours::getDayTime();
 			<div class="clearfix"></div>
 		</div>
 	</div>
-	<div class="resEditItem">
-		<div class="resEditContainer">
-			<div class="resEditLabel">
-				*價格區間
-			</div>
-			<div class="resEditInput">
-				<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
-				~
-				<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
-				元
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="resEditHelp">
-			請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
-		</div>
-		<div class="clearfix"></div>
-	</div>
+	
 	
 	
 	
