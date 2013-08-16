@@ -1,0 +1,87 @@
+.cmxform
+{
+	padding-top:100px;
+}
+.regBox {
+	position: relative;
+	padding: 0 40px;
+	
+	width: 320px;
+	min-height: 460px;
+	max-height: none;	
+	margin: 0 auto;
+	background-color: #fff;
+	/*background-color: rbga(0,0,0,.5);
+	background-image: url(../img/material_wall/wavegrid_@2X.png);	*/
+	border: 1px solid #e0e0e0;	
+	box-shadow: 0px 2px 4px #aaa;
+	border-radius: 0px;
+}
+.regTitle {
+	padding: 40px 0 20px 0;
+	margin: 0 0 30px 0;
+	color:  #555555;
+	font-size: 20px;	
+	border-bottom:1px solid #e0e0e0;
+}
+.regItem {
+	position: relative;
+	height: 31px;
+	margin: 0 0 50px 0; 
+}
+.regText {
+	position: absolute;
+	padding: 5px 10px;
+	width: 300px;
+	border: 0;
+	border-bottom: 1px solid #ff8b16;
+	background-color: transparent;
+	background-image: url(../img/icon/input_arrow.png);
+	background-repeat: no-repeat;
+	background-position: right bottom;	
+	color: #333;
+	font-size: 16px;
+	z-index: 1001;
+}
+.regdiv{
+	position: absolute;
+	padding: 5px 10px;
+	width: 300px;
+	color:#B4B5B5;
+	font-size: 13px;		
+}
+.reglink {
+	position: relative;
+	text-align:right;
+	width: 100px;	
+}
+.regCheckSub{
+	position: relative;
+	width:100%;
+	padding: 5px 0;
+	border:1px solid #ec7600; 
+	color: #fff;
+	font-size: 18px;
+	text-align: center;
+	box-shadow: 0px 1px 1px #333;
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: #ffa244;
+	
+}
+label.error {
+	position: absolute;		
+	bottom: -30px;
+	padding:5px;
+	font-size: 12px;
+	display:inline-block;
+	color: #FF0000;	
+	background-color:#e0e0e0;
+	border: 1px solid #ccc;
+	border-top: 0;
+}
+label.error p
+{
+	margin:0;
+	padding:0;
+}

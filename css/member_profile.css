@@ -1,0 +1,113 @@
+
+.profileTop
+{
+	position:relative;	
+	margin-top:-30px;	
+	padding:0px;	
+	height:300px;
+}
+.bgImg
+{
+	position:absolute;
+	margin-top:-30px;
+	background-color:#f0f0f0;
+	width:100%;
+	height:250px;
+	z-index: 888;	
+}
+.avatar
+{
+	position:relative;
+	display:block;
+	border:5px solid #fff;
+	background-color:#fff;
+	width:230px;
+	height:200px;
+	margin:30px 0 0 -25px;
+	box-shadow: 0 3px 3px #ccc;	
+	z-index: 999;
+}
+.avatarEdit
+{
+	position:absolute;
+	display:block;	
+	background-color:#0080ff;
+	color:#fff;
+	font-size:20px;
+	padding:10px 0;
+	width:240px;
+	text-align:center;
+	margin:-70px 0 0 -25px;
+	box-shadow: 0 2px 1px #999;	
+	z-index: 999;
+}
+.arrowLeft 
+{		
+	position:absolute;
+	display:inline-block;
+	background: url(../img/layout/res_title-01.png) no-repeat;
+	width: 25px;
+	height: 25px;
+	margin-top: -25px;
+	margin-left: -25px;
+	z-index: 999;
+}
+.memberMeta
+{	
+	position:relative;
+	display:block;	
+	background-color:#fff;
+	width:100%;
+	min-height:100px;
+	margin-top:-30px;
+	border-top:1px solid #e0e0e0;
+	z-index: 990;	
+	padding-top:20px;
+}
+.meta
+{
+	float:right;
+	display:block;	
+	background-color:#f8f5f0;
+	width:70%;
+	min-height:90px;	
+	border:1px solid #e0e0e0;
+	/*box-shadow:0 1px 2px #e0e0e0;*/
+	border-right:none;
+}	
+.memberMenu
+{
+	display:block;	
+	width:100%;	
+	background-color: #f8f5f0;
+	border-bottom:1px solid #e0e0e0;
+	
+}
+.navUl
+{	
+	text-align: right;
+	overflow:hidden;	
+}
+.navli
+{
+	display:inline-block;	
+	padding:15px 20px;	
+	font-weight:bold;
+	border-right:1px solid #ccc;
+	cursor: default;
+	margin-left:-3px;		
+}
+.navli:last-child
+{
+	border-right:none;
+}
+.navli-on
+{
+	color:#000;
+}
+.navli-off:hover
+{
+	color:#000;
+	cursor: pointer;
+	background-color: #fcfcfc;	
+}

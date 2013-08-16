@@ -39,8 +39,9 @@
 		<link href="css/layout.css" rel="stylesheet" />
 		<link href="css/default.css" rel="stylesheet" />
 		<link href="css/random.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
 		<script src="js/jquery-2.0.3.min.js" type="text/javascript"></script>
-		<script src="js/jquery.color.js" type="text/javascript"></script>
+		<script src="js/jquery.color.js" type="text/javascript"></script>		
 		<script src="js/funeat.core.js" type="text/javascript"></script>
 		<script src="js/layout.js" type="text/javascript"></script>
 		<script src="js/res_random.js" type="text/javascript"></script>
