@@ -78,16 +78,7 @@
 	</div>
 </div>
 <div class="contentBox">
-	<div id="mapBox" class="mapBox"></div>
-	<script type="text/javascript">
-	
-		jQuery(document).ready(function()
-		{
-			/*
-			map = new Funeat.Map('#mapBox');
-			Funeat.MapStatic.geolocate(map);*/
-		});
-	</script>
+	<div id="mapBox" ></div>
 	<script type="text/html" id="localTemplate">
 		<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c19.19.244.244/s160x160/1010285_661668367180129_2143900233_n.jpg" />
 	</script>

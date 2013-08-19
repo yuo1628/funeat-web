@@ -56,6 +56,7 @@
 	</head>
 	<body>
 		<div class="container">
+						
 			<div class="randomBox">
 				<div class="randomStartBtn">
 					開始
