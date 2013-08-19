@@ -2,6 +2,10 @@
  * 	override gallery 
  */
 
+.container {
+	height:auto;
+}
+
 .galleryBox {
 	overflow:hidden;
 }

@@ -7,16 +7,16 @@ var timeout = [];
 $(function() {
 	var funeat;
 	
-	funeat = new Funeat.Map('#mapBox');
-	funeat.addOnUpdateRemote(function() {
-		//alert(JSON.stringify(funeat.getRemoteData(30,0)));
-
-		t_list[0].name = funeat.getRemoteData(30, 0);
-		//alert(json);
-	});
+	
 	if ($("#mapBox").length > 0) // TODO 判斷元素存在 
 	{
-
+		funeat = new Funeat.Map('#mapBox');
+		funeat.addOnUpdateRemote(function() {
+			//alert(JSON.stringify(funeat.getRemoteData(30,0)));
+	
+			t_list[0].name = funeat.getRemoteData(30, 0);
+			//alert(json);
+		});
 		
 	}
 	var t_list = [{
