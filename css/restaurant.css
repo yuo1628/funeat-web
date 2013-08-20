@@ -2,6 +2,10 @@
  * 	override gallery 
  */
 
+.container {
+	height:auto;
+}
+
 .galleryBox {
 	overflow:hidden;
 }
@@ -291,6 +295,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', end
 	color:#5a9ee9;
 	float:left;
 	cursor: pointer;
+}
+
+.resInfoIntro {
+	margin: 10px;
+	
+}
+
+.resInfoIntroTitle {
+	padding: 10px;
+	color:#5a9ee9;
+	font-size: 21px;
+}
+
+.resInfoIntroDesc {
+	padding: 10px;
 }
 
 /**

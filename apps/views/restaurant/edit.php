@@ -29,6 +29,7 @@ $name = Entity::preset(set_value('name'), $restaurant->getName());
 $address = Entity::preset(set_value('address'), $restaurant->getAddress());
 $website = Entity::preset(set_value('website'), $restaurant->getWebsite());
 $tel = Entity::preset(set_value('tel'), $restaurant->getTel());
+$intro = Entity::preset(set_value('intro'), $restaurant->getIntro());
 $fax = Entity::preset(set_value('fax'), $restaurant->getFax());
 $priceLow = Entity::preset(set_value('fax'), $restaurant->getPriceLow());
 $priceHigh = Entity::preset(set_value('fax'), $restaurant->getPriceHigh());
@@ -161,6 +162,40 @@ $hour24 = Hours::getDayTime();
 		<div class="resEditItem">
 			<div class="resEditContainer">
 				<div class="resEditLabel">
+					*價格區間
+				</div>
+				<div class="resEditInput">
+					<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
+					~
+					<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
+					元
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="resEditHelp">
+				請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="resEditItem">
+			<div class="resEditContainer">
+				<div class="resEditLabel">
+					介紹
+				</div>
+				<div class="resEditInput">
+					<textarea class="intro" name="intro"><?php echo $intro ?></textarea>
+					
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="resEditHelp">
+				請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="resEditItem">
+			<div class="resEditContainer">
+				<div class="resEditLabel">
 					傳真
 				</div>
 				<div class="resEditInput">
@@ -189,24 +224,7 @@ $hour24 = Hours::getDayTime();
 			<div class="clearfix"></div>
 		</div>
 	</div>
-	<div class="resEditItem">
-		<div class="resEditContainer">
-			<div class="resEditLabel">
-				*價格區間
-			</div>
-			<div class="resEditInput">
-				<input class="textItem" style="width:275px" type="text" name="priceLow" value="<?php echo $priceLow; ?>" />
-				~
-				<input class="textItem" style="width:275px" type="text" name="priceHigh" value="<?php echo $priceHigh; ?>" />
-				元
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="resEditHelp">
-			請輸入價格區間，可直接輸入 最低 與 最高 的價格 EX：10~60
-		</div>
-		<div class="clearfix"></div>
-	</div>
+	
 	
 	
 	
@@ -570,7 +588,9 @@ $hour24 = Hours::getDayTime();
 			<div class="clearfix"></div>
 		</div>
 		<div class="resEditHelp">
-			請對該店有營業的時間勾選該時段，並且在時段裡輸入該時段營業時間 EX:
+			請對該店有營業的時間勾選該時段，並且在時段裡輸入該時段營業時間
+			
+			<!--
 			<div class="dateTimeItem">
 				<div class="dateTimeTag">
 					<label>
@@ -580,20 +600,14 @@ $hour24 = Hours::getDayTime();
 				<div class="dateTimeStep">
 					<div class="resEditInput">
 						<select name="hours">
-							
 							<option></option>
 						</select>
 						
-						<!--
-						<input class="" style="width:100px;background-color:transparent" value="0700" type="text" disabled="disabled"/>
-						
-						~
-						<input class="" style="width:100px;background-color:transparent" value="1200" type="text" disabled="disabled"/>
-						-->
 					</div>
 				</div>
 				<div class="clearfix"></div>
 			</div>
+			-->
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -634,7 +648,7 @@ $hour24 = Hours::getDayTime();
 	<div class="resEditItem">
 		<div class="resEditContainer">
 			<div class="resEditLabel">
-				店家大頭照
+				店家形象照
 			</div>
 			<div class="resEditInput">
 				<input type="file" name="logo" />

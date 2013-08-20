@@ -350,6 +350,7 @@ class Restaurant extends MY_Controller
 			// Assign normal data
 			$restaurant->setName($this->input->post('name'));
 			$restaurant->setAddress($this->input->post('address'));
+			$restaurant->setIntro($this->input->post('intro'));
 			$restaurant->setLatLng($this->input->post('latitude'), $this->input->post('longitude'));
 			$restaurant->setAddress($this->input->post('address'));
 			$restaurant->setTel($this->input->post('tel'));
@@ -700,7 +701,6 @@ class Restaurant extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setRestaurant($item);
 
 				$commentModel->save($comment);
@@ -753,7 +753,6 @@ class Restaurant extends MY_Controller
 				$type = Comments::TYPE_MEMBER;
 
 				$comment->setComment($this->input->post('comment'));
-				$comment->setCreator(FuneatFactory::getMember(), $type);
 				$comment->setReply($reply);
 
 				$commentModel->save($comment);

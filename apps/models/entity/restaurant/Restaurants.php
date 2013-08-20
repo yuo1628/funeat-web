@@ -7,10 +7,12 @@ use Doctrine\ORM\PersistentCollection as Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 use models\FuneatFactory;
+use models\ModelFactory;
 use models\Feature as Feature;
 use models\entity\Entity as Entity;
 use models\restaurant\Hours;
 use models\entity\image\Images as Images;
+use models\notification\Action as Action;
 use Maps;
 
 /**
@@ -357,6 +359,17 @@ class Restaurants extends Entity
 	protected $comments;
 
 	/**
+	 * @var models\entity\member\Members[]
+	 *
+	 * @ORM\ManyToMany(targetEntity="models\entity\member\Members")
+	 * @ORM\JoinTable(name="Restaurant_Member_Subscription",
+	 * 	joinColumns={@ORM\JoinColumn(name="restaurants_id", referencedColumnName="id", onDelete="CASCADE")},
+	 * 	inverseJoinColumns={@ORM\JoinColumn(name="members_id", referencedColumnName="id")}
+	 * )
+	 */
+	protected $subscription;
+
+	/**
 	 * Distance
 	 *
 	 * @var float
@@ -400,10 +413,39 @@ class Restaurants extends Entity
 	}
 
 	/**
-	 * @ORM\PreUpdate
+	 * @ORM\PostPersist
 	 */
-	public function onPreUpdate()
+	public function onPostPersist()
 	{
+		$notificationModel = ModelFactory::getInstance('models\Notification');
+
+		/**
+		 * @var models\entity\notification\Notifications
+		 */
+		$notification = $notificationModel->getInstance();
+		$notification->setType(Action::RESTAURANT_ADD);
+		$notification->setMessage(Action::RESTAURANT_ADD);
+		$notification->setPublic(true);
+
+		$notificationModel->save($notification);
+	}
+
+	/**
+	 * @ORM\PostUpdate
+	 */
+	public function onPostUpdate()
+	{
+		$notificationModel = ModelFactory::getInstance('models\Notification');
+
+		/**
+		 * @var models\entity\notification\Notifications
+		 */
+		$notification = $notificationModel->getInstance();
+		$notification->setType(Action::RESTAURANT_EDIT);
+		$notification->setMessage(Action::RESTAURANT_EDIT);
+		$notification->setPublic(true);
+
+		$notificationModel->save($notification);
 	}
 
 	public function getId()
@@ -616,6 +658,16 @@ class Restaurants extends Entity
 	public function setGallery($gallery)
 	{
 		$this->gallery = !empty($gallery) ? $gallery : null;
+	}
+	
+	/**
+	 * Set Intro
+	 *
+	 * @param		\models\entity\Restaurant $model Restaurant model.
+	 */
+	public function setIntro($intro)
+	{
+		$this->intro = !empty($intro) ? $intro : null;
 	}
 
 	/**
