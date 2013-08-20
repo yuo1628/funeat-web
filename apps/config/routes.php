@@ -69,6 +69,7 @@ $route['restaurant/(:num)/(:any)'] = 'restaurant/profile/$1/$2';
 $route['restaurant/(\w+)'] = 'restaurant/profile/$1';
 $route['restaurant/(\w+)/comment'] = 'restaurant/comment/$1';
 $route['restaurant/(\w+)/(:any)'] = 'restaurant/profile/$1/$2';
+$route['news/(\d+)'] = 'news/index/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
